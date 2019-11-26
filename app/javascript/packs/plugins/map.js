@@ -1,10 +1,9 @@
-import "./styles.css";
 /*
   Example safe-executing JS script for Lewagon.
   packs/plugins/myPlugin.js
 */
 
-export const initMyPlugin = (selector) => {
+export const initMap = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
   return elements.map(el => new MyPlugin(el));
 };
@@ -43,10 +42,20 @@ class MyPlugin {
     // - type: locationTypes[0]
     // Mapbox optimize.
 
+    const placeResult = {
+
+    };
+
+    /*
+      placeResult['liquor_store'] = {
+        lat: 333333,
+        lon: 333333,
+      };
+    */
+    place[0]
+
     const google = window.google;
-    var service = new google.maps.places.PlacesService(
-      document.getElementById("map")
-    );
+    var service = new google.maps.places.PlacesService(this.el);
 
     locationTypes.forEach(async locationType => {
       const placeSearchParmas = {
@@ -60,9 +69,13 @@ class MyPlugin {
       try {
         service.nearbySearch(placeSearchParmas, function(place, status) {
           console.log(place[0], locationType);
+          placeResult['liquor_store'] = {
+          lat: 333333,
+          lon: 333333,
+      };
         });
       } catch (e) {
-        // console.log(e);
+        console.error(e.message);
       }
 
     });
