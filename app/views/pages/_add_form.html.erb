@@ -1,0 +1,9 @@
+<%= simple_form_for @task do |f| %>
+    <%= f.input :title, label: false, placeholder: 'Title' %>
+    <%= f.association :category %>
+
+    <div class="form-actions text-center">
+      <%= f.submit %>
+    </div>
+<% end %>
+
