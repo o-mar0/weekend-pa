@@ -1,13 +1,17 @@
 .form {
   margin: auto auto;
   padding: 16px;
-  border: 1px solid $main;
   border-radius: 4px;
 }
 
 .add_form {
   margin: auto auto;
   padding: 16px;
-  border: 1px solid $main;
   border-radius: 4px;
+
+  .form-inline {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-gap: 12px;
+  }
 }

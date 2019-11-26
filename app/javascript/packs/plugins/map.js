@@ -64,6 +64,7 @@ class MyPlugin {
       } catch (e) {
         // console.log(e);
       }
+
     });
 
     // Mapbox GL display markers
