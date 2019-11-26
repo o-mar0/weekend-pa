@@ -10,7 +10,7 @@ const userLocation = {
 }; // Inspire 9
 
 const defaultPlacesQueryParams = {
-  key: "AIzaSyD1vAt8qefNigqN4soYJez4m4Z8J9RDYSk",
+  key: "",
   radius: "1000",
   rankby: "distance",
   location: userLocation
