@@ -1,9 +1,18 @@
 class TasksController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
   before_action :find_task, only: %i[show edit destroy]
+  before_action :find_category, only: %i[create]
+
   def index
-    @tasks = Task.all
-    @categories = Category.all
+    @tasks = Task.all.select { |task| task.user == current_user }
+    @tasks_categories = {}
+    @tasks.each do |task|
+      if @tasks_categories.include? task.category.name
+        @tasks_categories[task.category.name].push(task)
+      else
+        @tasks_categories[task.category.name] = [task]
+      end
+    end
   end
 
   def show
@@ -16,9 +25,10 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.new
+    @task.user = current_user
+    @task.category = @category
     if @task.save
-      redirect_to @tasks
+      redirect_to tasks_path
     else
       render :new
     end
@@ -47,7 +57,11 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  def find_category
+    @category = Category.find(params[:task][:category_id])
+  end
+
   def task_params
-    params.require(:task).permit(:title, :location, :start_at, :end_at, :due, :category, :user)
+    params.require(:task).permit(:title, :location, :start_at, :end_at, :due, :category)
   end
 end

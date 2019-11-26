@@ -1,12 +1,22 @@
 <div class="app-container">
   <div class="container-body">
     <h1>This Week</h1>
-    <% @categories.each do |category| %>
+    <% @tasks_categories.each do |category| %>
       <div class="card-category">
-        <h2><%= category.name.capitalize %></h2>
+        <h2><%= category[0].capitalize %></h2>
         <ul class="list">
-          <% category.tasks.each do |task| %>
-            <li class="list-item"><%= task.title %><i class="fas fa-chevron-right"></i></li>
+          <% category[1].each do |task| %>
+            <li class="list-item">
+              <div class="list-item-left">
+                <% if task.status %>
+                  <i class="fas fa-check-circle"></i>
+                <% else %>
+                  <i class="fas fa-circle"></i>
+                <% end %>
+                <%= task.title %>
+              </div>
+              <i class="fas fa-chevron-right"></i>
+            </li>
           <% end %>
         </ul>
       </div>
