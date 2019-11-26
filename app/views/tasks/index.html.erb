@@ -2,11 +2,11 @@
   <div class="container-body">
     <h1>This Week</h1>
     <% @categories.each do |category| %>
-      <div class="card">
-        <h2><% category.name %></h2>
-        <ul>
+      <div class="card-category">
+        <h2><%= category.name.capitalize %></h2>
+        <ul class="list">
           <% category.tasks.each do |task| %>
-            <li><%= task.title %></li>
+            <li class="list-item"><%= task.title %><i class="fas fa-chevron-right"></i></li>
           <% end %>
         </ul>
       </div>
