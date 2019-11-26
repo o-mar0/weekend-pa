@@ -1,7 +1,9 @@
 class TasksController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index]
   before_action :find_task, only: %i[show edit destroy]
   def index
     @tasks = Task.all
+    @categories = Category.all
   end
 
   def show
@@ -31,6 +33,7 @@ class TasksController < ApplicationController
       redirect_to
     else
       render :edit
+    end
   end
 
   def destroy

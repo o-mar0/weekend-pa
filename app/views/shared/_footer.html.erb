@@ -1,0 +1,13 @@
+<div class="footer fixed-bottom">
+  <div class="footer-left">
+    <%= image_tag "startup.png", alt: "alttext", width: '32', height: '32' %>
+  </div>
+  <div class="footer-center">
+    <%= link_to '+', root_path, class: 'btn-add' %>
+  </div>
+  <div class="footer-right">
+    <%= link_to tasks_path do %>
+      <i class="fas fa-list-ul"></i>
+    <% end %>
+  </div>
+</div>
