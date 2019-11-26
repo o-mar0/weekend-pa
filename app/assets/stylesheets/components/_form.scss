@@ -13,5 +13,10 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     grid-gap: 12px;
+    margin: 28px auto;
   }
+}
+
+.form-group {
+  margin: 0;
 }
