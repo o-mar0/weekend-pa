@@ -1,6 +1,11 @@
 <%= simple_form_for @task do |f| %>
     <%= f.input :title, label: false, placeholder: 'Title' %>
-    <%= f.association :category %>
+
+    <div class="form-inline">
+      <%= f.association :category, label: false, prompt: 'Category' %>
+      <%= image_tag "calendar.png", alt: "alttext", class: 'img-sm' %>
+      <%= image_tag "maps-and-flags.png", alt: "alttext", class: 'img-sm' %>
+    </div>
 
     <div class="form-actions text-center">
       <%= f.submit %>
