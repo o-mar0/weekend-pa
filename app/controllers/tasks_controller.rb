@@ -59,7 +59,7 @@ class TasksController < ApplicationController
     end
     # sort todays_tasks by priority
     # priority: Time first > Location to user second > Category last
-    #return sorted tasks from today
+    # return sorted tasks from today
     @tasks.each do |task|
       if task.start_at
         # fetch tasks with todays date --> array
