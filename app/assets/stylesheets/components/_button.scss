@@ -12,3 +12,13 @@
   border-radius: 20px;
   padding: 0 24px;
 }
+
+.btn-link {
+  color: rgba(0,0,0,0.7);
+  transition: 0.2s;
+
+  &:hover {
+    text-decoration: none;
+    color: rgba(0,0,0,1);
+  }
+}

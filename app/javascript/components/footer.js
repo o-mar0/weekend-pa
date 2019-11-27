@@ -1,0 +1,6 @@
+
+const dynamicFooter = () => {
+
+}
+
+export { dynamicFooter };

@@ -1,2 +1,17 @@
-<h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<div class="app-container">
+  <div class="container-body">
+    <div class="container-top text-center">
+      <h1><%= @task.title %></h1>
+      <% if @task.status %>
+        <p>Completed</p>
+      <% else %>
+        <p>Uncompleted</p>
+      <% end %>
+    </div>
+
+    <div class="container-bottom">
+      <p><%= @task.start_at %></p>
+      <p><%= @task.location %></p>
+    </div>
+  </div>
+</div>
