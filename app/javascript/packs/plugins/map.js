@@ -13,18 +13,47 @@ class MyPlugin {
   constructor(el) {
     this.el = el;
 
+    this.markers = [];
+
     this.init();
   }
 
+  initMap() {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiby1tYXIwIiwiYSI6ImNrM2dzaWUyMTA1N2EzbGw5bmU2aTR0cHoifQ.K1SJ2f_lddAklOarADHODw';
+    this.map = new mapboxgl.Map({
+      container: this.el,
+      style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+      center: [userLocation.longitude, userLocation.latitude], // starting position [lng, lat]
+      zoom: 12,
+    });
+  }
+
   async init() {
+    this.initMap();
+
     // Array of Location types
     const categoryNames = ["liquor_store", "supermarket", "hospital"];
 
     // User location
-    const userLocation = {
-      lat: -37.82394,
-      lng: 144.99125
+    const fallbackLocation = {
+      latitude: -37.82394,
+      longitude: 144.99125
     }; // Inspire 9
+
+    const getUserLocationPromise = () => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        }, reject, {
+          enableHighAccuracy: true,
+        });
+      });
+    }
+
+    const userLocation = await getUserLocationPromise();
 
     // Google places (closest) to user location.
     // https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters
@@ -56,7 +85,10 @@ class MyPlugin {
         key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
         radius: "1000",
         rankby: "distance",
-        location: userLocation,
+        location: {
+          lat: userLocation.latitude,
+          lng: userLocation.longitude,
+        },
         type: categoryName,
       };
 
@@ -97,7 +129,44 @@ class MyPlugin {
     // });
 
     // Mapbox GL display markers
+    this.updateMapWithLatestData(userLocation, placeSearchResults);
+  }
 
+  removeAllMarkersFromMap() {
+    this.markers.forEach(marker => {
+      marker.remove();
+    });
+
+    this.markers = [];
+  }
+
+  addUserMarkerToMap(userLocation) {
+    const userMarker = new mapboxgl.Marker({
+      color: 'red',
+    })
+      .setLngLat([userLocation.longitude, userLocation.latitude])
+      .addTo(this.map);
+
+    this.markers.push(userMarker);
+  }
+
+  addPlaceMarkersToMap(placeSearchResults) {
+    placeSearchResults.forEach(placeSearchResult => {
+      const marker = new mapboxgl.Marker()
+        .setLngLat([placeSearchResult.location.longitude, placeSearchResult.location.latitude])
+        .addTo(this.map);
+
+      this.markers.push(marker);
+    });
+  }
+
+  updateMapWithLatestData(userLocation, placeSearchResults) {
+    this.removeAllMarkersFromMap();
+    this.addUserMarkerToMap(userLocation);
+
+    const bounds = new mapboxgl.LngLatBounds();
+    placeSearchResults.forEach(placeSearchResult => bounds.extend([ placeSearchResult.location.longitude, placeSearchResult.location.latitude ]));
+    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 });
   }
 
 }
