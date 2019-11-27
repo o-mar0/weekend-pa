@@ -16,9 +16,9 @@ class MyPlugin {
     this.init();
   }
 
-  init() {
+  async init() {
     // Array of Location types
-    const locationTypes = ["liquor_store", "supermarket", "hospital"];
+    const categoryNames = ["liquor_store", "supermarket", "hospital"];
 
     // User location
     const userLocation = {
@@ -26,12 +26,6 @@ class MyPlugin {
       lng: 144.99125
     }; // Inspire 9
 
-    const defaultPlacesQueryParams = {
-      key: "AIzaSyD1vAt8qefNigqN4soYJez4m4Z8J9RDYSk",
-      radius: "1000",
-      rankby: "distance",
-      location: userLocation
-    };
     // Google places (closest) to user location.
     // https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters
     // - Parameters:
@@ -39,7 +33,7 @@ class MyPlugin {
     // - location: userLocation
     // - radius: 5000
     // - rankby: 'distance'
-    // - type: locationTypes[0]
+    // - type: categoryNames[0]
     // Mapbox optimize.
 
     const placeResult = {
@@ -52,33 +46,55 @@ class MyPlugin {
         lon: 333333,
       };
     */
-    place[0]
+    //place[0]
 
     const google = window.google;
     var service = new google.maps.places.PlacesService(this.el);
 
-    locationTypes.forEach(async locationType => {
+    const getPlaceSearchPromiseForCategoryName = async (categoryName) => {
       const placeSearchParmas = {
-        ...defaultPlacesQueryParams,
-        type: locationType
+        key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
+        radius: "1000",
+        rankby: "distance",
+        location: userLocation,
+        type: categoryName,
       };
 
       // const placeSearchQueryString = queryString.stringify(placeSearchParmas);
       // const placeUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${placeSearchQueryString}`;
 
-      try {
-        service.nearbySearch(placeSearchParmas, function(place, status) {
-          console.log(place[0], locationType);
-          placeResult['liquor_store'] = {
-          lat: 333333,
-          lon: 333333,
-      };
-        });
-      } catch (e) {
-        console.error(e.message);
-      }
+      return new Promise((resolve, reject) => {
+        service.nearbySearch(placeSearchParmas, function(places, status) {
+          if (places.length === 0) {
+            resolve(null);
+          }
 
+          const closestPlace = places[0];
+          const location = {
+            name: closestPlace.name,
+            address: closestPlace.vicinity,
+            location: {
+              latitude: closestPlace.geometry.location.lat(),
+              longitude: closestPlace.geometry.location.lng(),
+            },
+            categoryName: categoryName,
+          };
+
+          resolve(location);
+        });
+      });
+    }
+
+    const placeSearchPromisesForCategoryNames = categoryNames.map((categoryName) => {
+      return getPlaceSearchPromiseForCategoryName(categoryName);
     });
+
+    const placeSearchResults = await Promise.all(placeSearchPromisesForCategoryNames);
+    console.log(placeSearchResults);
+
+    // categoryNames.forEach((categoryName) => {
+    //   getPlaceForCategoryName(categoryName);
+    // });
 
     // Mapbox GL display markers
 
