@@ -7,10 +7,10 @@ class TasksController < ApplicationController
     @tasks = Task.all.select { |task| task.user == current_user }
     @tasks_categories = {}
     @tasks.each do |task|
-      if @tasks_categories.include? task.category.name
-        @tasks_categories[task.category.name].push(task)
+      if @tasks_categories.include? task.category.label
+        @tasks_categories[task.category.label].push(task)
       else
-        @tasks_categories[task.category.name] = [task]
+        @tasks_categories[task.category.label] = [task]
       end
     end
   end
