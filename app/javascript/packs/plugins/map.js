@@ -2,7 +2,6 @@
   Example safe-executing JS script for Lewagon.
   packs/plugins/myPlugin.js
 */
-
 import { featureCollection, feature } from '@turf/turf';
 
 export const initMap = (selector) => {
