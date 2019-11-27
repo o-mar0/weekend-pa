@@ -6,17 +6,19 @@
         <h2><%= category[0].capitalize %></h2>
         <ul class="list">
           <% category[1].each do |task| %>
-            <li class="list-item">
-              <div class="list-item-left">
-                <% if task.status %>
-                  <i class="fas fa-check-circle"></i>
-                <% else %>
-                  <i class="fas fa-circle"></i>
-                <% end %>
-                <%= task.title %>
-              </div>
-              <i class="fas fa-chevron-right"></i>
-            </li>
+            <%= link_to task_path(task), class: 'btn-link' do %>
+              <li class="list-item">
+                <div class="list-item-left">
+                  <% if task.status %>
+                    <i class="fas fa-check-circle"></i>
+                  <% else %>
+                    <i class="fas fa-circle"></i>
+                  <% end %>
+                  <%= task.title %>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            <% end %>
           <% end %>
         </ul>
       </div>
