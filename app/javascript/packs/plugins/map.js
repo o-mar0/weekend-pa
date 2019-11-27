@@ -22,7 +22,7 @@ class MyPlugin {
 
   async init() {
     // Array of Location types
-    const categoryNames = ["liquor_store", "supermarket", "hospital"];
+    const categoryNames = ["liquor_store", "supermarket", "hospital", "cafe", "park", "restaurant", "gym", "hair_care"];
 
     // User location
     const fallbackLocation = {
@@ -54,18 +54,6 @@ class MyPlugin {
     // - rankby: 'distance'
     // - type: categoryNames[0]
     // Mapbox optimize.
-
-    const placeResult = {
-
-    };
-
-    /*
-      placeResult['liquor_store'] = {
-        lat: 333333,
-        lon: 333333,
-      };
-    */
-    //place[0]
 
     const google = window.google;
     var service = new google.maps.places.PlacesService(this.el);
@@ -112,7 +100,6 @@ class MyPlugin {
     });
 
     const placeSearchResults = await Promise.all(placeSearchPromisesForCategoryNames);
-    console.log(placeSearchResults);
 
     // categoryNames.forEach((categoryName) => {
     //   getPlaceForCategoryName(categoryName);
@@ -142,9 +129,20 @@ class MyPlugin {
 
   addPlaceMarkersToMap(placeSearchResults) {
     placeSearchResults.forEach(placeSearchResult => {
+      const markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML('<h3>' + placeSearchResult.categoryName + '</h3><p>' + placeSearchResult.name + '</p>');
+
       const marker = new mapboxgl.Marker()
         .setLngLat([placeSearchResult.location.longitude, placeSearchResult.location.latitude])
+        .setPopup(markerPopup)
         .addTo(this.map);
+
+      // // DEBUGGING - to see which is which
+      // new mapboxgl.Popup()
+      //   .setLngLat([placeSearchResult.location.longitude, placeSearchResult.location.latitude])
+      //   .setHTML(`${placeSearchResult.categoryName}: ${placeSearchResult.name}`)
+      //   .setMaxWidth("300px")
+      //   .addTo(this.map);
 
       this.markers.push(marker);
     });
@@ -164,15 +162,15 @@ class MyPlugin {
     });
   }
 
-  updateMapWithLatestData(userLocation, placeSearchResults) {
-    this.map.addSource('route', {
+  addRouteLineLayerToMap() {
+    this.map.addSource('weekendPARouteLine', {
       type: 'geojson',
       data: null,
     });
     this.map.addLayer({
       id: 'routeline-active',
       type: 'line',
-      source: 'route',
+      source: 'weekendPARouteLine',
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
@@ -192,7 +190,7 @@ class MyPlugin {
     this.map.addLayer({
       id: 'routearrows',
       type: 'symbol',
-      source: 'route',
+      source: 'weekendPARouteLine',
       layout: {
         'symbol-placement': 'line',
         'text-field': '▶',
@@ -218,7 +216,10 @@ class MyPlugin {
         'text-halo-width': 3
       }
     }, 'waterway-label');
+  }
 
+  updateMapWithLatestData(userLocation, placeSearchResults) {
+    this.addRouteLineLayerToMap();
     this.removeAllMarkersFromMap();
     this.addUserMarkerToMap(userLocation);
     this.addPlaceMarkersToMap(placeSearchResults);
@@ -252,7 +253,7 @@ class MyPlugin {
       } else {
         // Update the `route` source by getting the route source
         // and setting the data equal to routeGeoJSON
-        this.map.getSource('route')
+        this.map.getSource('weekendPARouteLine')
           .setData(routeGeoJSON);
       }
   }
