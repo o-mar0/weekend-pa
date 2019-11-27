@@ -11,10 +11,143 @@ puts 'Creating users'
 User.create(name: 'Omar', email: 'omar@gmail.com',password: 'password')
 
 puts 'creating categories'
-categories = [{name: 'groceries', label:'groceries'}, {name: 'appointments', label: 'appointments'}, {name: 'general', label: 'general'}]
+categories = [
+               {
+                name: 'airport',
+                label:'Airport'
+               },
+               {
+                name: 'amusement_park',
+                label: 'Amusement Park'
+               },
+               {
+                name: 'aquarium',
+                label: 'Aquarium'
+               },
+               {
+                name: 'art_gallery',
+                label: 'Art Gallery'
+               },
+               {
+                name: 'atm',
+                label: 'ATM'
+               },
+               {
+                name: 'bakery',
+                label: 'Bakery'
+               },
+               {
+                name: 'bank',
+                label: 'Bank'
+               },
+               {
+                name: 'bar',
+                label: 'Bar'
+               },
+               {
+                name: 'cafe',
+                label: 'Cafe'
+               },
+               {
+                name: 'dentist',
+                label: 'Dentis'
+               },
+               {
+                name: 'department_store',
+                label: 'Department Store'
+               },
+               {
+                name: 'doctor',
+                label: 'Doctor'
+               },
+               {
+                name: 'electrician',
+                label: 'Electrician'
+               },
+               {
+                name: 'electronics_store',
+                label: 'Electronics Store'
+               },
+               {
+                name: 'grocery_or_supermarket',
+                label: 'Grocery or Supermarket'
+               },
+               {
+                name: 'gym',
+                label: 'Gym'
+               },
+               {
+                name: 'hardware_store',
+                label: 'Hardware Store'
+               },
+               {
+                name: 'home_goods_store',
+                label: 'Home Goods Store'
+               },
+               {
+                name: 'hospital',
+                label: 'Hospital'
+               },
+               {
+                name: 'laundry',
+                label: 'Laundry'
+               },
+               {
+                name: 'park',
+                label: 'Park'
+               },
+               {
+                name: 'pharmacy',
+                label: 'Pharmacy'
+               },
+               {
+                name: 'physiotherapist',
+                label: 'Physiotherapist'
+               },
+               {
+                name: 'plumber',
+                label: 'Plumber'
+               },
+               {
+                name: 'post_office',
+                label: 'Post Office'
+               },
+               {
+                name: 'restaurant',
+                label: 'Restaurant'
+               },
+               {
+                name: 'school',
+                label: 'School'
+               },
+               {
+                name: 'shopping_mall',
+                label: 'Shopping Mall'
+               },
+               {
+                name: 'store',
+                label: 'Store'
+               },
+               {
+                name: 'supermarket',
+                label: 'Supermarket'
+               },
+               {
+                name: 'tourist_attraction',
+                label: 'Tourist Attraction'
+               },
+               {
+                name: 'transit_station',
+                label: 'Transit Station'
+               },
+               {
+                name: 'veterinary_care',
+                label: 'Vetinary Care'
+              }
+             ]
 categories.each do |category|
   Category.create(category)
-  end
+end
 
 
 puts 'Creating tasks....'
