@@ -51,6 +51,28 @@ class TasksController < ApplicationController
     @task.destroy
   end
 
+  def mission_builder
+    @tasks = Task.all.select { |task| task.user == current_user }
+    # generate new array with tasks that can be achieved today
+    @todays_tasks = @tasks.select do |task|
+      task.start_at.day == Date.today || task.start_at.nil?
+    end
+    # sort todays_tasks by priority
+    # priority: Time first > Location to user second > Category last
+    #return sorted tasks from today
+    @tasks.each do |task|
+      if task.start_at
+        # fetch tasks with todays date --> array
+
+      elsif task.location
+
+      else
+
+      end
+      # sort first by time, location
+    end
+  end
+
   private
 
   def find_task
