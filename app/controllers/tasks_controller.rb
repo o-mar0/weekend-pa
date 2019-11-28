@@ -56,8 +56,7 @@ class TasksController < ApplicationController
     user_lat = params[:lat].to_f.round(2)
     user_long = params[:long].to_f.round(2)
 
-    @tasks = Task.all.select { |task| task.user == current_user }
-    @tasks = Task.near([user_lat, user_long], 10)
+    @tasks = current_user.tasks.near([user_lat, user_long], 5)
 
 
 
