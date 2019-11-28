@@ -1,0 +1,22 @@
+<div class="app-container">
+    <div class="form-container">
+      <form action="" class="js-mission-builder-form mission-builder-form">
+        <div class="js-map map"></div>
+
+        <div class="form-cards">
+          <% @tasks_categories.each do |category_name, tasks| %>
+            <div class="checkbox">
+              <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" />
+              <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
+              <ul class="task">
+                <% tasks.each do |task| %>
+                  <li><%= task.title %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <a href="">Do you choose to accept this mission?</a>
+        </div>
+      </form>
+    </div>
+</div>

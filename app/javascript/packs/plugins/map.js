@@ -6,13 +6,19 @@ import { featureCollection, feature } from '@turf/turf';
 
 export const initMap = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
-  return elements.map(el => new MyPlugin(el));
+  return elements.map(el => new Map(el));
 };
 
-class MyPlugin {
+export class Map {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
+
+    this.categoryNames = [];
+
+    this.userLocation = null;
+
+    this.placeCache = {};
 
     this.markers = [];
 
@@ -20,29 +26,90 @@ class MyPlugin {
   }
 
   async init() {
-    // Array of Location types
-    const categoryNames = ["liquor_store", "supermarket", "hospital", "cafe", "park", "restaurant", "gym", "hair_care"];
+    this.buildMap();
+    this.initPlacesService();
+  }
 
+  updateCategoryNames(categoryNames) {
+    this.categoryNames = categoryNames;
+    this.updateMap();
+  }
+
+  getUserLocationPromise = () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      }, reject, {
+        enableHighAccuracy: true,
+      });
+    });
+  }
+
+  async getPlaceSearchResults() {
+    const placeSearchPromisesForCategoryNames = this.categoryNames.map((categoryName) => {
+      return this.getPlaceSearchPromiseForCategoryName(categoryName);
+    });
+    return Promise.all(placeSearchPromisesForCategoryNames);
+  }
+
+  async getPlaceSearchPromiseForCategoryName(categoryName) {
+    if (this.placeCache[categoryName]) {
+      return this.placeCache[categoryName];
+    }
+
+    const placeSearchParmas = {
+      key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
+      radius: "1000",
+      rankby: "distance",
+      location: {
+        lat: this.userLocation.latitude,
+        lng: this.userLocation.longitude,
+      },
+      type: categoryName,
+    };
+
+    // const placeSearchQueryString = queryString.stringify(placeSearchParmas);
+    // const placeUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${placeSearchQueryString}`;
+
+    const placeSearchPromise = new Promise((resolve, reject) => {
+      this.placesService.nearbySearch(placeSearchParmas, function(places, status) {
+        if (!places || places.length === 0) {
+          resolve(null);
+          return;
+        }
+
+        const closestPlace = places[0];
+        const location = {
+          name: closestPlace.name,
+          address: closestPlace.vicinity,
+          location: {
+            latitude: closestPlace.geometry.location.lat(),
+            longitude: closestPlace.geometry.location.lng(),
+          },
+          categoryName: categoryName,
+        };
+
+        resolve(location);
+      });
+    });
+
+    this.placeCache[categoryName] = await placeSearchPromise;
+    return this.placeCache[categoryName];
+  }
+
+  async updateMap() {
     // User location
     const fallbackLocation = {
       latitude: -37.82394,
       longitude: 144.99125
     }; // Inspire 9
 
-    const getUserLocationPromise = () => {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        }, reject, {
-          enableHighAccuracy: true,
-        });
-      });
+    if (!this.userLocation) {
+      this.userLocation = await this.getUserLocationPromise();
     }
-
-    const userLocation = await getUserLocationPromise();
 
     // Google places (closest) to user location.
     // https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters
@@ -54,58 +121,14 @@ class MyPlugin {
     // - type: categoryNames[0]
     // Mapbox optimize.
 
-    const google = window.google;
-    var service = new google.maps.places.PlacesService(this.el);
-
-    const getPlaceSearchPromiseForCategoryName = async (categoryName) => {
-      const placeSearchParmas = {
-        key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
-        radius: "1000",
-        rankby: "distance",
-        location: {
-          lat: userLocation.latitude,
-          lng: userLocation.longitude,
-        },
-        type: categoryName,
-      };
-
-      // const placeSearchQueryString = queryString.stringify(placeSearchParmas);
-      // const placeUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${placeSearchQueryString}`;
-
-      return new Promise((resolve, reject) => {
-        service.nearbySearch(placeSearchParmas, function(places, status) {
-          if (places.length === 0) {
-            resolve(null);
-          }
-
-          const closestPlace = places[0];
-          const location = {
-            name: closestPlace.name,
-            address: closestPlace.vicinity,
-            location: {
-              latitude: closestPlace.geometry.location.lat(),
-              longitude: closestPlace.geometry.location.lng(),
-            },
-            categoryName: categoryName,
-          };
-
-          resolve(location);
-        });
-      });
-    }
-
-    const placeSearchPromisesForCategoryNames = categoryNames.map((categoryName) => {
-      return getPlaceSearchPromiseForCategoryName(categoryName);
-    });
-
-    const placeSearchResults = await Promise.all(placeSearchPromisesForCategoryNames);
-
+    const placeSearchResults = await this.getPlaceSearchResults();
+    console.log(placeSearchResults);
     // categoryNames.forEach((categoryName) => {
     //   getPlaceForCategoryName(categoryName);
     // });
 
     // Mapbox GL display markers
-    this.initMap(userLocation, placeSearchResults);
+    this.updateMapWithLatestData(this.userLocation, placeSearchResults.filter(x => x));
   }
 
   removeAllMarkersFromMap() {
@@ -147,18 +170,23 @@ class MyPlugin {
     });
   }
 
-  initMap(userLocation, placeSearchResults) {
-     mapboxgl.accessToken = 'pk.eyJ1Ijoiby1tYXIwIiwiYSI6ImNrM2dzaWUyMTA1N2EzbGw5bmU2aTR0cHoifQ.K1SJ2f_lddAklOarADHODw';
+  buildMap() {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiby1tYXIwIiwiYSI6ImNrM2dzaWUyMTA1N2EzbGw5bmU2aTR0cHoifQ.K1SJ2f_lddAklOarADHODw';
     this.map = new mapboxgl.Map({
       container: this.el,
       style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
       center: [144.99125, -37.82394], // starting position [lng, lat]
       zoom: 12,
     });
-
     this.map.on('load', () => {
-      this.updateMapWithLatestData(userLocation, placeSearchResults);
+      this.addRouteLineLayerToMap();
     });
+  }
+
+  initPlacesService() {
+    const google = window.google;
+    const googleMapEl = document.createElement('div');
+    this.placesService = new google.maps.places.PlacesService(googleMapEl);
   }
 
   addRouteLineLayerToMap() {
@@ -218,23 +246,24 @@ class MyPlugin {
   }
 
   updateMapWithLatestData(userLocation, placeSearchResults) {
-    this.addRouteLineLayerToMap();
     this.removeAllMarkersFromMap();
     this.addUserMarkerToMap(userLocation);
     this.addPlaceMarkersToMap(placeSearchResults);
 
-    const bounds = new mapboxgl.LngLatBounds();
-    placeSearchResults.forEach(placeSearchResult => bounds.extend([ placeSearchResult.location.longitude, placeSearchResult.location.latitude ]));
-    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 });
+    if (placeSearchResults.length > 0) {
+      const bounds = new mapboxgl.LngLatBounds();
+      placeSearchResults.forEach(placeSearchResult => bounds.extend([ placeSearchResult.location.longitude, placeSearchResult.location.latitude ]));
+      this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 });
 
-    this.getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults);
+      this.getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults);
+    }
   }
 
   async getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults) {
     // Store the location of the truck in a variable called coordinates
       const coordinates = placeSearchResults.map(placeSearchResult => {
         return `${placeSearchResult.location.longitude},${placeSearchResult.location.latitude}`;
-      });
+      }).slice(0, 11);
 
       coordinates.unshift(`${userLocation.longitude},${userLocation.latitude}`);
 
