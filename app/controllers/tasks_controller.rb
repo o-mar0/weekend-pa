@@ -52,24 +52,20 @@ class TasksController < ApplicationController
   end
 
   def mission_builder
-    @tasks = Task.all.select { |task| task.user == current_user }
-    # generate new array with tasks that can be achieved today
-    @todays_tasks = @tasks.select do |task|
-      task.start_at.day == Date.today || task.start_at.nil?
-    end
-    # sort todays_tasks by priority
-    # priority: Time first > Location to user second > Category last
-    # return sorted tasks from today
-    @tasks.each do |task|
-      if task.start_at
-        # fetch tasks with todays date --> array
+    user_lat = params[:lat].to_f.round(2)
+    user_long = params[:long].to_f.round(2)
 
-      elsif task.location
+    @tasks_with_location = current_user.tasks.near([user_lat, user_long], 5)
 
+    @tasks_no_location = current_user.tasks.where(location: nil).order(:due)
+    # Hash - tasks with no location
+    @tasks_categories = {}
+    @tasks_no_location.each do |task|
+      if @tasks.include? task.category.label
+        @tasks_categories[task.category.label].push(task)
       else
-
+        @tasks_categories[task.category.label] = [task]
       end
-      # sort first by time, location
     end
   end
 
