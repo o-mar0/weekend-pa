@@ -51,24 +51,6 @@ class TasksController < ApplicationController
     @task.destroy
   end
 
-  def mission_builder
-    user_lat = params[:lat].to_f.round(2)
-    user_long = params[:long].to_f.round(2)
-
-    @tasks_with_location = current_user.tasks.near([user_lat, user_long], 5)
-
-    @tasks_no_location = current_user.tasks.where(location: nil).order(:due)
-    # Hash - tasks with no location
-    @tasks_categories = {}
-    @tasks_no_location.each do |task|
-      if @tasks.include? task.category.label
-        @tasks_categories[task.category.label].push(task)
-      else
-        @tasks_categories[task.category.label] = [task]
-      end
-    end
-  end
-
   private
 
   def find_task
