@@ -155,7 +155,6 @@ tasks_past = [
   {
     title: 'Grocery shopping',
     category: Category.find_by(name: 'grocery_or_supermarket'),
-    location: 'Coles - 150/160 Swan St, Richmond VIC 3121',
     status: true,
     due: DateTime.parse('03/11/2019 23:59'),
     user: User.first
@@ -164,7 +163,6 @@ tasks_past = [
   {
     title: 'Make dinner reservation',
     category: Category.find_by(name: 'restaurant'),
-    location: 'Macelleria - 87/89 Swan St, Richmond VIC 3121',
     status: true,
     start_at: DateTime.parse('03/11/2019 19:30'),
     end_at: DateTime.parse('03/11/2019 21:30'),
