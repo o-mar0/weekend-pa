@@ -5,3 +5,14 @@
 .cards {
   margin: 0 0 96px 0;
 }
+
+.card-task {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid $main;
+  border-radius: 4px;
+
+  .card-left {
+    flex-grow: 1;
+  }
+}
