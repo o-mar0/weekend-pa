@@ -1,10 +1,25 @@
 class MissionController < ApplicationController
   def mission_builder
+    user_lat = params[:lat].to_f.round(2)
+    user_long = params[:long].to_f.round(2)
+
+    @tasks_with_location = current_user.tasks.near([user_lat, user_long], 10)
+
+    @tasks_no_location = current_user.tasks.where(location: nil).order(:due)
+    # Hash - tasks with no location
+    @tasks_no_location_categories = {}
+    @tasks_no_location.each do |task|
+      if @tasks_no_location_categories.include? task.category.label
+        @tasks_no_location_categories[task.category.label].push(task)
+      else
+        @tasks_no_location_categories[task.category.label] = [task]
+      end
+    end
+
     @tasks = Task.all.select { |task| task.user == current_user }
     @tasks_categories = {}
 
     @category_labels = {}
-
 
     @tasks.each do |task|
       if @tasks_categories.include? task.category.label

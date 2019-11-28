@@ -24,7 +24,7 @@ class MyPlugin {
 
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        window.location = '/new_mission?lat=' + position.coords.latitude + '&long=' + position.coords.longitude
+        window.location = '/mission?lat=' + position.coords.latitude + '&long=' + position.coords.longitude
       });
     } else {
       alert('You cannot get location')
