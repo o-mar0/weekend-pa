@@ -16,12 +16,14 @@
               <ul class="task">
                 <% tasks.each do |task| %>
                   <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
-                  <li><%= task.title %></li>
+                  <li class="list-item"><%= task.title %></li>
                 <% end %>
               </ul>
             </div>
           <% end %>
-          <input type="submit" name="Accept">
+          <div class="form-actions text-right">
+            <input type="submit" name="Accept" value="Accept" class="btn-submit">
+          </div>
         </div>
       </form>
     </div>

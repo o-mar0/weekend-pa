@@ -12,12 +12,23 @@
   padding: 0 24px;
 }
 
-.btn-link {
+.btn-link, .btn-submit {
+  background: rgba(255,255,255,0);
   color: rgba(0,0,0,0.7);
   transition: 0.2s;
 
   &:hover {
     color: rgba(0,0,0,1);
     text-decoration: none;
+  }
+}
+
+.btn-submit {
+  padding: 12px 16px;
+  border: 1px solid rgba(0,0,0,0.7);
+  border-radius: 2px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,1);
   }
 }

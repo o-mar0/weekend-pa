@@ -5,26 +5,27 @@
       <div class="js-map map"></div>
 
       <div class="form-cards">
-        <% @category_labels.each do |category_name, tasks| %>
-          <div class="js-category-card d-none" data-category-name="<%= category_name %>">
+        <% @category_labels.each do |category, tasks| %>
+          <div class="js-category-card d-none" data-category-name="<%= category.name %>">
             <ul class="task">
-              <li>
-                <%= category_name %>
-                <% tasks.each do |task_id| %>
+              <li class="list-item-title">
+                <h1><%= category.label %></h1>
+                <% tasks.each do |task| %>
                   <div>
-                    <input type="checkbox" name="task_completion" value="<%= task_id %>" />
-                    <label><%= Task.find(task_id).title %></label>
+                    <input type="checkbox" name="task_completion" value="<%= task.id %>" />
+                    <label><%= task.title %></label>
                   </div>
                 <% end %>
               </li>
             </ul>
           </div>
         <% end %>
-        <div class="js-final-step d-none">
+        <div class="js-final-step d-none task-final">
+          <h1>Final Step</h1>
           This is the final step, congratulations!!
         </div>
-        <div class="mission-toolbar">
-          <button class="js-next-btn">Next</button>
+        <div class="mission-toolbar text-right">
+          <button class="js-next-btn btn-submit">Next</button>
         </div>
       </div>
   </div>
