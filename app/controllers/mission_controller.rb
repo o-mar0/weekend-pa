@@ -10,7 +10,7 @@ class MissionController < ApplicationController
     @tasks_no_location_categories = {}
     @category_labels = {}
     @tasks_no_location.each do |task|
-      if @tasks_no_location_categories.include? task.category.label
+      if @tasks_no_location_categories.include? task.category.name
         @tasks_no_location_categories[task.category.name].push(task)
       else
         @tasks_no_location_categories[task.category.name] = [task]
