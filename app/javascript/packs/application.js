@@ -3,7 +3,6 @@ import "bootstrap";
 import { initMap } from './plugins/map';
 import { initMissionBuilder } from './plugins/mission-builder';
 import { initMission } from './plugins/mission';
-
 import { initNavbar } from './plugins/navbar';
 
 // Always add a js- prefixed class to your elements when targeting to create a separation
