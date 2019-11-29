@@ -8,7 +8,7 @@ puts 'Clearing tasks database..'
 Task.destroy_all
 
 puts 'Creating users'
-User.create(name: 'Omar', email: 'omar@gmail.com',password: 'password')
+User.create(name: 'User', email: 'user@user.com',password: 'password')
 
 puts 'creating categories'
 categories = [
@@ -181,14 +181,14 @@ tasks_past = [
     user: User.first
   },
 
-  {
-    title: 'Pay for piano lessons',
-    category: Category.find_by(name: 'school'),
-    location: 'Richmond Music Academy - 369 Burnley St, Richmond VIC 3121',
-    status: true,
-    due: DateTime.parse('03/11/2019 23:59'),
-    user: User.first
-  },
+  # {
+  #   title: 'Pay for piano lessons',
+  #   category: Category.find_by(name: 'school'),
+  #   location: '369 Burnley St, Richmond VIC 3121',
+  #   status: true,
+  #   due: DateTime.parse('03/11/2019 23:59'),
+  #   user: User.first
+  # },
 
   # {
   #   title: 'Call parents',
@@ -200,22 +200,22 @@ tasks_past = [
   # },
 
   {
-    title: 'Install ceiling fan',
+    title: 'Buy ceiling fan',
     category: Category.find_by(name: 'hardware_store'),
-    location: 'Home - 41 Stewart St, Melbourne c/o Inspire9, Level1, Richmond VIC 3121',
+    location: '41 Stewart St, Melbourne c/o Inspire9, Level1, Richmond VIC 3121',
     status: true,
     due: DateTime.parse('10/11/2019 23:59'),
     user: User.first
   },
 
-  {
-    title: 'Fix bathroom door',
-    category: Category.find_by(name: 'hardware_store'),
-    location: 'Home - 41 Stewart St, Melbourne c/o Inspire9, Level1, Richmond VIC 3121',
-    status: true,
-    due: DateTime.parse('10/11/2019 23:59'),
-    user: User.first
-  },
+  # {
+  #   title: 'Fix bathroom door',
+  #   category: Category.find_by(name: 'hardware_store'),
+  #   location: '41 Stewart St, Melbourne c/o Inspire9, Level1, Richmond VIC 3121',
+  #   status: true,
+  #   due: DateTime.parse('10/11/2019 23:59'),
+  #   user: User.first
+  # },
 
   # {
   #   title: 'Help Katie to decorate her room',
@@ -231,7 +231,7 @@ tasks_past = [
   {
     title: 'Buy chairs',
     category: Category.find_by(name: 'home_goods_store'),
-    location: 'IKEA - 630 Victoria St, Richmond VIC 3121',
+    location: '630 Victoria St, Richmond VIC 3121',
     status: true,
     due: DateTime.parse('17/11/2019 23:59'),
     user: User.first
@@ -278,7 +278,7 @@ tasks_future = [
   {
     title: 'Appointment with barber',
     category: Category.find_by(name: 'shopping_mall'),
-    location: 'Beef\'s Barbers - 258 Bridge Rd, Richmond VIC 3121',
+    location: '258 Bridge Rd, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('14/12/2019 11:00'),
     end_at: DateTime.parse('14/12/2019 11:45'),
@@ -289,7 +289,7 @@ tasks_future = [
   {
     title: 'Doctor\'s appointment',
     category: Category.find_by(name: 'doctor'),
-    location: 'Richmond Medical - 9/53 Coppin St, Richmond VIC 3121',
+    location: '9/53 Coppin St, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('15/12/2019 09:00'),
     end_at: DateTime.parse('15/12/2019 10:00'),
@@ -300,7 +300,7 @@ tasks_future = [
   {
     title: 'Meeting at community center',
     category: Category.find_by(name: 'park'),
-    location: 'Richmond Recreation Centre - 11-15 Gleadell St, Richmond VIC 3121',
+    location: '11-15 Gleadell St, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('15/12/2019 14:30'),
     end_at: DateTime.parse('15/12/2019 15:00'),
@@ -311,7 +311,7 @@ tasks_future = [
   {
     title: 'Volunteer work at community center',
     category: Category.find_by(name: 'park'),
-    location: 'Richmond Recreation Centre - 11-15 Gleadell St, Richmond VIC 3121',
+    location: '11-15 Gleadell St, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('15/12/2019 15:00'),
     end_at: DateTime.parse('15/12/2019 16:30'),
@@ -322,7 +322,7 @@ tasks_future = [
   {
     title: 'Christmas party at workplace',
     category: Category.find_by(name: 'shopping_mall'),
-    location: 'Grand Hyatt - 123 Collins St, Melbourne VIC 3000',
+    location: '123 Collins St, Melbourne VIC 3000',
     status: false,
     start_at: DateTime.parse('14/12/2019 19:00'),
     end_at: DateTime.parse('14/12/2019 23:00'),
@@ -333,7 +333,7 @@ tasks_future = [
   {
     title: 'Watch Cricket match',
     category: Category.find_by(name: 'park'),
-    location: 'Melbourne Cricket Ground - Brunton Ave, Richmond VIC 3002',
+    location: 'Brunton Ave, Richmond VIC 3002',
     status: false,
     start_at: DateTime.parse('15/12/2019 19:00'),
     end_at: DateTime.parse('15/12/2019 23:00'),
@@ -352,7 +352,7 @@ tasks_present = [ # 6th
   {
     title: 'Dentist appointment',
     category: Category.find_by(name: 'dentist'),
-    location: 'Richmond Smiles Dental - 43 Clifton St, Richmond VIC 3121',
+    location: '43 Clifton St, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('06/12/2019 08:00'),
     end_at: DateTime.parse('06/12/2019 09:00'),
@@ -363,7 +363,7 @@ tasks_present = [ # 6th
   {
     title: 'Post office/ post the letter',
     category: Category.find_by(name: 'post_office'),
-    location: 'Australia Post - shop 1/335-341 Bridge Rd, Richmond VIC 3121',
+    location: 'shop 1/335-341 Bridge Rd, Richmond VIC 3121',
     status: false,
     due: DateTime.parse('06/12/2019 11:59'),
     user: User.first
@@ -380,14 +380,14 @@ tasks_present = [ # 6th
   #   user: User.first
   # },
 
-  {
-    title: 'Contact weed dealer',
-    category: Category.find_by(name: 'store'),
-    location: 'Classified location in Richmond (49 Dove St, Richmond VIC 3121)',
-    status: false,
-    due: DateTime.parse('06/12/2019 15:00'),
-    user: User.first
-  },
+  # {
+  #   title: 'Contact weed dealer',
+  #   category: Category.find_by(name: 'store'),
+  #   location: '49 Dove St, Richmond VIC 3121',
+  #   status: false,
+  #   due: DateTime.parse('06/12/2019 15:00'),
+  #   user: User.first
+  # },
 
   # {
   #   title: 'Reserve a book from the library',
@@ -407,19 +407,18 @@ tasks_present = [ # 6th
   #   user: User.first
   # },
 
-  {
-    title: 'Listen to the podcast',
-    category: Category.find_by(name: 'school'),
-    location: 'Can be at any location',
-    status: false,
-    due: DateTime.parse('06/12/2019 23:59'),
-    user: User.first
-  },
+  # {
+  #   title: 'Listen to the podcast',
+  #   category: Category.find_by(name: 'school'),
+  #   status: false,
+  #   due: DateTime.parse('06/12/2019 23:59'),
+  #   user: User.first
+  # },
 
   {
     title: 'Dinner Date',
     category: Category.find_by(name: 'restaurant'),
-    location: 'Supernormal - 180 Flinders Ln, Melbourne VIC 3000',
+    location: '180 Flinders Ln, Melbourne VIC 3000',
     status: false,
     start_at: DateTime.parse('06/12/2019 19:30'),
     end_at: DateTime.parse('06/12/2019 21:00'),
@@ -439,7 +438,7 @@ tasks_present = [ # 6th
   {
     title: 'Visit Yoga class',
     category: Category.find_by(name: 'gym'),
-    location: 'Yoga 213 - 97 Swan St, Richmond VIC 3121',
+    location: '213 - 97 Swan St, Richmond VIC 3121',
     status: false,
     start_at: DateTime.parse('07/12/2019 08:30'),
     end_at: DateTime.parse('07/12/2019 10:30'),
