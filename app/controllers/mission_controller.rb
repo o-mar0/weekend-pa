@@ -17,6 +17,14 @@ class MissionController < ApplicationController
         @category_labels[task.category.name] = task.category.label
       end
     end
+  end
+
+  def accepted_mission
+    @category_labels = {}
+    params[:task_categories].each do |task|
+      @category_labels[task[0]] = task[1] if params[:category_name].include? task[0]
+    end
+  end
 
     # @tasks = current_user.tasks
     # @tasks_categories = {}
@@ -35,5 +43,4 @@ class MissionController < ApplicationController
     # @todays_tasks = @tasks.select do |task|
     #   task.start_at.day == Date.today || task.start_at.nil?
     # end
-  end
 end

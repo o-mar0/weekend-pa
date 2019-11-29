@@ -15,12 +15,11 @@ export class Map {
     this.el = el;
 
     this.categoryNames = [];
-
     this.userLocation = null;
-
+    this.map = null;
     this.placeCache = {};
-
     this.markers = [];
+    this.hasMapLoaded = false;
 
     this.init();
   }
@@ -30,9 +29,19 @@ export class Map {
     this.initPlacesService();
   }
 
-  updateCategoryNames(categoryNames) {
+  async updateCategoryNames(categoryNames) {
     this.categoryNames = categoryNames;
-    this.updateMap();
+    return this.updateMap();
+  }
+
+  async zoomIntoJourney(journeyIndex) {
+    // Map must be set up for this to work.
+    const fromMarker = this.markers[journeyIndex];
+    const toMaker = this.markers.length === journeyIndex + 1 ? this.markers[0] : this.markers[journeyIndex + 1];
+
+    this.map.fitBounds([fromMarker.getLngLat(), toMaker.getLngLat()], {
+      padding: 50,
+    });
   }
 
   getUserLocationPromise = () => {
@@ -122,13 +131,9 @@ export class Map {
     // Mapbox optimize.
 
     const placeSearchResults = await this.getPlaceSearchResults();
-    console.log(placeSearchResults);
-    // categoryNames.forEach((categoryName) => {
-    //   getPlaceForCategoryName(categoryName);
-    // });
 
     // Mapbox GL display markers
-    this.updateMapWithLatestData(this.userLocation, placeSearchResults.filter(x => x));
+    return this.updateMapWithLatestData(this.userLocation, placeSearchResults.filter(x => x));
   }
 
   removeAllMarkersFromMap() {
@@ -179,6 +184,7 @@ export class Map {
       zoom: 12,
     });
     this.map.on('load', () => {
+      this.hasMapLoaded = true;
       this.addRouteLineLayerToMap();
     });
   }
@@ -245,7 +251,7 @@ export class Map {
     }, 'waterway-label');
   }
 
-  updateMapWithLatestData(userLocation, placeSearchResults) {
+  async updateMapWithLatestData(userLocation, placeSearchResults) {
     this.removeAllMarkersFromMap();
     this.addUserMarkerToMap(userLocation);
     this.addPlaceMarkersToMap(placeSearchResults);
@@ -255,12 +261,15 @@ export class Map {
       placeSearchResults.forEach(placeSearchResult => bounds.extend([ placeSearchResult.location.longitude, placeSearchResult.location.latitude ]));
       this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 });
 
-      this.getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults);
+      return this.getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults);
     }
+
+    return false;
   }
 
   async getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults) {
-    // Store the location of the truck in a variable called coordinates
+    return new Promise(async (resolve, reject) => {
+      // Store the location of the truck in a variable called coordinates
       const coordinates = placeSearchResults.map(placeSearchResult => {
         return `${placeSearchResult.location.longitude},${placeSearchResult.location.latitude}`;
       }).slice(0, 11);
@@ -277,14 +286,15 @@ export class Map {
 
       // If there is no route provided, reset
       if (!optimizeResult.trips[0]) {
-          alert('no optimize result');
+        reject('no optimize result');
       } else {
-        // Update the `route` source by getting the route source
-        // and setting the data equal to routeGeoJSON
-        this.map.getSource('weekendPARouteLine')
-          .setData(routeGeoJSON);
+        setTimeout(() => {
+            resolve(true);
+            this.map.getSource('weekendPARouteLine')
+              .setData(routeGeoJSON);
+          }, this.hasMapLoaded ? 0 : 5000);
       }
+    });
   }
-
 }
 

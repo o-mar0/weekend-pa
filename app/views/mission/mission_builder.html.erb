@@ -3,22 +3,25 @@
 
 <div class="app-container">
     <div class="form-container">
-      <form action="" class="js-mission-builder-form mission-builder-form">
+      <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+
         <div class="js-map map"></div>
 
         <div class="form-cards">
           <% @tasks_no_location_categories.each do |category_name, tasks| %>
             <div class="checkbox">
-              <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" />
+              <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" name="category_name[]" />
               <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
               <ul class="task">
                 <% tasks.each do |task| %>
+                  <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
                   <li><%= task.title %></li>
                 <% end %>
               </ul>
             </div>
           <% end %>
-          <a href="" class="btn-link">Do you choose to accept this mission?</a>
+          <input type="submit" name="Accept">
         </div>
       </form>
     </div>
