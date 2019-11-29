@@ -1,14 +1,17 @@
 <%= simple_form_for @task do |f| %>
     <%= f.input :title, label: false, placeholder: 'Title' %>
+    <%= f.association :category, label: false, prompt: 'Category' %>
 
     <div class="form-inline">
-      <%= f.association :category, label: false, prompt: 'Category' %>
-      <%= image_tag "calendar.png", alt: "alttext", class: 'img-sm' %>
-      <%= f.input :start_at, as: :string, label: false, placeholder: 'Begin at' %>
-      <input type="image" name="task[start_at]" border="0" alt="Start at" src="/assets/calendar-e15c90d116aeced7e80d398063af66b1bf223a2e3c653862169e0de3d63e80e4.png" class="img-sm">
-      <%= image_tag "maps-and-flags.png", alt: "alttext", class: 'img-sm' %>
-      <%= f.input :location, as: :string, label: false, placeholder: 'Location' %>
+      <div class="form-inline-left">
+        <%= image_tag "calendar.png", alt: "alttext", class: 'img-sm' %>
+        <%= f.input :start_at, as: :string, label: false, placeholder: 'Begin at' %>
+      </div>
+      <div class="form-inline-right">
+        <%= image_tag "maps-and-flags.png", alt: "alttext", class: 'img-sm' %>
+        <%= f.input :location, as: :string, label: false, placeholder: 'Location' %>
+      </div>
     </div>
-      <input name="submit" border="0" alt="Submit" type="image" src="/assets/tick-81810325e9d1b5f535dcf6efe18f6dbc6b043bf5cbb4375aba8f7be94664f6e1.png" class="img-sm btn-submit" />
+      <input name="submit" border="0" alt="Submit" type="image" src="/assets/tick-81810325e9d1b5f535dcf6efe18f6dbc6b043bf5cbb4375aba8f7be94664f6e1.png" class="img-sm" />
 <% end %>
 

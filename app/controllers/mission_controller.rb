@@ -6,6 +6,7 @@ class MissionController < ApplicationController
     @tasks_with_location = current_user.tasks.near([user_lat, user_long], 10)
 
     @tasks_no_location = current_user.tasks.where(location: nil).order(:due)
+    raise
     # Hash - tasks with no location
     @tasks_no_location_categories = {}
     @category_labels = {}
@@ -22,7 +23,12 @@ class MissionController < ApplicationController
   def accepted_mission
     @category_labels = {}
     params[:task_categories].each do |task|
-      @category_labels[task[0]] = task[1] if params[:category_name].include? task[0]
+      next unless params[:category_name].include? task[0]
+
+      tasks = task[1].map do |task_id|
+        Task.find(task_id)
+      end
+      @category_labels[Category.find_by(name: task[0])] = tasks
     end
   end
 
