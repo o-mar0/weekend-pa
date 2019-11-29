@@ -1,0 +1,31 @@
+<div class="app-container">
+  <div class="form-container js-mission">
+
+
+      <div class="js-map map"></div>
+
+      <div class="form-cards">
+        <% @category_labels.each do |category_name, tasks| %>
+          <div class="js-category-card d-none" data-category-name="<%= category_name %>">
+            <ul class="task">
+              <li>
+                <%= category_name %>
+                <% tasks.each do |task_id| %>
+                  <div>
+                    <input type="checkbox" name="task_completion" value="<%= task_id %>" />
+                    <label><%= Task.find(task_id).title %></label>
+                  </div>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+        <div class="js-final-step d-none">
+          This is the final step, congratulations!!
+        </div>
+        <div class="mission-toolbar">
+          <button class="js-next-btn">Next</button>
+        </div>
+      </div>
+  </div>
+</div>
