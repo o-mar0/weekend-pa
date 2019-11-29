@@ -14,10 +14,23 @@ class MyPlugin {
   init() {
     const newMissionButton = this.el.querySelector('#js-new-mission-button');
 
+    this.checkAddForm();
+
     newMissionButton.addEventListener('click', (event) => {
       event.preventDefault();
       this.requestUserLocation();
     })
+  }
+
+  async checkAddForm() {
+    const addForm = document.querySelector('.add-form')
+    const map = document.querySelector('.js-map');
+    const addBtn = document.querySelector('.btn-add');
+    if (addForm || map) {
+      return addBtn.classList.add('d-none');
+    }
+
+    addBtn.classList.remove('d-none');
   }
 
   requestUserLocation() {
