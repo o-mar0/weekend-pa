@@ -5,8 +5,7 @@ class MissionController < ApplicationController
 
     @tasks_with_location = current_user.tasks.near([user_lat, user_long], 10)
 
-    @tasks_no_location = current_user.tasks.where(location: nil).order(:due)
-    raise
+    @tasks_no_location = current_user.tasks.where(location: '').order(:due)
     # Hash - tasks with no location
     @tasks_no_location_categories = {}
     @category_labels = {}

@@ -156,6 +156,7 @@ tasks_past = [
     title: 'Grocery shopping',
     category: Category.find_by(name: 'grocery_or_supermarket'),
     status: true,
+    location: '',
     due: DateTime.parse('03/11/2019 23:59'),
     user: User.first
   },
@@ -164,6 +165,7 @@ tasks_past = [
     title: 'Make dinner reservation',
     category: Category.find_by(name: 'restaurant'),
     status: true,
+    location: '',
     start_at: DateTime.parse('03/11/2019 19:30'),
     end_at: DateTime.parse('03/11/2019 21:30'),
     due: DateTime.parse('02/11/2019 23:59'),
