@@ -39,4 +39,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+}
+
+.mission-submit {
+  position: absolute;
+  bottom: 74px;
+  right: 12px;
 }

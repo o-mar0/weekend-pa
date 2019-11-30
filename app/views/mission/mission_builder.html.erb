@@ -1,6 +1,3 @@
-<% @tasks_with_location.to_json %>
-<% @tasks_no_location.to_json %>
-
 <div class="app-container">
     <div class="form-container">
       <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
@@ -21,7 +18,7 @@
               </ul>
             </div>
           <% end %>
-          <div class="form-actions text-right">
+          <div class="form-actions text-right mission-submit">
             <input type="submit" name="Accept" value="Accept" class="btn-submit">
           </div>
         </div>
