@@ -10,7 +10,7 @@
               <h1><%= category.label %></h1>
               <% tasks.each do |task| %>
                 <div>
-                  <input type="checkbox" name="task_completion" value="<%= task.id %>" />
+                  <input class="js-task-input" type="checkbox" name="task_completion" value="<%= task.id %>" />
                   <label><%= task.title %></label>
                 </div>
               <% end %>
