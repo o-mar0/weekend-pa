@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
-  before_action :find_task, only: %i[show edit destroy]
+  before_action :find_task, only: %i[show edit destroy update]
   before_action :find_category, only: %i[create]
 
   def index
@@ -41,7 +41,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update
+    if @task.update(task_params)
       redirect_to task_path(@task)
     else
       render :edit

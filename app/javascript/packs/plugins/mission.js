@@ -16,6 +16,7 @@ class Mission {
     this.el = el;
 
     this.categoryEls = this.el.querySelectorAll('.js-category-card');
+    this.taskEls = this.el.querySelectorAll('.js-task-input');
 
     this.mapEl = this.el.querySelector('.js-map');
     this.map = new Map(this.mapEl);
@@ -34,11 +35,18 @@ class Mission {
     this.displayMissionStep();
 
     this.nextEl.addEventListener('click', () => {
+      this.updateCompletedTasks();
+
       this.currentMissionStep ++;
 
       this.displayMissionStep();
       this.updateMap();
     });
+  }
+
+  updateCompletedTasks() {
+    const completedTasks = Array.from(this.taskEls).filter(taskEl => taskEl.checked);
+    console.log(completedTasks);
   }
 
   async drawCategoriesOnMap() {
