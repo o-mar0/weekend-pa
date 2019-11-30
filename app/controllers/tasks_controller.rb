@@ -7,6 +7,8 @@ class TasksController < ApplicationController
     @tasks = Task.all.select { |task| task.user == current_user }
     @tasks_categories = {}
     @tasks.each do |task|
+      next if task.status
+
       if @tasks_categories.include? task.category.label
         @tasks_categories[task.category.label].push(task)
       else
