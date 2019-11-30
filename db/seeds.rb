@@ -50,7 +50,7 @@ categories = [
                },
                {
                 name: 'dentist',
-                label: 'Dentis'
+                label: 'Dentist'
                },
                {
                 name: 'department_store',
