@@ -1,32 +1,30 @@
 <div class="app-container">
   <div class="form-container js-mission">
+    <div class="js-map map"></div>
 
-
-      <div class="js-map map"></div>
-
-      <div class="form-cards">
-        <% @category_labels.each do |category, tasks| %>
-          <div class="js-category-card d-none" data-category-name="<%= category.name %>">
-            <ul class="task">
-              <li class="list-item-title">
-                <h1><%= category.label %></h1>
-                <% tasks.each do |task| %>
-                  <div>
-                    <input type="checkbox" name="task_completion" value="<%= task.id %>" />
-                    <label><%= task.title %></label>
-                  </div>
-                <% end %>
-              </li>
-            </ul>
-          </div>
-        <% end %>
-        <div class="js-final-step d-none task-final">
-          <h1>Final Step</h1>
-          This is the final step, congratulations!!
+    <div class="form-cards">
+      <% @category_labels.each do |category, tasks| %>
+        <div class="js-category-card d-none" data-category-name="<%= category.name %>">
+          <ul class="task">
+            <li class="list-item-title">
+              <h1><%= category.label %></h1>
+              <% tasks.each do |task| %>
+                <div>
+                  <input type="checkbox" name="task_completion" value="<%= task.id %>" />
+                  <label><%= task.title %></label>
+                </div>
+              <% end %>
+            </li>
+          </ul>
         </div>
-        <div class="mission-toolbar text-right">
-          <button class="js-next-btn btn-submit">Next</button>
-        </div>
+      <% end %>
+      <div class="js-final-step d-none task-final">
+        <h1>Final Step</h1>
+        This is the final step, congratulations!!
       </div>
+      <div class="mission-toolbar text-right">
+        <button class="js-next-btn btn-submit">Next</button>
+      </div>
+    </div>
   </div>
 </div>

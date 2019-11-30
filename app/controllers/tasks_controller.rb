@@ -28,7 +28,7 @@ class TasksController < ApplicationController
     @task.user = current_user
     @task.category = @category
     if @task.save
-      redirect_to tasks_path
+      redirect_to task_path(@task)
     else
       render :new
     end
@@ -40,7 +40,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update
-      redirect_to
+      redirect_to task_path(@task)
     else
       render :edit
     end
@@ -49,6 +49,7 @@ class TasksController < ApplicationController
   def destroy
     # @task = Task.find(params[:id])
     @task.destroy
+    redirect_to tasks_path
   end
 
   private
@@ -58,6 +59,7 @@ class TasksController < ApplicationController
   end
 
   def find_category
+    raise
     @category = Category.find(params[:task][:category_id])
   end
 
