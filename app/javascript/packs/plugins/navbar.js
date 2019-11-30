@@ -15,6 +15,7 @@ class MyPlugin {
     const newMissionButton = this.el.querySelector('#js-new-mission-button');
 
     this.checkAddForm();
+    this.checkMissionBuilder();
 
     newMissionButton.addEventListener('click', (event) => {
       event.preventDefault();
@@ -23,14 +24,23 @@ class MyPlugin {
   }
 
   async checkAddForm() {
-    const addForm = document.querySelector('.add-form')
-    const map = document.querySelector('.js-map');
-    const addBtn = document.querySelector('.btn-add');
-    if (addForm || map) {
-      return addBtn.classList.add('d-none');
+    const addFormEl = document.querySelector('.js-add-form');
+    const addBtnEl = document.querySelector('.js-btn-add');
+    if (addFormEl) {
+      return addBtnEl.classList.add('d-none');
     }
 
-    addBtn.classList.remove('d-none');
+    addBtnEl.classList.remove('d-none');
+  }
+
+  async checkMissionBuilder() {
+    const mapEl = document.querySelector('.js-map');
+    const missionBtnEl = document.querySelector('.js-btn-mission');
+    if (mapEl) {
+      return missionBtnEl.classList.add('d-none');
+    }
+
+    missionBtnEl.classList.remove('d-none');
   }
 
   requestUserLocation() {
