@@ -11,6 +11,27 @@
   border-radius: 20px;
   padding: 0 24px;
   line-height: 30px;
+  color: $main;
+  opacity: 0.7;
+  transition: 0.2s;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 1;
+    color: $main;
+  }
+}
+
+.btn-list {
+  color: $main;
+  opacity: 0.7;
+  transition: 0.2s;
+
+  &:hover {
+    text-decoration: none;
+    color: $main;
+    opacity: 1;
+  }
 }
 
 .btn-delete {
