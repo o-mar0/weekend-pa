@@ -12,7 +12,7 @@ class MyPlugin {
   }
 
   init() {
-    const newMissionButton = this.el.querySelector('#js-new-mission-button');
+    const newMissionButton = this.el.querySelector('.js-new-mission-button');
 
     this.checkAddForm();
     this.checkMissionBuilder();
