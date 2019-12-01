@@ -4,12 +4,26 @@ class MissionController < ApplicationController
     user_long = params[:long].to_f.round(2)
 
     @tasks_with_location = current_user.tasks.near([user_lat, user_long], 10)
+    @category_labels = {}
+
+    @tasks_with_location_categories = {}
+    @tasks_with_location.each do |task|
+      next if task.status
+
+      if @tasks_with_location_categories.include? task.category.name
+        @tasks_with_location_categories[task.category.name].push(task)
+      else
+        @tasks_with_location_categories[task.category.name] = [task]
+        @category_labels[task.category.name] = task.category.label
+      end
+    end
 
     @tasks_no_location = current_user.tasks.where(location: '').order(:due)
     # Hash - tasks with no location
     @tasks_no_location_categories = {}
-    @category_labels = {}
     @tasks_no_location.each do |task|
+      next if task.status
+
       if @tasks_no_location_categories.include? task.category.name
         @tasks_no_location_categories[task.category.name].push(task)
       else

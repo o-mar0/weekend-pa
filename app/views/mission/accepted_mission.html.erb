@@ -10,8 +10,10 @@
               <h1><%= category.label %></h1>
               <% tasks.each do |task| %>
                 <div>
-                  <input class="js-task-input" type="checkbox" name="task_completion" value="<%= task.id %>" />
-                  <label><%= task.title %></label>
+                  <%= simple_form_for task, remote: true do |f| %>
+                    <%= f.input :status, label: task.title %>
+                    <%= f.submit %>
+                  <% end %>
                 </div>
               <% end %>
             </li>
