@@ -6,6 +6,19 @@
         <div class="js-map map"></div>
 
         <div class="form-cards">
+          <% @tasks_with_location_categories.each do |category_name, tasks| %>
+            <div class="checkbox">
+              <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" name="category_name[]" />
+              <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
+              <ul class="task">
+                <% tasks.each do |task| %>
+                  <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
+                  <li class="list-item"><%= task.title %></li>
+                  <li class="list-item js-task-location"><%= task.location %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
           <% @tasks_no_location_categories.each do |category_name, tasks| %>
             <div class="checkbox">
               <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" name="category_name[]" />
