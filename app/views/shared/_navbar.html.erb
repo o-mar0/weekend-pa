@@ -1,8 +1,16 @@
-<div class="app-navbar d-flex justify-content-between align-items-center fixed-top">
-  <div class="navbar-left d-left justify-content-between align-items-center">
-    <i class="fas fa-chevron-left"></i>
-    <%= link_to 'Back', :back  %>
+<% if user_signed_in? %>
+  <div class="app-navbar d-flex justify-content-between align-items-center fixed-top">
+    <div class="navbar-left d-left justify-content-between align-items-center">
+      <i class="fas fa-chevron-left"></i>
+      <%= link_to 'Back', :back  %>
+    </div>
+    <div class="navbar-right">
+      <div class="dropdown">
+        <i class="far fa-user icon-sm"></i>
+        <div class="dropdown-content">
+          <%= link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn-link' %>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="navbar-right">
-  </div>
-</div>
+<% end %>

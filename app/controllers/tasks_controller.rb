@@ -1,5 +1,4 @@
 class TasksController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
   before_action :find_task, only: %i[show edit destroy update]
   before_action :find_category, only: %i[create]
 
