@@ -8,13 +8,13 @@
   margin: auto auto;
   padding: 16px;
   border-radius: 4px;
+}
 
-  .form-inline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 12px;
-    margin: 28px auto;
-  }
+.form-inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 12px;
+  margin: 28px auto;
 }
 
 .form-group {
