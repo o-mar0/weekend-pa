@@ -15,7 +15,7 @@ class Mission {
   constructor(el) {
     this.el = el;
 
-    // this.categoryEls = this.el.querySelectorAll('.js-category-card');
+    this.categoryCardEls = this.el.querySelectorAll('.js-category-card');
     this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
 
     this.mapEl = this.el.querySelector('.js-map');
@@ -23,7 +23,8 @@ class Mission {
     this.nextEl = this.el.querySelector('.js-next-btn');
     this.finalStepEl = this.el.querySelector('.js-final-step');
 
-    this.currentMissionStep = 0;
+    this.currentMissionLeg = 0;
+    this.currentMissionLegStep = 0;
 
     this.markers = [];
 
@@ -31,15 +32,29 @@ class Mission {
   }
 
   async init() {
-    this.drawLegsOnMap();
+    await this.drawLegsOnMap();
     this.displayMissionStep();
 
-    // this.nextEl.addEventListener('click', () => {
-    //   this.currentMissionStep ++;
+    this.nextEl.addEventListener('click', () => {
+      const legEl = this.locationTaskEls[this.currentMissionLeg];
 
-    //   this.displayMissionStep();
-    //   this.updateMap();
-    // });
+      if (!legEl) {
+        return;
+      }
+
+      const maxStepCountInLeg = legEl.querySelectorAll('.js-category-card').length;
+
+      if (this.currentMissionLegStep >= maxStepCountInLeg) {
+        this.currentMissionLeg ++;
+        this.currentMissionLegStep = 0;
+      }
+      else {
+        this.currentMissionLegStep += 1;
+      }
+
+      this.displayMissionStep();
+      this.updateMap();
+    });
   }
 
   async drawLegsOnMap() {
@@ -71,20 +86,38 @@ class Mission {
   }
 
   updateMap() {
-    this.map.zoomIntoLeg(this.currentMissionStep);
+    if (!this.locationTaskEls[this.currentMissionLeg]) {
+      this.map.zoomIntoFinalLeg();
+    }
+    else {
+      this.map.zoomIntoLeg(this.currentMissionLeg);
+    }
   }
 
   displayMissionStep() {
-    // this.categoryEls.forEach(categoryEl => categoryEl.classList.add('d-none'));
+    this.locationTaskEls.forEach(locationTaskEl => locationTaskEl.classList.add('d-none'));
+    this.categoryCardEls.forEach(categoryCardEl => categoryCardEl.classList.add('d-none'));
 
-    // if (this.currentMissionStep === this.categoryEls.length) {
-    //   this.finalStepEl.classList.remove('d-none');
-    //   this.nextEl.classList.add('d-none');
-    // }
-    // else {
-    //   const currentCategoryEl = this.categoryEls[this.currentMissionStep];
-    //   currentCategoryEl.classList.remove('d-none');
-    // }
+    const legEl = this.locationTaskEls[this.currentMissionLeg];
+
+     // Reached the finish line!
+    if (!legEl) {
+      this.finalStepEl.classList.remove('d-none');
+      this.nextEl.classList.add('d-none');
+      return;
+    }
+
+    legEl.classList.remove('d-none');
+    const legStepEl = legEl.querySelectorAll('.js-category-card')[this.currentMissionLegStep];
+
+    if (legStepEl) {
+      legStepEl.classList.remove('d-none');
+      this.map.highlightCategoryMarker(legStepEl.dataset.categoryName);
+    }
+    else {
+      legEl.querySelector('.js-location-card').classList.remove('d-none');
+      this.map.highlightTaskLocationMarker(legEl.dataset.taskId);
+    }
   }
 
 }

@@ -26,6 +26,9 @@ export class Map {
     this.markers = [];
     this.hasMapLoaded = false;
 
+    this.categoryMarkers = {};
+    this.taskLocationMarkers = {};
+
     this.init();
   }
 
@@ -56,9 +59,21 @@ export class Map {
   async zoomIntoLeg(legIndex) {
     const thisLeg = this.legs[legIndex];
     const fromLocation = legIndex === 0 ? this.userLocation : this.legs[legIndex - 1].endLocation;
-    const toLocation = thisLeg.endLocation;
+    const toLocation = !thisLeg ? this.userLocation : thisLeg.endLocation;
 
-    this.map.fitBounds([[fromLocation.longitude, fromLocation.latitude], [toLocation.longitude, toLocation.latitude]], {
+    const bounds = new mapboxgl.LngLatBounds();
+    bounds.extend([fromLocation.longitude, fromLocation.latitude]);
+    bounds.extend([toLocation.longitude, toLocation.latitude]);
+
+    // Extend the map bounds to fit all the category markers within this leg.
+    for (let i = 0; i < thisLeg.categories.length; i++) {
+      const placeResult = await this.getPlaceSearchPromiseForCategoryName(thisLeg.categories[i]);
+      if (placeResult) {
+        bounds.extend([placeResult.location.longitude, placeResult.location.latitude]);
+      }
+    }
+
+    this.map.fitBounds(bounds, {
       padding: 50,
     });
 
@@ -71,6 +86,45 @@ export class Map {
       else {
         this.map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
       }
+    });
+  }
+
+  zoomIntoFinalLeg() {
+    const fromLocation = this.legs[this.legs.length - 1].endLocation;
+    const toLocation = this.userLocation;
+
+    const bounds = new mapboxgl.LngLatBounds();
+    bounds.extend([fromLocation.longitude, fromLocation.latitude]);
+    bounds.extend([toLocation.longitude, toLocation.latitude]);
+
+    this.map.fitBounds(bounds, {
+      padding: 50,
+    });
+  }
+
+  highlightCategoryMarker(categoryName) {
+    const marker = this.categoryMarkers[categoryName];
+    this.highlightMarker(marker);
+  }
+
+  highlightTaskLocationMarker(taskId) {
+    const marker = this.taskLocationMarkers[taskId];
+    this.highlightMarker(marker);
+  }
+
+  highlightMarker(marker) {
+    this.removeActiveStateFromMarkers();
+
+    const markerElImage = marker.getElement().querySelector('.js-marker-image');
+    markerElImage.style.transform = 'scale(1.5)';
+    markerElImage.classList.add('js-marker-active-image');
+  }
+
+  removeActiveStateFromMarkers() {
+    const activeMarkers = document.querySelectorAll('.js-marker-active-image');
+    activeMarkers.forEach(activeMarker => {
+      activeMarker.classList.remove('js-marker-active-image');
+      activeMarker.style.transform = '';
     });
   }
 
@@ -188,9 +242,21 @@ export class Map {
     this.markers = [];
   }
 
+  generateIconMarkerEl(fontAwesomeIconName, color ='ff0000') {
+    const markerWrapperEl = document.createElement('div');
+
+    const imageEl = document.createElement('img');
+    imageEl.classList.add('js-marker-image');
+    imageEl.setAttribute('src', `https://cdn.mapmarker.io/api/v1/font-awesome/v5/pin?icon=${fontAwesomeIconName}&size=50&hoffset=0&voffset=-1&background=${color}`);
+    markerWrapperEl.appendChild(imageEl);
+
+    return markerWrapperEl;
+  }
+
   addUserMarkerToMap(userLocation) {
     const userMarker = new mapboxgl.Marker({
       color: 'red',
+      element: this.generateIconMarkerEl('fa-user-solid')
     })
       .setLngLat([userLocation.longitude, userLocation.latitude])
       .addTo(this.map);
@@ -200,10 +266,14 @@ export class Map {
 
   addPlaceMarkersToMap(placeSearchResults) {
     placeSearchResults.forEach(placeSearchResult => {
-      const markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
+      const markerPopup = new mapboxgl.Popup({
+        offset: 25,
+      }) // add popups
         .setHTML('<h3>' + placeSearchResult.categoryName + '</h3><p>' + placeSearchResult.name + '</p>');
 
-      const marker = new mapboxgl.Marker()
+      const marker = new mapboxgl.Marker({
+        element: this.generateIconMarkerEl('fa-circle'),
+      })
         .setLngLat([placeSearchResult.location.longitude, placeSearchResult.location.latitude])
         .setPopup(markerPopup)
         .addTo(this.map);
@@ -216,22 +286,25 @@ export class Map {
       //   .addTo(this.map);
 
       this.markers.push(marker);
+      this.categoryMarkers[placeSearchResult.categoryName] = marker;
     });
   }
 
   addLocationTaskMarkersToMap() {
     this.legs.forEach(leg => {
       const markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML('<h3>' + leg.id + '</h3>');
+        .setHTML('<h3>' + leg.taskId + '</h3>');
 
         const marker = new mapboxgl.Marker({
            color: 'orange',
+            element: this.generateIconMarkerEl('fa-calendar-check-solid')
         })
         .setLngLat([leg.endLocation.longitude, leg.endLocation.latitude])
         .setPopup(markerPopup)
         .addTo(this.map);
 
         this.markers.push(marker);
+        this.taskLocationMarkers[leg.taskId] = marker;
     });
   }
 
