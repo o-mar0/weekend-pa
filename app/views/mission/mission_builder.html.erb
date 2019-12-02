@@ -10,7 +10,7 @@
             <div class="checkbox js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
               <ul class="task">
                   <label>
-                    <input type="checkbox" value="<%= task.id %>" checked name="location_tasks[]">
+                    <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
                     <h2><%= task.title %></h2>
                     <%= task.location %>
                   </label>
