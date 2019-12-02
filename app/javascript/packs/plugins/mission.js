@@ -15,7 +15,8 @@ class Mission {
   constructor(el) {
     this.el = el;
 
-    this.categoryEls = this.el.querySelectorAll('.js-category-card');
+    // this.categoryEls = this.el.querySelectorAll('.js-category-card');
+    this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
 
     this.mapEl = this.el.querySelector('.js-map');
     this.map = new Map(this.mapEl);
@@ -30,40 +31,60 @@ class Mission {
   }
 
   async init() {
-    this.drawCategoriesOnMap();
+    this.drawLegsOnMap();
     this.displayMissionStep();
 
-    this.nextEl.addEventListener('click', () => {
-      this.currentMissionStep ++;
+    // this.nextEl.addEventListener('click', () => {
+    //   this.currentMissionStep ++;
 
-      this.displayMissionStep();
-      this.updateMap();
-    });
+    //   this.displayMissionStep();
+    //   this.updateMap();
+    // });
   }
 
-  async drawCategoriesOnMap() {
-    const checkedCategoryNames = Array.from(this.categoryEls)
+  async drawLegsOnMap() {
+    const legs = Array.from(this.locationTaskEls).map(taskEl => {
+      const taskId = taskEl.dataset.taskId;
+      const latitude = taskEl.dataset.latitude;
+      const longitude = taskEl.dataset.longitude;
+
+      const categoryEls = taskEl.querySelectorAll('.js-category');
+
+      return {
+        taskId,
+        endLocation: {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        },
+        categories: Array.from(categoryEls).map(categoryEl => categoryEl.dataset.categoryName),
+      };
+    });
+
+    this.map.addLegs(legs);
+
+    const allCategoryEls = document.querySelectorAll('.js-category');
+    const allCategoryNames = Array.from(allCategoryEls)
       .map(categoryEl => categoryEl.dataset.categoryName);
 
-    await this.map.updateCategoryNames(checkedCategoryNames);
+    await this.map.updateCategoryNames(allCategoryNames);
     this.updateMap();
   }
 
   updateMap() {
-    this.map.zoomIntoJourney(this.currentMissionStep);
+    this.map.zoomIntoLeg(this.currentMissionStep);
   }
 
   displayMissionStep() {
-    this.categoryEls.forEach(categoryEl => categoryEl.classList.add('d-none'));
+    // this.categoryEls.forEach(categoryEl => categoryEl.classList.add('d-none'));
 
-    if (this.currentMissionStep === this.categoryEls.length) {
-      this.finalStepEl.classList.remove('d-none');
-      this.nextEl.classList.add('d-none');
-    }
-    else {
-      const currentCategoryEl = this.categoryEls[this.currentMissionStep];
-      currentCategoryEl.classList.remove('d-none');
-    }
+    // if (this.currentMissionStep === this.categoryEls.length) {
+    //   this.finalStepEl.classList.remove('d-none');
+    //   this.nextEl.classList.add('d-none');
+    // }
+    // else {
+    //   const currentCategoryEl = this.categoryEls[this.currentMissionStep];
+    //   currentCategoryEl.classList.remove('d-none');
+    // }
   }
 
 }

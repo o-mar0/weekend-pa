@@ -10,6 +10,9 @@ export const initMap = (selector) => {
   return elements.map(el => new Map(el));
 };
 
+const defaultRouteLineColor = '#3887be';
+const activeRouteLineColor = '#ff0000';
+
 export class Map {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
@@ -50,13 +53,24 @@ export class Map {
     this.legs = legs;
   }
 
-  async zoomIntoJourney(journeyIndex) {
-    // Map must be set up for this to work.
-    const fromMarker = this.markers[journeyIndex];
-    const toMaker = this.markers.length === journeyIndex + 1 ? this.markers[0] : this.markers[journeyIndex + 1];
+  async zoomIntoLeg(legIndex) {
+    const thisLeg = this.legs[legIndex];
+    const fromLocation = legIndex === 0 ? this.userLocation : this.legs[legIndex - 1].endLocation;
+    const toLocation = thisLeg.endLocation;
 
-    this.map.fitBounds([fromMarker.getLngLat(), toMaker.getLngLat()], {
+    this.map.fitBounds([[fromLocation.longitude, fromLocation.latitude], [toLocation.longitude, toLocation.latitude]], {
       padding: 50,
+    });
+
+    this.legs.forEach(leg => {
+      const lineLayerId = `routeline-active${leg.taskId}`;
+
+      if (leg === thisLeg) {
+        this.map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
+      }
+      else {
+        this.map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
+      }
     });
   }
 
@@ -257,7 +271,7 @@ export class Map {
         'line-cap': 'round'
       },
       paint: {
-        'line-color': '#3887be',
+        'line-color': defaultRouteLineColor,
         'line-width': [
           "interpolate",
           ["linear"],

@@ -49,31 +49,26 @@ class MissionController < ApplicationController
 
   def accepted_mission
     @category_labels = {}
-    params[:task_categories].each do |task|
-      next unless params[:category_name].include? task[0]
 
-      tasks = task[1].map do |task_id|
-        Task.find(task_id)
+    @display_tasks = {}
+
+    params[:location_tasks].each do |location_task_id|
+      if params[:task].include? location_task_id
+        @display_tasks[location_task_id] = { categories: [] }
+        params[:task][location_task_id].each do |category_name|
+          params[:task_categories].each do |category|
+            next unless category_name[0] == category[0]
+
+            category_tasks = category[1].map do |task_id|
+              Task.find(task_id)
+            end
+            @display_tasks[location_task_id][:categories].push(Category.find_by(name: category[0]) => category_tasks)
+          end
+        end
+        @display_tasks[location_task_id][:location_task] = Task.find(location_task_id)
+      else
+        @display_tasks[location_task_id] = { location_task: Task.find(location_task_id) }
       end
-      @category_labels[Category.find_by(name: task[0])] = tasks
     end
   end
-
-    # @tasks = current_user.tasks
-    # @tasks_categories = {}
-
-    # @category_labels = {}
-
-    # @tasks.each do |task|
-    #   if @tasks_categories.include? task.category.label
-    #     @tasks_categories[task.category.name].push(task)
-    #   else
-    #     @tasks_categories[task.category.name] = [task]
-    #     @category_labels[task.category.name] = task.category.label
-    #   end
-    # end
-    # generate new array with tasks that can be achieved today
-    # @todays_tasks = @tasks.select do |task|
-    #   task.start_at.day == Date.today || task.start_at.nil?
-    # end
 end
