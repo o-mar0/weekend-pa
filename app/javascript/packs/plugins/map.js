@@ -3,6 +3,7 @@
   packs/plugins/myPlugin.js
 */
 import { featureCollection, feature } from '@turf/turf';
+import queryString from 'query-string';
 
 export const initMap = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
@@ -14,7 +15,8 @@ export class Map {
   constructor(el) {
     this.el = el;
 
-    this.categoryNames = [];
+    this.legs = [];
+    this.selectedCategoryNames = [];
     this.userLocation = null;
     this.map = null;
     this.placeCache = {};
@@ -30,8 +32,22 @@ export class Map {
   }
 
   async updateCategoryNames(categoryNames) {
-    this.categoryNames = categoryNames;
+    this.selectedCategoryNames = categoryNames;
     return this.updateMap();
+  }
+
+  async addLegs(legs) {
+    /*
+    return {
+      taskId,
+      location: {
+        latitude,
+        longitude,
+      },
+      categories: Array.from(categoryEls).map(categoryEl => categoryEl.value),
+    };
+    */
+    this.legs = legs;
   }
 
   async zoomIntoJourney(journeyIndex) {
@@ -58,7 +74,7 @@ export class Map {
   }
 
   async getPlaceSearchResults() {
-    const placeSearchPromisesForCategoryNames = this.categoryNames.map((categoryName) => {
+    const placeSearchPromisesForCategoryNames = this.selectedCategoryNames.map((categoryName) => {
       return this.getPlaceSearchPromiseForCategoryName(categoryName);
     });
     return Promise.all(placeSearchPromisesForCategoryNames);
@@ -69,16 +85,30 @@ export class Map {
       return this.placeCache[categoryName];
     }
 
+    const leg = this.legs.find(leg => {
+      return leg.categories.includes(categoryName);
+    });
+
+    const legIndex = this.legs.indexOf(leg);
+    const previousLegEndLocation = legIndex === 0 ? this.userLocation : this.legs[legIndex - 1].endLocation;
+
+    const midPoint = {
+      latitude: ((leg.endLocation.latitude - previousLegEndLocation.latitude) / 2) + previousLegEndLocation.latitude,
+      longitude: ((leg.endLocation.longitude - previousLegEndLocation.longitude) / 2) + previousLegEndLocation.longitude,
+    }
+
     const placeSearchParmas = {
       key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
       radius: "1000",
       rankby: "distance",
       location: {
-        lat: this.userLocation.latitude,
-        lng: this.userLocation.longitude,
+        lat: midPoint.latitude,
+        lng: midPoint.longitude,
       },
       type: categoryName,
     };
+
+    console.log(placeSearchParmas);
 
     // const placeSearchQueryString = queryString.stringify(placeSearchParmas);
     // const placeUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${placeSearchQueryString}`;
@@ -175,6 +205,22 @@ export class Map {
     });
   }
 
+  addLocationTaskMarkersToMap() {
+    this.legs.forEach(leg => {
+      const markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML('<h3>' + leg.id + '</h3>');
+
+        const marker = new mapboxgl.Marker({
+           color: 'orange',
+        })
+        .setLngLat([leg.endLocation.longitude, leg.endLocation.latitude])
+        .setPopup(markerPopup)
+        .addTo(this.map);
+
+        this.markers.push(marker);
+    });
+  }
+
   buildMap() {
     mapboxgl.accessToken = 'pk.eyJ1Ijoiby1tYXIwIiwiYSI6ImNrM2dzaWUyMTA1N2EzbGw5bmU2aTR0cHoifQ.K1SJ2f_lddAklOarADHODw';
     this.map = new mapboxgl.Map({
@@ -185,7 +231,7 @@ export class Map {
     });
     this.map.on('load', () => {
       this.hasMapLoaded = true;
-      this.addRouteLineLayerToMap();
+      this.addRouteLineLayersToMap();
     });
   }
 
@@ -195,15 +241,17 @@ export class Map {
     this.placesService = new google.maps.places.PlacesService(googleMapEl);
   }
 
-  addRouteLineLayerToMap() {
-    this.map.addSource('weekendPARouteLine', {
+  addRouteLineLayerToMap(suffix) {
+    const sourceName = `weekendPARouteLine${suffix}`;
+
+    this.map.addSource(sourceName, {
       type: 'geojson',
       data: null,
     });
     this.map.addLayer({
-      id: 'routeline-active',
+      id: `routeline-active${suffix}`,
       type: 'line',
-      source: 'weekendPARouteLine',
+      source: sourceName,
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
@@ -221,9 +269,9 @@ export class Map {
     }, 'waterway-label');
 
     this.map.addLayer({
-      id: 'routearrows',
+      id: `routearrows${suffix}`,
       type: 'symbol',
-      source: 'weekendPARouteLine',
+      source: sourceName,
       layout: {
         'symbol-placement': 'line',
         'text-field': '▶',
@@ -251,34 +299,116 @@ export class Map {
     }, 'waterway-label');
   }
 
+  addRouteLineLayersToMap() {
+    this.legs.forEach(leg => {
+      this.addRouteLineLayerToMap(leg.taskId);
+    });
+    this.addRouteLineLayerToMap('finish');
+  }
+
   async updateMapWithLatestData(userLocation, placeSearchResults) {
     this.removeAllMarkersFromMap();
     this.addUserMarkerToMap(userLocation);
+    this.addLocationTaskMarkersToMap();
     this.addPlaceMarkersToMap(placeSearchResults);
 
     if (placeSearchResults.length > 0) {
       const bounds = new mapboxgl.LngLatBounds();
       placeSearchResults.forEach(placeSearchResult => bounds.extend([ placeSearchResult.location.longitude, placeSearchResult.location.latitude ]));
+      this.legs.forEach(leg => bounds.extend([ leg.endLocation.longitude, leg.endLocation.latitude ]));
+      bounds.extend([ userLocation.longitude, userLocation.latitude ])
       this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 });
 
-      return this.getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults);
+      const legJourneyPromises = this.legs.map((leg, legIndex) => this.getOptimizedRouteForLeg(userLocation, legIndex));
+      legJourneyPromises.push(this.getFinalJourney());
+
+      return Promise.all(legJourneyPromises);
     }
 
     return false;
   }
 
-  async getOptimizedRouteBetweenPlaces(userLocation, placeSearchResults) {
+  async getFinalJourney() {
+    // If the leg is the first leg, there is no last leg location so the user location is used. Otherwise use the end location of the last leg.
+    const finalLeg = this.legs[this.legs.length - 1];
+    const toLocation = this.userLocation;
+
+    const coordinates = [];
+    coordinates.push(`${finalLeg.endLocation.longitude},${finalLeg.endLocation.latitude}`);
+    coordinates.push(`${toLocation.longitude},${toLocation.latitude}`);
+
+    // Set the profile to `driving`
+    // Coordinates will include the current location of the truck,
+    const params = {
+      overview: 'full',
+      steps: 'true',
+      geometries: 'geojson',
+      source: 'first',
+      destination: 'last',
+      roundtrip: 'false',
+      access_token: mapboxgl.accessToken,
+    };
+    const optimizeUrl = `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(';')}?${queryString.stringify(params)}`;
+    const optimizeResult = await fetch(optimizeUrl).then(response => response.json());
+
+    // Create a GeoJSON feature collection
+    var routeGeoJSON = featureCollection([feature(optimizeResult.trips[0].geometry)]);
+
+    // If there is no route provided, reset
+    if (!optimizeResult.trips[0]) {
+      throw new Error('no optimize result');
+    } else {
+      setTimeout(() => {
+          this.map.getSource(`weekendPARouteLinefinish`)
+            .setData(routeGeoJSON);
+        }, this.hasMapLoaded ? 0 : 5000);
+    }
+  }
+
+  async getOptimizedRouteForLeg(userLocation, legIndex) {
     return new Promise(async (resolve, reject) => {
       // Store the location of the truck in a variable called coordinates
-      const coordinates = placeSearchResults.map(placeSearchResult => {
-        return `${placeSearchResult.location.longitude},${placeSearchResult.location.latitude}`;
-      }).slice(0, 11);
+      // const coordinates = placeSearchResults.map(placeSearchResult => {
+      //   return `${placeSearchResult.location.longitude},${placeSearchResult.location.latitude}`;
+      // }).slice(0, 11);
+      const thisLeg = this.legs[legIndex];
 
-      coordinates.unshift(`${userLocation.longitude},${userLocation.latitude}`);
+      // If the leg is the first leg, there is no last leg location so the user location is used. Otherwise use the end location of the last leg.
+      const fromLocation = legIndex === 0 ? userLocation : this.legs[legIndex - 1].endLocation;
+      const toLocation = thisLeg.endLocation;
+
+      const coordinates = [];
+      coordinates.push(`${fromLocation.longitude},${fromLocation.latitude}`);
+
+      // Inject the category places.
+      const activeCategoriesForLeg = thisLeg.categories.filter(categoryName => {
+        return this.selectedCategoryNames.includes(categoryName);
+      });
+      const placesAlongTheWay = await Promise.all(activeCategoriesForLeg.map(category =>
+          this.getPlaceSearchPromiseForCategoryName(category)));
+
+      placesAlongTheWay.forEach(place => {
+        coordinates.push(`${place.location.longitude},${place.location.latitude}`);
+      });
+
+      coordinates.push(`${toLocation.longitude},${toLocation.latitude}`);
+
+      // const coordinates = this.legs.map(leg => `${leg.endLocation.longitude},${leg.endLocation.latitude}`);
+
+      // coordinates.unshift(`${userLocation.longitude},${userLocation.latitude}`);
 
       // Set the profile to `driving`
       // Coordinates will include the current location of the truck,
-      const optimizeUrl = `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(';')}?overview=full&steps=true&geometries=geojson&source=first&access_token=${mapboxgl.accessToken}`;
+      const params = {
+        overview: 'full',
+        steps: 'true',
+        geometries: 'geojson',
+        source: 'first',
+        destination: 'last',
+        roundtrip: 'false',
+        access_token: mapboxgl.accessToken,
+      };
+      const optimizeUrl = `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(';')}?${queryString.stringify(params)}`;
       const optimizeResult = await fetch(optimizeUrl).then(response => response.json());
 
       // Create a GeoJSON feature collection
@@ -290,7 +420,7 @@ export class Map {
       } else {
         setTimeout(() => {
             resolve(true);
-            this.map.getSource('weekendPARouteLine')
+            this.map.getSource(`weekendPARouteLine${thisLeg.taskId}`)
               .setData(routeGeoJSON);
           }, this.hasMapLoaded ? 0 : 5000);
       }

@@ -156,7 +156,6 @@ tasks_past = [
     title: 'Grocery shopping',
     category: Category.find_by(name: 'grocery_or_supermarket'),
     status: true,
-    location: '',
     due: DateTime.parse('03/11/2019 23:59'),
     user: User.first
   },
@@ -165,7 +164,6 @@ tasks_past = [
     title: 'Make dinner reservation',
     category: Category.find_by(name: 'restaurant'),
     status: true,
-    location: '',
     start_at: DateTime.parse('03/11/2019 19:30'),
     end_at: DateTime.parse('03/11/2019 21:30'),
     due: DateTime.parse('02/11/2019 23:59'),
@@ -280,7 +278,7 @@ tasks_future = [
   {
     title: 'Appointment with barber',
     category: Category.find_by(name: 'shopping_mall'),
-    location: '258 Bridge Rd, Richmond VIC 3121',
+    location: '',
     status: false,
     start_at: DateTime.parse('14/12/2019 11:00'),
     end_at: DateTime.parse('14/12/2019 11:45'),
@@ -302,7 +300,7 @@ tasks_future = [
   {
     title: 'Meeting at community center',
     category: Category.find_by(name: 'park'),
-    location: '11-15 Gleadell St, Richmond VIC 3121',
+    location: '',
     status: false,
     start_at: DateTime.parse('15/12/2019 14:30'),
     end_at: DateTime.parse('15/12/2019 15:00'),
@@ -313,7 +311,7 @@ tasks_future = [
   {
     title: 'Volunteer work at community center',
     category: Category.find_by(name: 'park'),
-    location: '11-15 Gleadell St, Richmond VIC 3121',
+    location: '',
     status: false,
     start_at: DateTime.parse('15/12/2019 15:00'),
     end_at: DateTime.parse('15/12/2019 16:30'),
@@ -324,7 +322,7 @@ tasks_future = [
   {
     title: 'Christmas party at workplace',
     category: Category.find_by(name: 'shopping_mall'),
-    location: '123 Collins St, Melbourne VIC 3000',
+    location: '',
     status: false,
     start_at: DateTime.parse('14/12/2019 19:00'),
     end_at: DateTime.parse('14/12/2019 23:00'),
@@ -335,7 +333,7 @@ tasks_future = [
   {
     title: 'Watch Cricket match',
     category: Category.find_by(name: 'park'),
-    location: 'Brunton Ave, Richmond VIC 3002',
+    location: '',
     status: false,
     start_at: DateTime.parse('15/12/2019 19:00'),
     end_at: DateTime.parse('15/12/2019 23:00'),
@@ -363,9 +361,82 @@ tasks_present = [ # 6th
   },
 
   {
+    title: 'Get a drink',
+    category: Category.find_by(name: 'bar'),
+    location: '',
+    status: false,
+    start_at: DateTime.parse('06/12/2019 08:00'),
+    user: User.first
+  },
+
+  {
+    title: 'Get a sandwich',
+    category: Category.find_by(name: 'cafe'),
+    location: '',
+    status: false,
+    start_at: DateTime.parse('06/12/2019 08:00'),
+    user: User.first
+  },
+
+  {
+    title: 'Get a croissant',
+    category: Category.find_by(name: 'bakery'),
+    location: '',
+    status: false,
+    start_at: DateTime.parse('06/12/2019 08:00'),
+    user: User.first
+  },
+
+  {
+    title: 'Get a coffee',
+    category: Category.find_by(name: 'cafe'),
+    location: '',
+    status: false,
+    start_at: DateTime.parse('06/12/2019 08:00'),
+    user: User.first
+  },
+
+  {
     title: 'Post office/ post the letter',
     category: Category.find_by(name: 'post_office'),
-    location: 'shop 1/335-341 Bridge Rd, Richmond VIC 3121',
+    location: '',
+    status: false,
+    due: DateTime.parse('06/12/2019 11:59'),
+    user: User.first
+  },
+
+  {
+    title: 'Buy bread',
+    category: Category.find_by(name: 'grocery_or_supermarket'),
+    location: '',
+    status: false,
+    due: DateTime.parse('06/12/2019 11:59'),
+    user: User.first
+  },
+
+  {
+    title: 'Buy milk',
+    category: Category.find_by(name: 'grocery_or_supermarket'),
+    location: '',
+    status: false,
+    due: DateTime.parse('06/12/2019 11:59'),
+    user: User.first
+  },
+
+  {
+    title: 'Buy cheese',
+    category: Category.find_by(name: 'grocery_or_supermarket'),
+    location: '',
+    status: false,
+    due: DateTime.parse('06/12/2019 11:59'),
+    user: User.first
+  },
+
+
+  {
+    title: 'Buy chicken avo salad',
+    category: Category.find_by(name: 'grocery_or_supermarket'),
+    location: '',
     status: false,
     due: DateTime.parse('06/12/2019 11:59'),
     user: User.first
@@ -440,7 +511,7 @@ tasks_present = [ # 6th
   {
     title: 'Visit Yoga class',
     category: Category.find_by(name: 'gym'),
-    location: '213 - 97 Swan St, Richmond VIC 3121',
+    location: '',
     status: false,
     start_at: DateTime.parse('07/12/2019 08:30'),
     end_at: DateTime.parse('07/12/2019 10:30'),

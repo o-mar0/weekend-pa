@@ -2,6 +2,9 @@
   <div class="container-body">
     <p><%= @task.category.label %></p>
     <h1><%= @task.title %></h1>
+    <% if @task.start_at %>
+      <p><%= @task.start_at.to_date %></p>
+    <% end %>
     <%= link_to 'Edit', edit_task_path(@task), class: 'btn-link' %>
     <%= link_to '+', task_path(@task), class: 'btn-delete', method: :delete, data: { confirm: "Are you sure you want to delete #{@task.title}?"} %>
     <p><%= @task.location %></p>

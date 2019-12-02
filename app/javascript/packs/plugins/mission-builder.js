@@ -16,6 +16,7 @@ class MissionBuilder {
     this.el = el;
 
     this.categoryEls = this.el.querySelectorAll('.js-category');
+    this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
 
     this.mapEl = this.el.querySelector('.js-map');
     this.map = new Map(this.mapEl);
@@ -26,8 +27,26 @@ class MissionBuilder {
   }
 
   async init() {
-    this.syncCheckboxesWithMap();
+    const legs = Array.from(this.locationTaskEls).map(taskEl => {
+      const taskId = taskEl.dataset.taskId;
+      const latitude = taskEl.dataset.latitude;
+      const longitude = taskEl.dataset.longitude;
 
+      const categoryEls = taskEl.querySelectorAll('.js-category');
+
+      return {
+        taskId,
+        endLocation: {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        },
+        categories: Array.from(categoryEls).map(categoryEl => categoryEl.value),
+      };
+    });
+
+    this.map.addLegs(legs);
+
+    this.syncCheckboxesWithMap();
     this.categoryEls.forEach(categoryEl => {
       categoryEl.addEventListener('change', (event) => {
         this.syncCheckboxesWithMap();

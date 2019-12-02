@@ -3,34 +3,48 @@ class MissionController < ApplicationController
     user_lat = params[:lat].to_f.round(2)
     user_long = params[:long].to_f.round(2)
 
-    @tasks_with_location = current_user.tasks.near([user_lat, user_long], 10)
+    @location_tasks = current_user.tasks.near([user_lat, user_long], 10).where(status: false)
+    @category_tasks = current_user.tasks.where(location: '').order(:due).where(status: false)
+
     @category_labels = {}
+    @categories = []
+    @mission_legs = []
 
-    @tasks_with_location_categories = {}
-    @tasks_with_location.each do |task|
-      next if task.status
+    mission_leg_count = @location_tasks.length
 
-      if @tasks_with_location_categories.include? task.category.name
-        @tasks_with_location_categories[task.category.name].push(task)
-      else
-        @tasks_with_location_categories[task.category.name] = [task]
-        @category_labels[task.category.name] = task.category.label
-      end
-    end
-
-    @tasks_no_location = current_user.tasks.where(location: '').order(:due)
     # Hash - tasks with no location
-    @tasks_no_location_categories = {}
-    @tasks_no_location.each do |task|
-      next if task.status
-
-      if @tasks_no_location_categories.include? task.category.name
-        @tasks_no_location_categories[task.category.name].push(task)
+    @category_tasks_categories = {}
+    @category_tasks.each do |task|
+      if @category_tasks_categories.include? task.category.name
+        @category_tasks_categories[task.category.name].push(task)
       else
-        @tasks_no_location_categories[task.category.name] = [task]
+        @category_tasks_categories[task.category.name] = [task]
         @category_labels[task.category.name] = task.category.label
+        @categories.push(task.category.name)
       end
     end
+
+    tasks_per_mission_leg = (@categories.length / mission_leg_count).ceil
+    chunked_categories = @categories.each_slice(tasks_per_mission_leg).to_a
+    @categories_by_location_task = {}
+
+    @location_tasks_categories = {}
+    @location_tasks.each_with_index do |task, index|
+      if @location_tasks_categories.include? task.category.name
+        @location_tasks_categories[task.category.name].push(task)
+      else
+        @location_tasks_categories[task.category.name] = [task]
+        @category_labels[task.category.name] = task.category.label
+      end
+
+      @chunked_tasks = chunked_categories[index]
+      @categories_by_location_task[task.id] = @chunked_tasks
+    end
+
+    # @mission_legs = []
+    #  # Add 1 for getting back home.
+    # @mission_leg_count = @location_tasks.count + 1
+    # @tasks_per_mission_leg = (@category_tasks.count / @mission_leg_count).ceil
   end
 
   def accepted_mission
