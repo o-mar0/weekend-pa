@@ -176,8 +176,6 @@ export class Map {
       type: categoryName,
     };
 
-    console.log(placeSearchParmas);
-
     // const placeSearchQueryString = queryString.stringify(placeSearchParmas);
     // const placeUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${placeSearchQueryString}`;
 
