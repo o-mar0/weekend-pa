@@ -10,9 +10,8 @@
               <h1><%= category.label %></h1>
               <% tasks.each do |task| %>
                 <div>
-                  <%= simple_form_for task, remote: true do |f| %>
-                    <%= f.input :status, label: task.title %>
-                    <%= f.submit %>
+                  <%= simple_form_for task, method: :patch, remote: true do |f| %>
+                    <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
                   <% end %>
                 </div>
               <% end %>
