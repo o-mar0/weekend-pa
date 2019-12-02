@@ -40,11 +40,6 @@ class MissionController < ApplicationController
       @chunked_tasks = chunked_categories[index]
       @categories_by_location_task[task.id] = @chunked_tasks
     end
-
-    # @mission_legs = []
-    #  # Add 1 for getting back home.
-    # @mission_leg_count = @location_tasks.count + 1
-    # @tasks_per_mission_leg = (@category_tasks.count / @mission_leg_count).ceil
   end
 
   def accepted_mission

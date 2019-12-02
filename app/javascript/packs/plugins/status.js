@@ -12,6 +12,7 @@ class StatusUpdate {
 
   async init() {
     this.el.addEventListener('change', event => {
+      console.log(event.target.checked);
       Rails.fire(event.target.parentElement.parentElement.parentElement, 'submit');
     });
   }
