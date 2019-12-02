@@ -15,14 +15,16 @@ class Mission {
   constructor(el) {
     this.el = el;
 
-    this.categoryEls = this.el.querySelectorAll('.js-category-card');
+    this.categoryCardEls = this.el.querySelectorAll('.js-category-card');
+    this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
 
     this.mapEl = this.el.querySelector('.js-map');
     this.map = new Map(this.mapEl);
     this.nextEl = this.el.querySelector('.js-next-btn');
     this.finalStepEl = this.el.querySelector('.js-final-step');
 
-    this.currentMissionStep = 0;
+    this.currentMissionLeg = 0;
+    this.currentMissionLegStep = 0;
 
     this.markers = [];
 
@@ -30,39 +32,91 @@ class Mission {
   }
 
   async init() {
-    this.drawCategoriesOnMap();
+    await this.drawLegsOnMap();
     this.displayMissionStep();
 
     this.nextEl.addEventListener('click', () => {
-      this.currentMissionStep ++;
+      const legEl = this.locationTaskEls[this.currentMissionLeg];
+
+      if (!legEl) {
+        return;
+      }
+
+      const maxStepCountInLeg = legEl.querySelectorAll('.js-category-card').length;
+
+      if (this.currentMissionLegStep >= maxStepCountInLeg) {
+        this.currentMissionLeg ++;
+        this.currentMissionLegStep = 0;
+      }
+      else {
+        this.currentMissionLegStep += 1;
+      }
 
       this.displayMissionStep();
       this.updateMap();
     });
   }
 
-  async drawCategoriesOnMap() {
-    const checkedCategoryNames = Array.from(this.categoryEls)
+  async drawLegsOnMap() {
+    const legs = Array.from(this.locationTaskEls).map(taskEl => {
+      const taskId = taskEl.dataset.taskId;
+      const latitude = taskEl.dataset.latitude;
+      const longitude = taskEl.dataset.longitude;
+
+      const categoryEls = taskEl.querySelectorAll('.js-category');
+
+      return {
+        taskId,
+        endLocation: {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        },
+        categories: Array.from(categoryEls).map(categoryEl => categoryEl.dataset.categoryName),
+      };
+    });
+
+    this.map.addLegs(legs);
+
+    const allCategoryEls = document.querySelectorAll('.js-category');
+    const allCategoryNames = Array.from(allCategoryEls)
       .map(categoryEl => categoryEl.dataset.categoryName);
 
-    await this.map.updateCategoryNames(checkedCategoryNames);
+    await this.map.updateCategoryNames(allCategoryNames);
     this.updateMap();
   }
 
   updateMap() {
-    this.map.zoomIntoJourney(this.currentMissionStep);
+    if (!this.locationTaskEls[this.currentMissionLeg]) {
+      this.map.zoomIntoFinalLeg();
+    }
+    else {
+      this.map.zoomIntoLeg(this.currentMissionLeg);
+    }
   }
 
   displayMissionStep() {
-    this.categoryEls.forEach(categoryEl => categoryEl.classList.add('d-none'));
+    this.locationTaskEls.forEach(locationTaskEl => locationTaskEl.classList.add('d-none'));
+    this.categoryCardEls.forEach(categoryCardEl => categoryCardEl.classList.add('d-none'));
 
-    if (this.currentMissionStep === this.categoryEls.length) {
+    const legEl = this.locationTaskEls[this.currentMissionLeg];
+
+     // Reached the finish line!
+    if (!legEl) {
       this.finalStepEl.classList.remove('d-none');
       this.nextEl.classList.add('d-none');
+      return;
+    }
+
+    legEl.classList.remove('d-none');
+    const legStepEl = legEl.querySelectorAll('.js-category-card')[this.currentMissionLegStep];
+
+    if (legStepEl) {
+      legStepEl.classList.remove('d-none');
+      this.map.highlightCategoryMarker(legStepEl.dataset.categoryName);
     }
     else {
-      const currentCategoryEl = this.categoryEls[this.currentMissionStep];
-      currentCategoryEl.classList.remove('d-none');
+      legEl.querySelector('.js-location-card').classList.remove('d-none');
+      this.map.highlightTaskLocationMarker(legEl.dataset.taskId);
     }
   }
 

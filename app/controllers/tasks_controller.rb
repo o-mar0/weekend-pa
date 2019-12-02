@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit destroy update]
-  before_action :find_category, only: %i[create]
 
   def index
     @tasks = Task.all.select { |task| task.user == current_user }
@@ -16,27 +15,17 @@ class TasksController < ApplicationController
     end
   end
 
-  def show
-    # @task = Task.find(params[:id])
-  end
-
-  def new
-    @task = Task.new
-  end
-
   def create
     @task = Task.new(task_params)
     @task.user = current_user
-    @task.category = @category
+    return if params[:task][:category_id].empty?
+
+    @task.category = Category.find(params[:task][:category_id])
     if @task.save
       redirect_to task_path(@task)
     else
-      render :new
+      render 'pages/home'
     end
-  end
-
-  def edit
-    # @task = Task.find(params[:id])
   end
 
   def update
@@ -64,11 +53,6 @@ class TasksController < ApplicationController
 
   def find_task
     @task = Task.find(params[:id])
-  end
-
-  def find_category
-    raise
-    @category = Category.find(params[:task][:category_id])
   end
 
   def task_params
