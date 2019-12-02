@@ -15,9 +15,8 @@
                       <h2><%= category.label %></h2>
                       <% tasks.each do |task| %>
                         <div>
-                          <%= simple_form_for task, remote: true do |f| %>
-                            <%= f.input :status, label: task.title %>
-                            <%= f.submit %>
+                          <%= simple_form_for task, method: :patch, remote: true do |f| %>
+                            <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
                           <% end %>
                         </div>
                       <% end %>
@@ -30,8 +29,7 @@
           <div class="js-location-card d-none">
             <h2><%= location_task_id[1][:location_task].title %></h2>
             <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
-              <%= f.input :status, label: location_task_id[1][:location_task].title %>
-              <%= f.submit %>
+              <%= f.input :status, label: location_task_id[1][:location_task].title, wrapper_html: { class: 'js-task-status' } %>
             <% end %>
           </div>
         </div>

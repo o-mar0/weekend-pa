@@ -30,7 +30,14 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to task_path(@task)
+      if params[:task][:status] && params[:task][:status] == '1'
+        @task.status = true
+        @task.save!
+      end
+      respond_to do |format|
+        format.html { redirect_to task_path(@task) }
+        format.js { render 'tasks/update.js.erb' } # <-- will render `app/views/tasks/update_task.js.erb`
+      end
     else
       render :edit
     end
