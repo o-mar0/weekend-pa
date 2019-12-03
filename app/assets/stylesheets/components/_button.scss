@@ -1,79 +1,43 @@
-// .btn-submit {
-//   position: absolute;
-//   top: 16px;
-//   right: 16px;
-// }
-
-.btn-add {
-  display: inline-block;
-  font-size: 24px;
-  border: 1px solid $main;
-  border-radius: 20px;
-  padding: 0 24px;
-  line-height: 30px;
-  color: $main;
-  opacity: 0.7;
-  transition: 0.2s;
-
-  &:hover {
-    text-decoration: none;
-    opacity: 1;
-    color: $main;
-  }
+.btn-inline {
+  display: grid;
+  grid-template-columns: 4fr 1fr 4fr;
+  grid-gap: 12px;
+  text-align: center;
 }
 
-.btn-list {
-  color: $main;
-  opacity: 0.7;
-  transition: 0.2s;
-
-  &:hover {
-    text-decoration: none;
-    color: $main;
-    opacity: 1;
-  }
+.btn-active {
+  background: blue !important;
 }
 
-.btn-delete {
-  display: inline-block;
-  font-size: 24px;
-  line-height: 0.62;
-  color: $main;
-  opacity: 0.7;
-  transform: rotate(45deg);
+.btn-task {
+  background: orange;
+  border: 0;
   padding: 8px;
-  border: 1px solid $main;
-  border-radius: 50%;
-  transition: 0.2s;
-
-  &:hover {
-    color: $main;
-    opacity: 1;
-    text-decoration: none;
-  }
-}
-
-.btn-link, .btn-submit {
-  background: rgba(255,255,255,0);
-  color: rgba(0,0,0,0.7);
-  transition: 0.2s;
-
-  &:hover {
-    color: rgba(0,0,0,1);
-    text-decoration: none;
-  }
+  border-radius: 2px;
 }
 
 .btn-submit {
-  padding: 12px 16px;
-  border: 1px solid rgba(0,0,0,0.7);
+  width: 100%;
+  background: #0000FF;
+  color: #fff;
+  padding: 12px;
+  border: 0;
   border-radius: 2px;
-
-  &:hover {
-    border: 1px solid rgba(0,0,0,1);
-  }
 }
 
-.btn-mission:hover {
-  cursor: pointer;
+.btn-add {
+  border: 1px solid $main;
+  padding: 4px 24px;
+  border-radius: 20px;
+  font-size: 20px;
+}
+
+.btn-link {
+  color: $main;
+  transition: 0.2s;
+
+  &:hover {
+    color: $main;
+    text-decoration: none;
+  }
 }

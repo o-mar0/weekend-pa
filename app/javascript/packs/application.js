@@ -7,6 +7,7 @@ import { initMission } from './plugins/mission';
 import { initNavbar } from './plugins/navbar';
 import { initAutocomplete } from './plugins/init_autocomplete';
 import { initStatusUpdate } from './plugins/status';
+import { initAddButton } from './plugins/add-task-button';
 
 
 // Always add a js- prefixed class to your elements when targeting to create a separation
@@ -17,3 +18,4 @@ initMission('.js-mission');
 initNavbar('.js-navbar');
 initAutocomplete();
 initStatusUpdate('.js-task-status');
+initAddButton('.js-btn');

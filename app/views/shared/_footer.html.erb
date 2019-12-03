@@ -1,15 +1,15 @@
 <% if user_signed_in? %>
   <div class="footer fixed-bottom js-navbar">
     <div class="footer-left">
-      <%= image_tag "startup.png", alt: "alttext", class: 'img-sm js-btn-mission js-new-mission-button btn-mission' %>
+      <%= link_to tasks_path, class: 'btn-list' do %>
+        <i class="fas fa-list-ul icon-sm"></i>
+      <% end %>
     </div>
     <div class="footer-center">
       <%= link_to '+', root_path, class: 'btn-add js-btn-add' %>
     </div>
     <div class="footer-right">
-      <%= link_to tasks_path, class: 'btn-list' do %>
-        <i class="fas fa-list-ul icon-sm"></i>
-      <% end %>
+      <%= image_tag "startup.png", alt: "alttext", class: 'img-sm js-btn-mission js-new-mission-button btn-mission' %>
     </div>
   </div>
 <% end %>
