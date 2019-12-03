@@ -316,7 +316,6 @@ tasks = [
     category: Category.find_by(name: 'post_office'),
     location: '',
     status: false,
-    due: DateTime.parse(''),
     user: User.first
   },
 
