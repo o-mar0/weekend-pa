@@ -1,44 +1,46 @@
 <div class="app-container">
   <div class="form-container js-mission">
-    <div class="js-map map"></div>
+    <div class="mission-builder-form">
+      <div class="js-map map"></div>
 
-    <div class="form-cards">
-      <% @display_tasks.each do |location_task_id| %>
-        <% location_task = location_task_id[1][:location_task] %>
-        <div class="checkbox js-task-location d-none" data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
-          <% if location_task_id[1].key? :categories %>
-            <% location_task_id[1][:categories].each do |category_and_tasks| %>
-              <% category_and_tasks.each do |category, tasks| %>
-                <div class="js-category-card js-category d-none" data-category-name="<%= category.name %>">
-                  <ul class="task">
-                    <li class="list-item-title">
-                      <h2><%= category.label %></h2>
-                      <% tasks.each do |task| %>
-                        <div>
-                          <%= simple_form_for task, method: :patch, remote: true do |f| %>
-                            <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
-                          <% end %>
-                        </div>
-                      <% end %>
-                    </li>
-                  </ul>
-                </div>
+      <div class="form-cards">
+        <% @display_tasks.each do |location_task_id| %>
+          <% location_task = location_task_id[1][:location_task] %>
+          <div class="checkbox js-task-location d-none" data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
+            <% if location_task_id[1].key? :categories %>
+              <% location_task_id[1][:categories].each do |category_and_tasks| %>
+                <% category_and_tasks.each do |category, tasks| %>
+                  <div class="js-category-card js-category d-none" data-category-name="<%= category.name %>">
+                    <ul class="task">
+                      <li class="list-item-title">
+                        <h2><%= category.label %></h2>
+                        <% tasks.each do |task| %>
+                          <div>
+                            <%= simple_form_for task, method: :patch, remote: true do |f| %>
+                              <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </li>
+                    </ul>
+                  </div>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-          <div class="js-location-card d-none">
-            <h2><%= location_task_id[1][:location_task].title %></h2>
-            <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
-              <%= f.input :status, label: location_task_id[1][:location_task].title, wrapper_html: { class: 'js-task-status' } %>
-            <% end %>
+            <div class="js-location-card d-none">
+              <h2><%= location_task_id[1][:location_task].title %></h2>
+              <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
+                <%= f.input :status, label: location_task_id[1][:location_task].title, wrapper_html: { class: 'js-task-status' } %>
+              <% end %>
+            </div>
           </div>
+        <% end %>
+        <div class="js-final-step task-final d-none">
+          <h1>Final Step</h1>
+          This is the final step, congratulations!!
         </div>
-      <% end %>
-      <div class="js-final-step task-final d-none">
-        <h1>Final Step</h1>
-        This is the final step, congratulations!!
       </div>
-      <div class="mission-toolbar text-right">
+      <div class="form-actions mission-accept">
         <button class="js-next-btn btn-submit">Next</button>
       </div>
     </div>

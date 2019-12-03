@@ -1,9 +1,32 @@
 <div class="app-container">
-  <div class="container-body">
-    <h1>Weekend PA</h1>
-
-    <div class="add-form js-add-form">
-      <%= render 'add_form' %>
+    <div class="form-home">
+      <div class="form-top">
+        <h2 class="text-center">What kind of task?</h2>
+        <div class="btn-inline">
+          <button class="js-btn btn-task btn-active" data-errand>Errand</button>
+          <p class="m-0">or</p>
+          <button class="js-btn btn-task" data-appointment>Appointment</button>
+        </div>
+      </div>
+      <div class="form js-form-errand">
+        <%= simple_form_for(@task) do |f| %>
+          <%= f.input :title, label: 'What are you doing?', placeholder: 'eg. Buy bread' %>
+          <%= f.association :category, collection: Category.order(:name), prompt: 'eg. Grocery or Supermarket', label: 'What type of task?' %>
+          <div class="form-actions">
+            <%= f.submit 'Add', class: 'btn-submit' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="form js-form-appointment d-none">
+        <%= simple_form_for(@task) do |f| %>
+          <%= f.input :title, label: 'What are you doing?', placeholder: 'eg. Buy bread' %>
+          <%= f.association :category, collection: Category.order(:name), value_method: :id, prompt: 'eg. Grocery or Supermarket', label: 'What type of task?' %>
+          <%= f.input :location, as: :string, label: 'Where do you have to go?', placeholder: 'eg. 41-43 Stewart St, Richmond' %>
+          <%= f.input :start_at, as: :string, label: 'When do you want to do this task?', required: false, input_html: {class: "datepicker"}, placeholder: 'Date and Time' %>
+          <div class="form-actions">
+            <%= f.submit 'Add', class: 'btn-submit' %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
 </div>
