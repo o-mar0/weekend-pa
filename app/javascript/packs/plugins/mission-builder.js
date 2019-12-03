@@ -44,7 +44,7 @@ class MissionBuilder {
       };
     });
 
-    this.map.addLegs(legs);
+    await this.map.addLegs(legs);
 
     this.syncCheckboxesWithMap();
     this.categoryEls.forEach(categoryEl => {

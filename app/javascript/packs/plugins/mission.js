@@ -75,14 +75,14 @@ class Mission {
       };
     });
 
-    this.map.addLegs(legs);
+    await this.map.addLegs(legs);
 
     const allCategoryEls = document.querySelectorAll('.js-category');
     const allCategoryNames = Array.from(allCategoryEls)
       .map(categoryEl => categoryEl.dataset.categoryName);
 
     await this.map.updateCategoryNames(allCategoryNames);
-    this.updateMap();
+    return this.updateMap();
   }
 
   updateMap() {
