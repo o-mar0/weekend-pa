@@ -4,6 +4,7 @@
 */
 import { featureCollection, feature } from '@turf/turf';
 import { Map } from './map';
+import LoadingScreen from './loading.js';
 
 export const initMission = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
@@ -14,6 +15,7 @@ class Mission {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
+    this.loadingEl = document.querySelector('.loading-screen');
 
     this.categoryCardEls = this.el.querySelectorAll('.js-category-card');
     this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
@@ -32,9 +34,9 @@ class Mission {
   }
 
   async init() {
-    alert('begin load');
+    const loader = new LoadingScreen(this.loadingEl);
     await this.drawLegsOnMap();
-    alert('end load');
+    loader.finishLoading();
 
     this.displayMissionStep();
 

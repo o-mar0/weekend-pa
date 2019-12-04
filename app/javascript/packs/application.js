@@ -8,7 +8,6 @@ import { initNavbar } from './plugins/navbar';
 import { initAutocomplete } from './plugins/init_autocomplete';
 import { initStatusUpdate } from './plugins/status';
 import { initAddButton } from './plugins/add-task-button';
-import { initLoadingScreen } from './plugins/loading';
 
 
 // Always add a js- prefixed class to your elements when targeting to create a separation
@@ -20,4 +19,3 @@ initNavbar('.js-navbar');
 initAutocomplete();
 initStatusUpdate('.js-task-status');
 initAddButton('.js-btn');
-initLoadingScreen('.loading-screen');

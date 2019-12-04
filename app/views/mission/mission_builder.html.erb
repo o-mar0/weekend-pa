@@ -1,41 +1,42 @@
-<div class="loading-screen">
-<div class="app-container">
-    <div class="form-container">
-      <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
-
-        <div class="js-map map"></div>
-
-        <div class="form-cards">
-          <% @location_tasks.each do |task| %>
-            <div class="checkbox js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
-              <ul class="task">
-                  <label>
-                    <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
-                    <h2><%= task.title %> <p>( <i class="fas fa-map-marker-alt"></i> <%= task.location %>)</p> </h2>
-
-                  </label>
-                  <% @categories_by_location_task[task.id].each do |category_name| %>
-                    <div class="checkbox">
-                      <input type="checkbox" class="js-category" checked value="<%= category_name %>" data-leg-task-id="<%= task.id %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
-
-                      <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
-                      <ul class="task">
-                        <% @category_tasks_categories[category_name].each do |task| %>
-                          <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
-                          <li class="list-item"><%= @category_tasks_categories[category_name].index(task) + 1 %>. <%= task.title %></li>
-                        <% end %>
-                      </ul>
-                    </div>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-        </div>
-        <div class="form-actions mission-accept">
-          <input type="submit" name="Accept" value="Accept" class="btn-submit">
-        </div>
-      </form>
-    </div>
+<div class="loading-screen load-active d-flex justify-content-around align-items-center">
+  <div class="loader"></div>
 </div>
+<div class="app-container display-container">
+  <div class="form-container">
+    <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+
+      <div class="js-map map"></div>
+
+      <div class="form-cards">
+        <% @location_tasks.each do |task| %>
+          <div class="checkbox js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
+            <ul class="task">
+                <label>
+                  <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
+                  <h2><%= task.title %> <p>( <i class="fas fa-map-marker-alt"></i> <%= task.location %>)</p> </h2>
+
+                </label>
+                <% @categories_by_location_task[task.id].each do |category_name| %>
+                  <div class="checkbox">
+                    <input type="checkbox" class="js-category" checked value="<%= category_name %>" data-leg-task-id="<%= task.id %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
+
+                    <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
+                    <ul class="task">
+                      <% @category_tasks_categories[category_name].each do |task| %>
+                        <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
+                        <li class="list-item"><%= @category_tasks_categories[category_name].index(task) + 1 %>. <%= task.title %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="form-actions mission-accept">
+        <input type="submit" name="Accept" value="Accept" class="btn-submit">
+      </div>
+    </form>
+  </div>
 </div>

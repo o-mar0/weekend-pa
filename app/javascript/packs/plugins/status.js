@@ -7,18 +7,22 @@ class StatusUpdate {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
+    this.emptyCheckbox = this.el.parentElement.querySelector('.checkbox-empty');
+    this.tickCheckbox = this.el.parentElement.querySelector('.checkbox-tick');
+
     this.init();
   }
 
   async init() {
     this.el.addEventListener('change', event => {
+      this.emptyCheckbox.classList.toggle('d-none');
+      this.tickCheckbox.classList.toggle('d-none');
       if (event.target.checked) {
         event.target.status = 1;
       }
       else {
         event.target.status = 0;
       }
-      console.log(event.target.status);
       Rails.fire(event.target.parentElement.parentElement.parentElement, 'submit');
     });
   }
