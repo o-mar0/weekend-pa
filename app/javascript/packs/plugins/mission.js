@@ -32,7 +32,10 @@ class Mission {
   }
 
   async init() {
+    alert('begin load');
     await this.drawLegsOnMap();
+    alert('end load');
+
     this.displayMissionStep();
 
     this.nextEl.addEventListener('click', () => {
@@ -53,7 +56,7 @@ class Mission {
       }
 
       this.displayMissionStep();
-      this.updateMap();
+      this.zoomIntoSelectedLeg();
     });
   }
 
@@ -82,10 +85,12 @@ class Mission {
       .map(categoryEl => categoryEl.dataset.categoryName);
 
     await this.map.updateCategoryNames(allCategoryNames);
-    return this.updateMap();
+    await this.map.updateMap();
+
+    return this.zoomIntoSelectedLeg();
   }
 
-  updateMap() {
+  zoomIntoSelectedLeg() {
     if (!this.locationTaskEls[this.currentMissionLeg]) {
       this.map.zoomIntoFinalLeg();
     }

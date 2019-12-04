@@ -20,7 +20,6 @@ export class Map {
     this.el = el;
 
     this.legs = [];
-    this.selectedCategoryNames = [];
     this.userLocation = null;
     this.map = null;
     this.placeCache = {};
@@ -38,8 +37,9 @@ export class Map {
   }
 
   async updateCategoryNames(categoryNames) {
-    this.selectedCategoryNames = categoryNames;
-    return this.updateMap();
+    this.legs.forEach(leg => {
+      leg.updateAvailableCategoryNames(categoryNames);
+    });
   }
 
   async addLegs(legsData) {
@@ -77,15 +77,17 @@ export class Map {
       padding: 50,
     });
 
-    this.legs.forEach(thisLeg => {
+    this.legs.forEach(async thisLeg => {
       const lineLayerId = `routeline-active${leg.taskId}`;
+
+      const map = await this.getMap();
       this.addRouteLineLayerToMap(leg.taskId);
 
       if (thisLeg === leg) {
-        this.map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
+        map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
       }
       else {
-        this.map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
+        map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
       }
     });
   }
@@ -378,11 +380,26 @@ export class Map {
     if (!optimizeResult.trips[0]) {
       throw new Error('no optimize result');
     } else {
-      setTimeout(() => {
-          this.map.getSource(`weekendPARouteLinefinish`)
+      const map = await this.getMap();
+      map.getSource(`weekendPARouteLinefinish`)
             .setData(routeGeoJSON);
-        }, this.hasMapLoaded ? 0 : 5000);
     }
+  }
+
+  async getMap() {
+    if (this.hasMapLoaded) {
+      return this.map;
+    }
+
+    return new Promise((resolve) => {
+      const mapInterval = setInterval(() => {
+        if (this.hasMapLoaded) {
+          clearInterval(mapInterval);
+          resolve(this.map);
+        }
+      }, 500);
+    });
+
   }
 
   async drawRouteForLeg(legIndex) {
@@ -400,11 +417,10 @@ export class Map {
       throw new Error('no optimize result');
     } else {
       // This is hacky shit.
-      setTimeout(() => {
-          this.addRouteLineLayerToMap(leg.taskId);
-          this.map.getSource(`weekendPARouteLine${leg.taskId}`)
-            .setData(routeGeoJSON);
-        }, this.hasMapLoaded ? 0 : 5000);
+      const map = await this.getMap();
+      this.addRouteLineLayerToMap(leg.taskId);
+      map.getSource(`weekendPARouteLine${leg.taskId}`)
+        .setData(routeGeoJSON);
     }
   }
 }

@@ -19,6 +19,7 @@ export default class Leg {
     this.endLocation = legData.endLocation;
 
     this.categoryNames = legData.categories;
+    this.selectedCategoryNames = [];
 
     this.placeCache = {};
     this.placesService = null;
@@ -32,6 +33,10 @@ export default class Leg {
     this.placesService = new google.maps.places.PlacesService(googleMapEl);
   }
 
+  updateAvailableCategoryNames(categoryNames) {
+    this.selectedCategoryNames = categoryNames;
+  }
+
   async fetchRouteForLeg() {
     const placeSearchResults = await this.getPlaceSearchResults();
 
@@ -42,15 +47,18 @@ export default class Leg {
     const legPlaceSearchResults = await this.getPlaceSearchResults();
 
     return legPlaceSearchResults
-      .filter(legPlace => legPlace)
       .map(legPlace => legPlace.location);
   }
 
   async getPlaceSearchResults() {
-    const placeSearchPromisesForCategoryNames = this.categoryNames.map((categoryName) => {
+    const placeSearchPromisesForCategoryNames = this.categoryNames.filter(categoryName => {
+      return this.selectedCategoryNames.includes(categoryName);
+    }).map((categoryName) => {
       return this.getPlaceSearchPromiseForCategoryName(categoryName);
     });
-    return Promise.all(placeSearchPromisesForCategoryNames);
+    const placeSearchResults = await Promise.all(placeSearchPromisesForCategoryNames);
+
+    return placeSearchResults.filter(legPlace => legPlace);
   }
 
   async getPlaceSearchPromiseForCategoryName(categoryName) {
@@ -127,13 +135,9 @@ export default class Leg {
 
       const activeCategoriesForLeg = this.categoryNames;
 
-      /*.filter(categoryName => {
-        return this.selectedCategoryNames.includes(categoryName);
-      });*/
-      const placesAlongTheWay = await Promise.all(activeCategoriesForLeg.map(category =>
-          this.getPlaceSearchPromiseForCategoryName(category)));
+      const placesAlongTheWay = await this.getPlaceSearchResults();
 
-      placesAlongTheWay.filter(place => place).forEach(place => {
+      placesAlongTheWay.forEach(place => {
         coordinates.push(`${place.location.longitude},${place.location.latitude}`);
       });
 

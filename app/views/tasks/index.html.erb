@@ -15,8 +15,9 @@
               <%= link_to task_path(task), class: 'btn-link' do %>
                   <div class="list-item-left">
                     <%= simple_form_for task, method: :patch, remote: true do |f| %>
-                      <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
+                      <%= f.input :status, label: false, wrapper_html: { class: 'js-task-status' } %>
                     <% end %>
+                    <%= task.title %>
                   </div>
                   <i class="fas fa-chevron-right"></i>
               <% end %>
