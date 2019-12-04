@@ -1,5 +1,5 @@
 .list {
-  padding: 0 0 0 24px;
+  padding: 0;
 }
 
 .list-item {
@@ -8,6 +8,10 @@
   align-items: center;
   list-style: none;
   padding: 12px 0;
+  padding: 10px 13px;
+  margin-bottom: 1px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
 }
 
 .list-item-title {
@@ -16,14 +20,16 @@
   h1 {
     margin: 0;
   }
-
-  label {
-    margin: 12px 0;
-  }
 }
 
 .task {
   padding: 0 24px;
+  h2{
+    p{
+    opacity: 0.5;
+    font-size: 20px;
+    }
+  }
 }
 
 .task-final {

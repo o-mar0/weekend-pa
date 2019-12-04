@@ -19,7 +19,7 @@
 .btn-submit {
   width: 100%;
   // ###################
-  background: #003366;
+  background: #1e346c;
   color: #fff;
   padding: 12px;
   border: 0;
@@ -29,6 +29,10 @@
 .btn-link {
   color: $main;
   transition: 0.2s;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 
   &:hover {
     color: $main;
