@@ -1,9 +1,9 @@
-export const initStatusUpdate = (selector) => {
+export const initUpdateCheckbox = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
-  return elements.map(el => new StatusUpdate(el));
+  return elements.map(el => new UpdateCheckbox(el));
 };
 
-class StatusUpdate {
+class UpdateCheckbox {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
@@ -15,20 +15,14 @@ class StatusUpdate {
 
   async init() {
     this.el.addEventListener('change', event => {
-      this.submitStatusUpdate(event);
+      this.updateCheckboxState(event);
     });
   }
 
 
-  submitStatusUpdate(event) {
-    if (event.target.checked) {
-      event.target.status = 1;
-    }
-    else {
-      event.target.status = 0;
-    }
-    console.log(event.target.status);
-    Rails.fire(event.target.parentElement.parentElement.parentElement, 'submit');
+  updateCheckboxState(event) {
+    this.emptyCheckbox.classList.toggle('d-none');
+    this.tickCheckbox.classList.toggle('d-none');
   }
 }
 

@@ -1,4 +1,4 @@
-.checkbox-box {
+.checkbox-box, .checkbox {
   left: 8px;
   top: 8px;
   position: absolute;
@@ -53,8 +53,23 @@
 }
 
 .checkbox {
+  position: relative;
+
+  .checkbox-tick, .checkbox-empty {
+    position: absolute;
+    top: 4px;
+    left: -8px;
+  }
+
+  .label-mission {
+    .checkbox-tick, .checkbox-empty {
+      top: -8px;
+    }
+  }
+
   & > label {
     font-size: 24px;
-    margin: 0;
+    margin: 0 0 18px;
+    padding: 0 0 0 36px;
   }
 }

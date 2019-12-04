@@ -22,12 +22,20 @@
 
 .form{
   .form-control {
-    border-left: 6px solid #000;
-    background: rgba(255,255,255,0.3);
+    border-left: 6px solid #fff;
+    background: rgba(255,255,255,0.2);
+    color: #000 !important;
   }
 
   .form-actions {
-    bottom: 54px;
+    bottom: 40px;
+    margin: 0;
+  }
+}
+
+.new_task {
+  div {
+    margin: 0 0 16px 0;
   }
 }
 
@@ -53,11 +61,24 @@
 
   .form-cards {
     bottom: 84px;
-    height: 45%;
+    height: 46%;
     overflow: scroll;
+    position: absolute;
+    bottom: 55px;
 
-    .checkbox > .task {
-      padding: 0 12px;
+    .checkbox {
+
+      .task {
+        padding: 0 12px;
+      }
+
+      .label-mission {
+        margin: 0;
+        font-size: 18px;
+
+        p {
+        }
+      }
     }
 
     .list-item {

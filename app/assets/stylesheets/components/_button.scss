@@ -6,14 +6,34 @@
 }
 
 .btn-active {
-  background: blue !important;
+  background: rgba(255,255,255,0.2) !important;
+}
+
+.btn-circle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 11px 18px;
+  z-index: 2;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+
+  i {
+    padding: 0;
+  }
 }
 
 .btn-task {
-  background: orange;
+  background: rgba(0,0,0,0.2);
   border: 0;
   padding: 8px;
   border-radius: 2px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn-submit {

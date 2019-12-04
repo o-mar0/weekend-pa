@@ -2,6 +2,11 @@
   <div class="loader"></div>
 </div>
 <div class="app-container display-container">
+  <%= link_to :back do %>
+    <div class="btn-circle">
+      <i class="fas fa-chevron-left"></i>
+    </div>
+  <% end %>
   <div class="form-container js-mission">
     <div class="mission-builder-form">
       <div class="js-map map"></div>
@@ -9,21 +14,33 @@
       <div class="form-cards">
         <% @display_tasks.each do |location_task_id| %>
           <% location_task = location_task_id[1][:location_task] %>
-          <div class="checkbox js-task-location d-none" data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
+          <div class="js-task-location d-none" data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
             <% if location_task_id[1].key? :categories %>
               <% location_task_id[1][:categories].each do |category_and_tasks| %>
                 <% category_and_tasks.each do |category, tasks| %>
                   <div class="js-category-card js-category d-none" data-category-name="<%= category.name %>">
-                    <ul class="task">
+                    <ul class="list-card">
                       <li class="list-item-title">
                         <h2><%= category.label %></h2>
-                        <% tasks.each do |task| %>
-                          <div class="list-item">
-                            <%= simple_form_for task, method: :patch, remote: true do |f| %>
-                              <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
-                            <% end %>
-                          </div>
-                        <% end %>
+                        <ul class="list">
+                          <% tasks.each do |task| %>
+                            <li class="list-item">
+                              <div class="checkbox">
+                                <label class="label-mission">
+                                  <%= simple_form_for task, method: :patch, remote: true do |f| %>
+                                    <%= f.input :status, wrapper_html: { class: 'js-task-status js-checkbox checkbox-hidden' } %>
+                                    <div class="checkbox-empty"></div>
+                                    <div class="checkbox-tick d-none">
+                                      <div class="tick-sm"></div>
+                                      <div class="tick-lg"></div>
+                                    </div>
+                                  <% end %>
+                                  <span><%= task.title %></span>
+                                </label>
+                              </div>
+                            </li>
+                          <% end %>
+                        </ul>
                       </li>
                     </ul>
                   </div>

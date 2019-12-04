@@ -1,6 +1,7 @@
 .map {
   position: absolute; top: -32px; bottom: 0; width: 100%;
   height: 48%;
+  z-index: 1;
 }
 
 .mapboxgl-ctrl-bottom-right > .mapboxgl-ctrl-attrib.mapboxgl-compact::after, a.mapboxgl-ctrl-logo {

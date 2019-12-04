@@ -34,9 +34,9 @@ class Mission {
   }
 
   async init() {
-    const loader = new LoadingScreen(this.loadingEl);
     await this.drawLegsOnMap();
-    loader.finishLoading();
+
+    this.endLoadingScreen();
 
     this.displayMissionStep();
 
@@ -60,6 +60,14 @@ class Mission {
       this.displayMissionStep();
       this.zoomIntoSelectedLeg();
     });
+  }
+
+  async endLoadingScreen() {
+    if (!this.loader) {
+      this.loader = new LoadingScreen(this.loadingEl);
+
+      this.loader.endLoading();
+    }
   }
 
   async drawLegsOnMap() {

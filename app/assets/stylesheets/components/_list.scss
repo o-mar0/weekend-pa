@@ -29,15 +29,12 @@
   }
 }
 
-.task {
+.list-card {
   padding: 0 24px;
   position: relative;
 
-  h2{
-    p{
-    opacity: 0.5;
-    font-size: 20px;
-    }
+  li {
+    list-style: none;
   }
 }
 
