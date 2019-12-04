@@ -12,11 +12,12 @@
   margin-bottom: 1px;
   border-radius: 4px;
   background: rgba(255,255,255,0.1);
+  position: relative;
 }
 
 .list-item-left {
   span {
-    margin: 0 0 0 24px;
+    margin: 0 0 0 40px;
   }
 }
 
@@ -30,6 +31,8 @@
 
 .task {
   padding: 0 24px;
+  position: relative;
+
   h2{
     p{
     opacity: 0.5;

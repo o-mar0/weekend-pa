@@ -4,6 +4,7 @@
 */
 import { featureCollection, feature } from '@turf/turf';
 import { Map } from './map';
+import LoadingScreen from './loading.js';
 
 export const initMissionBuilder = (selector) => {
   const elements = Array.from(document.querySelectorAll(selector));
@@ -14,6 +15,7 @@ class MissionBuilder {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
+    this.loadingEl = document.querySelector('.loading-screen');
 
     this.categoryEls = this.el.querySelectorAll('.js-category');
     this.locationTaskEls = this.el.querySelectorAll('.js-task-location');
@@ -56,7 +58,7 @@ class MissionBuilder {
 
   async syncCheckboxesWithMap() {
     // begin loading.
-
+    const loader = new LoadingScreen(this.loadingEl);
 
     const checkedCategoryNames = Array.from(this.categoryEls)
       .filter(categoryEl => categoryEl.checked)
@@ -65,6 +67,7 @@ class MissionBuilder {
     this.map.updateCategoryNames(checkedCategoryNames);
     await this.map.updateMap();
 
+    loader.finishLoading();
     // end loading.
   }
 

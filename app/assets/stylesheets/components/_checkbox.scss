@@ -1,20 +1,24 @@
 .checkbox-box {
+  left: 8px;
+  top: 8px;
+  position: absolute;
+
   .checkbox-empty, .checkbox-tick {
     width: 28px;
     height: 28px;
-    background: $main;
+    background: #fff;
     border-radius: 2px;
     margin: 0;
     display: inline-block;
   }
+
   .checkbox-tick {
-    display: none;
     position: relative;
 
     .tick-sm, .tick-lg {
       position: absolute;
       width: 4px;
-      background: #fff;
+      background: #000;
     }
 
     .tick-sm {
@@ -33,7 +37,10 @@
   }
 
   .checkbox-hidden {
-    display: none;
+    visibility: hidden;
+    display: inline-block;
+    position: absolute;
+    left: -144px;
 
     &:checked ~ .checkbox-empty {
       display: none;
@@ -42,5 +49,12 @@
     &:checked ~ .checkbox-tick {
       display: inline-block;
     }
+  }
+}
+
+.checkbox {
+  & > label {
+    font-size: 24px;
+    margin: 0;
   }
 }
