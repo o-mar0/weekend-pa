@@ -47,7 +47,7 @@
                 <% end %>
               <% end %>
             <% end %>
-            <div class="js-location-card d-none task">
+            <div class="js-location-card d-none list-card">
               <h2><%= location_task_id[1][:location_task].title %></h2>
               <div class="list-item">
                 <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
@@ -57,7 +57,7 @@
             </div>
           </div>
         <% end %>
-        <div class="js-final-step task task-final d-none">
+        <div class="js-final-step list-card task-final d-none">
           <h1>Final Step</h1>
           This is the final step, congratulations!!
           <div class="form-actions mission-accept text-center">
