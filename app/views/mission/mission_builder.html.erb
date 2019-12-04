@@ -1,3 +1,4 @@
+<div class="loading-screen">
 <div class="app-container">
     <div class="form-container">
       <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
@@ -16,7 +17,7 @@
                   </label>
                   <% @categories_by_location_task[task.id].each do |category_name| %>
                     <div class="checkbox">
-                      <input type="checkbox" class="js-category" checked value="<%= category_name %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
+                      <input type="checkbox" class="js-category" checked value="<%= category_name %>" data-leg-task-id="<%= task.id %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
 
                       <label for="<%= category_name %>"><%= @category_labels[category_name] %></label>
                       <ul class="task">
@@ -36,4 +37,5 @@
         </div>
       </form>
     </div>
+</div>
 </div>

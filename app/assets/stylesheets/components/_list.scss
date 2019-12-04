@@ -1,5 +1,5 @@
 .list {
-  padding: 0 0 0 24px;
+  padding: 0 24px;
 }
 
 .list-item {
@@ -29,14 +29,5 @@
 .task-final {
   h1 {
     margin: 12px 0;
-  }
-}
-
-.list-item-left {
-  display: flex;
-  align-items: center;
-
-  .edit_task {
-
   }
 }

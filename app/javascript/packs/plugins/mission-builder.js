@@ -54,12 +54,18 @@ class MissionBuilder {
     });
   }
 
-  syncCheckboxesWithMap() {
+  async syncCheckboxesWithMap() {
+    // begin loading.
+
+
     const checkedCategoryNames = Array.from(this.categoryEls)
       .filter(categoryEl => categoryEl.checked)
       .map(categoryEl => categoryEl.value);
 
     this.map.updateCategoryNames(checkedCategoryNames);
+    await this.map.updateMap();
+
+    // end loading.
   }
 
 }

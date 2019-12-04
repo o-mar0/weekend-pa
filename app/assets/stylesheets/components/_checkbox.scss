@@ -1,0 +1,46 @@
+.checkbox-box {
+  .checkbox-empty, .checkbox-tick {
+    width: 28px;
+    height: 28px;
+    background: $main;
+    border-radius: 2px;
+    margin: 0;
+    display: inline-block;
+  }
+  .checkbox-tick {
+    display: none;
+    position: relative;
+
+    .tick-sm, .tick-lg {
+      position: absolute;
+      width: 4px;
+      background: #fff;
+    }
+
+    .tick-sm {
+      height: 10px;
+      transform: rotate(-45deg);
+      top: 12px;
+      right: 18px;
+    }
+
+    .tick-lg {
+      height: 18px;
+      transform: rotate(45deg);
+      top: 6px;
+      right: 10px;
+    }
+  }
+
+  .checkbox-hidden {
+    display: none;
+
+    &:checked ~ .checkbox-empty {
+      display: none;
+    }
+
+    &:checked ~ .checkbox-tick {
+      display: inline-block;
+    }
+  }
+}
