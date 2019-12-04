@@ -14,6 +14,12 @@
   background: rgba(255,255,255,0.1);
 }
 
+.list-item-left {
+  span {
+    margin: 0 0 0 24px;
+  }
+}
+
 .list-item-title {
   list-style: none;
 

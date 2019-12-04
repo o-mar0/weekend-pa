@@ -13,15 +13,15 @@
           <ul class="list">
             <% category[1].each do |task| %>
               <li class="list-item">
-              <%= link_to task_path(task), class: 'btn-link' do %>
+                <%= link_to task_path(task), class: 'btn-link' do %>
                   <div class="list-item-left">
                     <%= simple_form_for task, method: :patch, remote: true do |f| %>
                       <%= f.input :status, label: false, wrapper_html: { class: 'js-task-status' } %>
                     <% end %>
-                    <%= task.title %>
+                    <span><%= task.title %></span>
                   </div>
                   <i class="fas fa-chevron-right"></i>
-              <% end %>
+                <% end %>
               </li>
             <% end %>
           </ul>
