@@ -20,16 +20,27 @@
   }
 }
 
+.form{
+  .form-control {
+    border-left: 6px solid #000;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .form-actions {
+    bottom: 54px;
+  }
+}
+
 .form-actions {
   position: absolute;
-  bottom: 36px;
+  bottom: -12px;
   left: 0;
   width: 100%;
 }
 
 .mission-accept {
-  width: 80% !important;
-  left: 10%;
+  width: 88% !important;
+  left: 6%;
 }
 
 .form-container, .mission-builder-form {
@@ -42,11 +53,21 @@
 
   .form-cards {
     bottom: 84px;
-    height: 40%;
+    height: 45%;
     overflow: scroll;
+
+    .checkbox > .task {
+      padding: 0 12px;
+    }
+
+    .list-item {
+      padding: 8px;
+    }
   }
 }
 
-label {
-  margin: 0;
+.checkbox {
+  & > label {
+    font-size: 24px;
+  }
 }

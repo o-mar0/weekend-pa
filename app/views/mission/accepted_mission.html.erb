@@ -15,7 +15,7 @@
                       <li class="list-item-title">
                         <h2><%= category.label %></h2>
                         <% tasks.each do |task| %>
-                          <div>
+                          <div class="list-item">
                             <%= simple_form_for task, method: :patch, remote: true do |f| %>
                               <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
                             <% end %>
@@ -27,7 +27,7 @@
                 <% end %>
               <% end %>
             <% end %>
-            <div class="js-location-card d-none">
+            <div class="js-location-card d-none task">
               <h2><%= location_task_id[1][:location_task].title %></h2>
               <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
                 <%= f.input :status, label: location_task_id[1][:location_task].title, wrapper_html: { class: 'js-task-status' } %>
@@ -35,7 +35,7 @@
             </div>
           </div>
         <% end %>
-        <div class="js-final-step task-final d-none">
+        <div class="js-final-step task task-final d-none">
           <h1>Final Step</h1>
           This is the final step, congratulations!!
         </div>

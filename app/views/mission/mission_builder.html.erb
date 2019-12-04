@@ -12,8 +12,8 @@
               <ul class="task">
                   <label>
                     <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
-                    <h2><%= task.title %></h2>
-                    <%= task.location %>
+                    <h2><%= task.title %> <p>( <i class="fas fa-map-marker-alt"></i> <%= task.location %>)</p> </h2>
+
                   </label>
                   <% @categories_by_location_task[task.id].each do |category_name| %>
                     <div class="checkbox">
@@ -23,7 +23,7 @@
                       <ul class="task">
                         <% @category_tasks_categories[category_name].each do |task| %>
                           <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
-                          <li class="list-item"><%= task.title %></li>
+                          <li class="list-item"><%= @category_tasks_categories[category_name].index(task) + 1 %>. <%= task.title %></li>
                         <% end %>
                       </ul>
                     </div>

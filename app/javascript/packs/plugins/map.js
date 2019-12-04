@@ -245,7 +245,7 @@ export class Map {
     mapboxgl.accessToken = 'pk.eyJ1Ijoiby1tYXIwIiwiYSI6ImNrM2dzaWUyMTA1N2EzbGw5bmU2aTR0cHoifQ.K1SJ2f_lddAklOarADHODw';
     this.map = new mapboxgl.Map({
       container: this.el,
-      style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
+      style: 'mapbox://styles/o-mar0/ck3qr7fao06n41cnt6nhsinl8', // stylesheet location
       center: [144.99125, -37.82394], // starting position [lng, lat]
       zoom: 12,
     });
