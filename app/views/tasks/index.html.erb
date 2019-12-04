@@ -4,28 +4,23 @@
       <% @tasks_categories.each do |category| %>
         <div class="card-category">
           <div class="card-top d-flex justify-content-between align-items-center">
-            <h3><%= category[0].capitalize %></h3>
+            <h3><%= category[0].upcase %></h3>
             <div class="card-right">
               <span><%= category[1].count %></span>
-              <% if category[1].count == 1 %>
-                <span>task</span>
-              <% else %>
-                <span>tasks</span>
-              <% end %>
             </div>
           </div>
           <ul class="list">
             <% category[1].each do |task| %>
+              <li class="list-item">
               <%= link_to task_path(task), class: 'btn-link' do %>
-                <li class="list-item">
                   <div class="list-item-left">
                     <%= simple_form_for task, method: :patch, remote: true do |f| %>
                       <%= f.input :status, label: task.title, wrapper_html: { class: 'js-task-status' } %>
                     <% end %>
                   </div>
                   <i class="fas fa-chevron-right"></i>
-                </li>
               <% end %>
+              </li>
             <% end %>
           </ul>
         </div>

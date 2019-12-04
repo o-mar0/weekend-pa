@@ -12,12 +12,21 @@ class MyPlugin {
   }
 
   init() {
+    this.checkIfMapPresent();
     const newMissionButton = this.el.querySelector('.js-new-mission-button');
 
     newMissionButton.addEventListener('click', (event) => {
       event.preventDefault();
       this.requestUserLocation();
     })
+  }
+
+  checkIfMapPresent() {
+    const mapEl = document.querySelector('.map');
+
+    if (mapEl) {
+      this.el.classList.add('d-none');
+    }
   }
 
   requestUserLocation() {

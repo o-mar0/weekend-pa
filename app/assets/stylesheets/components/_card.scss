@@ -16,3 +16,27 @@
     flex-grow: 1;
   }
 }
+
+.card-top {
+  margin: 0 0 10px 0;
+}
+
+.card-top h3 {
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 10px 0;
+  margin: 0;
+}
+
+
+.card-right {
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  color: blue;
+  border-radius: 6.5px;
+  text-align: center;
+  font-weight: bold;
+  opacity: 0.2;
+}
