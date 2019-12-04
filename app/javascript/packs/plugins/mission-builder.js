@@ -48,7 +48,9 @@ class MissionBuilder {
 
     await this.map.addLegs(legs);
 
-    this.syncCheckboxesWithMap();
+    await this.syncCheckboxesWithMap();
+    this.endLoadingScreen();
+
     this.categoryEls.forEach(categoryEl => {
       categoryEl.addEventListener('change', (event) => {
         this.syncCheckboxesWithMap();
@@ -58,17 +60,21 @@ class MissionBuilder {
 
   async syncCheckboxesWithMap() {
     // begin loading.
-    const loader = new LoadingScreen(this.loadingEl);
-
     const checkedCategoryNames = Array.from(this.categoryEls)
       .filter(categoryEl => categoryEl.checked)
       .map(categoryEl => categoryEl.value);
 
     this.map.updateCategoryNames(checkedCategoryNames);
     await this.map.updateMap();
-
-    loader.finishLoading();
     // end loading.
+  }
+
+  endLoadingScreen() {
+    if (!this.loader) {
+      this.loader = new LoadingScreen(this.loadingEl);
+
+      this.loader.endLoading()
+    }
   }
 
 }

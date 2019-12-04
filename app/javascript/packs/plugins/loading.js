@@ -5,7 +5,7 @@ export default class LoadingScreen {
     this.displayContainerEl = document.querySelector('.display-container');
   }
 
-  finishLoading() {
+  endLoading() {
     this.el.classList.toggle('d-none');
     this.el.classList.toggle('d-flex');
   }

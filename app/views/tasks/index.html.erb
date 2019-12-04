@@ -19,7 +19,7 @@
                     <div class="checkbox-box">
                       <label for="task_status[<%= task.id %>]">
                         <%= simple_form_for task, method: :patch, remote: true do |f| %>
-                          <%= f.input :status, as: :boolean, input_html: { id: "task_status[#{task.id}]"}, wrapper_html: { class: 'js-task-status checkbox-hidden' } %>
+                          <%= f.input :status, as: :boolean, input_html: { id: "task_status[#{task.id}]"}, wrapper_html: { class: 'js-task-status js-checkbox checkbox-hidden' } %>
                           <div class="checkbox-empty"></div>
                           <div class="checkbox-tick d-none">
                             <div class="tick-sm"></div>

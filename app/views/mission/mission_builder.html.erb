@@ -2,6 +2,11 @@
   <div class="loader"></div>
 </div>
 <div class="app-container display-container">
+    <%= link_to tasks_path do %>
+      <div class="btn-circle">
+        <i class="fas fa-chevron-left"></i>
+      </div>
+    <% end %>
   <div class="form-container">
     <form action="<%= accepted_mission_path %>" method="POST" class="js-mission-builder-form mission-builder-form">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
@@ -9,6 +14,44 @@
       <div class="js-map map"></div>
 
       <div class="form-cards">
+        <% @location_tasks.each do |task| %>
+          <div class="js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
+            <div class="card-location">
+              <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
+              <h2><%= task.title %> <p> <i class="fas fa-map-marker-alt"></i> <%= task.location %></p></h2>
+            </div>
+
+            <% @categories_by_location_task[task.id].each do |category_name| %>
+              <div>
+                <ul class="list-card">
+                  <li>
+
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" class="js-category js-checkbox checkbox-hidden" checked value="<%= category_name %>" data-leg-task-id="<%= task.id %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
+                          <%= @category_labels[category_name] %>
+                          <div class="checkbox-empty d-none"></div>
+                          <div class="checkbox-tick">
+                            <div class="tick-sm"></div>
+                            <div class="tick-lg"></div>
+                          </div>
+                        </label>
+                      </div>
+                    <ul class="m-0 p-0">
+                      <% @category_tasks_categories[category_name].each do |task| %>
+                        <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
+                        <li class="list-item"><%= @category_tasks_categories[category_name].index(task) + 1 %>. <%= task.title %></li>
+                      <% end %>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- <div class="form-cards">
         <% @location_tasks.each do |task| %>
           <div class="checkbox js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
             <ul class="task">
@@ -33,7 +76,7 @@
             </ul>
           </div>
         <% end %>
-      </div>
+      </div> -->
       <div class="form-actions mission-accept">
         <input type="submit" name="Accept" value="Accept" class="btn-submit">
       </div>
