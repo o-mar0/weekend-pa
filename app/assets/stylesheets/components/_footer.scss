@@ -1,10 +1,17 @@
 .footer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 24px;
-  margin: 0 24px;
+  grid-gap: 20px;
   text-align: center;
-  padding: 16px 0;
-  background: #fff;
+  padding: 16px;
+  background: rgba(255,255,255,0.7);
   height: 68px;
+  width: 100%;
+
+  .btn-add {
+    border: 1px solid $main;
+    padding: 4px 24px;
+    border-radius: 20px;
+    font-size: 20px;
+  }
 }
