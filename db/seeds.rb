@@ -187,7 +187,7 @@ tasks = [
   {
     title: 'Drop Vincent To His House',
     category: Category.find_by(name: 'appointment'),
-    location: '1 Warley Road, Malvern East VIC',
+    location: '108-90 Graham St, Broadmeadows VIC 3047',
     status: false,
     user: User.first
   },
