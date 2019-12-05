@@ -3,7 +3,7 @@
 }
 
 .cards {
-  margin: 0px 0 96px 0;
+  margin: 0px 0 124px 0;
 }
 
 .card-task {
@@ -46,10 +46,9 @@
 .card-right {
   width: 25px;
   height: 25px;
-  background: #fff;
-  color: blue;
+  background: rgba(255,255,255,0.2);
+  color: #ddd;
   border-radius: 6.5px;
   text-align: center;
   font-weight: bold;
-  opacity: 0.2;
 }
