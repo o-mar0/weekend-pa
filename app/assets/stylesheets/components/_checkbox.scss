@@ -63,7 +63,7 @@
 
   .checkbox-tick, .checkbox-empty {
     position: absolute;
-    top: 4px;
+    top: 0;
     left: -8px;
   }
 
@@ -74,9 +74,15 @@
     }
   }
 
+  .label-category {
+    padding: 0 0 0 32px;
+  }
+
   & > label {
-    font-size: 24px;
-    margin: 0 0 18px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
     padding: 0 0 0 40px;
+    margin: 0 0 18px;
   }
 }

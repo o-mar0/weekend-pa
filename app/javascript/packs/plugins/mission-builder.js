@@ -30,6 +30,8 @@ class MissionBuilder {
 
   async init() {
     const legs = Array.from(this.locationTaskEls).map(taskEl => {
+      const title = taskEl.dataset.title;
+      const location = taskEl.dataset.location;
       const taskId = taskEl.dataset.taskId;
       const latitude = taskEl.dataset.latitude;
       const longitude = taskEl.dataset.longitude;
@@ -37,6 +39,8 @@ class MissionBuilder {
       const categoryEls = taskEl.querySelectorAll('.js-category');
 
       return {
+        title,
+        location,
         taskId,
         endLocation: {
           latitude: parseFloat(latitude),

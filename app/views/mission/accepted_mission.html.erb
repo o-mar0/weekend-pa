@@ -14,7 +14,7 @@
       <div class="form-cards">
         <% @display_tasks.each do |location_task_id| %>
           <% location_task = location_task_id[1][:location_task] %>
-          <div class="js-task-location d-none" data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
+          <div class="js-task-location d-none" data-title="<%= location_task.title %>" data-location="<%= location_task.location %>"  data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
             <% if location_task_id[1].key? :categories %>
               <% location_task_id[1][:categories].each do |category_and_tasks| %>
                 <% category_and_tasks.each do |category, tasks| %>

@@ -11,8 +11,8 @@ export const initMap = (selector) => {
   return elements.map(el => new Map(el));
 };
 
-const defaultRouteLineColor = '#3887be';
-const activeRouteLineColor = '#ff0000';
+const defaultRouteLineColor = '#fff';
+const activeRouteLineColor = '#3887be';
 
 export class Map {
   // Keep the constructor lean, don't add anything more to this.
@@ -121,9 +121,9 @@ export class Map {
     const markerElImage = marker.getElement().querySelector('.js-marker-image');
     markerElImage.style.transform = 'scale(1.5)';
     markerElImage.classList.add('js-marker-active-image');
-    console.log(marker);
-    console.log(marker.lngLat.lat);
-    this.map.fire('click', {latLng: marker.lngLat});
+    // console.log(marker);
+    // console.log(marker.lngLat.lat);
+    // this.map.fire('click', {latLng: marker.lngLat});
   }
 
   removeActiveStateFromMarkers() {
@@ -172,7 +172,7 @@ export class Map {
     this.markers = [];
   }
 
-  generateIconMarkerEl(fontAwesomeIconName, color ='ff0000') {
+  generateIconMarkerEl(fontAwesomeIconName, color ='ff8989') {
     const markerWrapperEl = document.createElement('div');
 
     const imageEl = document.createElement('img');
@@ -188,7 +188,7 @@ export class Map {
 
     const userMarker = new mapboxgl.Marker({
       color: 'red',
-      element: this.generateIconMarkerEl('fa-user-solid')
+      element: this.generateIconMarkerEl('fa-user-solid', '72c6ff')
     })
       .setLngLat([userLocation.longitude, userLocation.latitude])
       .addTo(this.map);
@@ -219,7 +219,6 @@ export class Map {
         //   .setHTML(`${placeSearchResult.categoryName}: ${placeSearchResult.name}`)
         //   .setMaxWidth("300px")
         //   .addTo(this.map);
-
         this.markers.push(marker);
         this.categoryMarkers[placeSearchResult.categoryName] = marker;
       });
@@ -229,7 +228,7 @@ export class Map {
   addLocationTaskMarkersToMap() {
     this.legs.forEach(leg => {
       const markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML('<h3>' + leg.taskId + '</h3>');
+        .setHTML('<h3>' + leg.title + '</h3><p>' + leg.location + '</p>');
 
         const marker = new mapboxgl.Marker({
            color: 'orange',
@@ -238,6 +237,8 @@ export class Map {
         .setLngLat([leg.endLocation.longitude, leg.endLocation.latitude])
         .setPopup(markerPopup)
         .addTo(this.map);
+        // marker.dataset.longitude = leg.location.longitude;
+        // marker.dataset.latitude = leg.location.latitude;
 
         this.markers.push(marker);
         this.taskLocationMarkers[leg.taskId] = marker;
@@ -413,8 +414,6 @@ export class Map {
     // Create a GeoJSON feature collection
     const routeGeoJSON = featureCollection([feature(optimizeResult.trips[0].geometry)]);
 
-
-    console.log(`weekendPARouteLine${leg.taskId}`);
     // If there is no route provided, reset
     if (!optimizeResult.trips[0]) {
       throw new Error('no optimize result');
