@@ -1,8 +1,8 @@
 <% if user_signed_in? %>
   <div class="footer fixed-bottom js-navbar">
-    <div class="footer-left">
-      <%= link_to tasks_path, class: 'btn-list' do %>
-        <i class="fas fa-list-ul icon-sm"></i>
+    <div class="footer-left js-btn-list-wrapper">
+      <%= link_to tasks_path do %>
+        <i class="fas fa-list-ul icon-sm js-btn-list"></i>
       <% end %>
     </div>
     <div class="footer-center">
