@@ -25,7 +25,7 @@
                         <ul class="list">
                           <% tasks.each do |task| %>
                             <li class="list-item">
-                              <div class="checkbox">
+                              <div class="checkbox checkbox-mission">
                                 <label class="label-mission">
                                   <%= simple_form_for task, method: :patch, remote: true do |f| %>
                                     <%= f.input :status, wrapper_html: { class: 'js-task-status js-checkbox checkbox-hidden' } %>
@@ -49,11 +49,23 @@
             <% end %>
             <div class="js-location-card d-none list-card">
               <h2><%= location_task_id[1][:location_task].title %></h2>
-              <div class="list-item">
-                <%= simple_form_for location_task_id[1][:location_task], remote: true do |f| %>
-                  <%= f.input :status, label: location_task_id[1][:location_task].title, wrapper_html: { class: 'js-task-status' } %>
-                <% end %>
-              </div>
+              <ul class="list">
+                <li class="list-item">
+                  <div class="checkbox checkbox-mission">
+                    <label class="label-mission">
+                      <%= simple_form_for location_task, method: :patch, remote: true do |f| %>
+                        <%= f.input :status, wrapper_html: { class: 'js-task-status js-checkbox checkbox-hidden' } %>
+                        <div class="checkbox-empty"></div>
+                        <div class="checkbox-tick d-none">
+                          <div class="tick-sm"></div>
+                          <div class="tick-lg"></div>
+                        </div>
+                      <% end %>
+                      <span><%= location_task.title %></span>
+                    </label>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         <% end %>

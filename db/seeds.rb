@@ -9,6 +9,10 @@ User.create(name: 'User', email: 'user@user.com',password: 'password')
 puts 'Creating Categories...'
 categories = [
                {
+                name: 'appointment',
+                label:'Appointment'
+               },
+               {
                 name: 'airport',
                 label:'Airport'
                },
@@ -164,8 +168,8 @@ tasks = [
  ############################# LOCATION #############################
   {
     title: 'Buy a Gift For Vincent',
-    category: Category.find_by(name: 'airport'),
-    location: '2. OMEGA Boutique - Crown Melbourne, Shop 20/20A Ground Floor, Crown Melbourne Entertainment and Casino Complex, 8 Whiteman St, Southbank VIC 3004',
+    category: Category.find_by(name: 'appointment'),
+    location: '8 Whiteman St, Southbank VIC 3006',
     status: false,
     due: DateTime.parse('06/12/2019 19:00'),
     user: User.first
@@ -173,8 +177,8 @@ tasks = [
 
   {
     title: 'Pick Up Vincent From The Airport',
-    category: Category.find_by(name: 'airport'),
-    location: '3. Melbourne Airport, Departure Dr, Melbourne Airport VIC',
+    category: Category.find_by(name: 'appointment'),
+    location: 'Melbourne Airport, Departure Dr, Melbourne Airport VIC',
     status: false,
     due: DateTime.parse('06/12/2019 20:30'),
     user: User.first
@@ -182,7 +186,7 @@ tasks = [
 
   {
     title: 'Drop Vincent To His House',
-    category: Category.find_by(name: 'airport'),
+    category: Category.find_by(name: 'appointment'),
     location: '1 Warley Road, Malvern East VIC',
     status: false,
     user: User.first
