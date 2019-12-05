@@ -164,7 +164,7 @@ tasks = [
  ############################# LOCATION #############################
   {
     title: 'Buy a Gift For Vincent',
-    category: Category.find_by(name: 'airport'),
+    category: Category.find_by(name: ''),
     location: '2. OMEGA Boutique - Crown Melbourne, Shop 20/20A Ground Floor, Crown Melbourne Entertainment and Casino Complex, 8 Whiteman St, Southbank VIC 3004',
     status: false,
     due: DateTime.parse('06/12/2019 19:00'),
