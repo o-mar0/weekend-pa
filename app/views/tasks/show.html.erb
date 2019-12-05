@@ -1,7 +1,9 @@
 <div class="app-container">
   <div class="container-body">
-    <p><%= @task.category.label %></p>
+    <p>Current task:</p>
     <h1><%= @task.title %></h1>
+    <p>Type of task:</p>
+    <p><%= @task.category.label %></p>
     <% if @task.start_at %>
       <p><%= @task.start_at.to_date %></p>
     <% end %>

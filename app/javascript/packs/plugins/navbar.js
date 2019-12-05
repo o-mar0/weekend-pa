@@ -13,6 +13,8 @@ class MyPlugin {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
+    this.scrollPos = 0;
+
     this.init();
   }
 
@@ -21,9 +23,27 @@ class MyPlugin {
     const newMissionButton = this.el.querySelector('.js-new-mission-button');
     const newMissionButtonWrapper = this.el.querySelector('.js-btn-mission-wrapper');
 
+    const listButton = this.el.querySelector('.js-btn-list')
+    const listButtonWrapper = this.el.querySelector('.js-btn-list-wrapper');
+
+    this.el.classList.add('footer-active');
     window.addEventListener('scroll', (event) => {
-      console.log(event);
+      if (window.scrollY > this.scrollPos) {
+        this.el.classList.remove('footer-active');
+      }
+      else {
+        this.el.classList.add('footer-active');
+        // saves the new position for iteration.
+      };
+      this.scrollPos = window.scrollY;
     });
+
+    const clickListButton = (event) => {
+      listButtonWrapper.classList.add('btn-list--active');
+    }
+
+    listButton.addEventListener('click', clickListButton);
+    listButton.addEventListener('touchstart', clickListButton);
 
     const clickButton = (event) => {
       event.preventDefault();

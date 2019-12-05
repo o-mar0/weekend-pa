@@ -8,6 +8,8 @@
   height: 58px;
   width: 100%;
   backdrop-filter: blur(6px);
+  bottom: -58px;
+  transition: 0.4s;
 
   & * {
     color: #fff;
@@ -15,7 +17,16 @@
 
     &:hover {
       text-decoration: none;
+      color: #fff;
     }
+  }
+
+  .footer-left {
+    transition: transform 0.5s 0s;
+  }
+
+  .btn-list--active {
+    transform: scale(0.8);
   }
 
   .btn-add {
@@ -45,5 +56,9 @@
       transform: scale(4.4) translateY(-186px) translateX(200px);
     }
   }
+}
+
+.footer-active {
+  bottom: 0;
 }
 

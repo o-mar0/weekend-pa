@@ -21,7 +21,6 @@ class TasksController < ApplicationController
 
     @task.category = params[:task][:category_id].nil? ? Category.find_by(name: 'appointment') : Category.find(params[:task][:category_id].to_i)
 
-
     if @task.save
       redirect_to tasks_path
     else
