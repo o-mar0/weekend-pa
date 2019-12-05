@@ -1,5 +1,8 @@
 <div class="loading-screen load-active d-flex justify-content-around align-items-center">
-  <div class="loader"></div>
+  <div class="loading-screen-inner">
+    <div class="loader"></div>
+    Omarizing™ route...
+  </div>
 </div>
 <div class="app-container display-container">
   <%= link_to :back do %>
@@ -11,7 +14,7 @@
     <div class="mission-builder-form">
       <div class="js-map map"></div>
 
-      <div class="form-cards">
+      <div class="form-cards accepted-mission-task-list">
         <% @display_tasks.each do |location_task_id| %>
           <% location_task = location_task_id[1][:location_task] %>
           <div class="js-task-location d-none" data-title="<%= location_task.title %>" data-location="<%= location_task.location %>"  data-latitude="<%= location_task.latitude %>" data-longitude="<%= location_task.longitude %>" data-task-id="<%= location_task.id %>">
@@ -21,7 +24,6 @@
                   <div class="js-category-card js-category d-none" data-category-name="<%= category.name %>">
                     <ul class="list-card">
                       <li class="list-item-title">
-                        <h2><%= category.label %></h2>
                         <ul class="list">
                           <% tasks.each do |task| %>
                             <li class="list-item">
@@ -48,7 +50,6 @@
               <% end %>
             <% end %>
             <div class="js-location-card d-none list-card">
-              <h2><%= location_task_id[1][:location_task].title %></h2>
               <ul class="list">
                 <li class="list-item">
                   <div class="checkbox checkbox-mission">

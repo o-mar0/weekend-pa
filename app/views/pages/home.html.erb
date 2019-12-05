@@ -1,7 +1,7 @@
 <div class="app-container">
     <div class="form-home">
       <div class="form-top">
-        <h2 class="text-center">What kind of task?</h2>
+        <h2 class="text-center">Let's do this...</h2>
         <div class="btn-inline">
           <button class="js-btn btn-task btn-active" data-errand>Errand</button>
           <p class="m-0">or</p>
@@ -13,7 +13,7 @@
           <%= f.input :title, label: 'What are you doing?', placeholder: 'eg. Buy bread' %>
           <%= f.association :category, collection: Category.order(:name), prompt: 'eg. Grocery or Supermarket', label: 'What type of task?' %>
           <div class="form-actions">
-            <%= f.submit 'Add', class: 'btn-submit' %>
+            <%= f.submit 'Create task', class: 'btn-submit' %>
           </div>
         <% end %>
       </div>
@@ -23,7 +23,7 @@
           <%= f.input :location, as: :string, label: 'Where do you have to go?', placeholder: 'eg. 41-43 Stewart St, Richmond' %>
           <%= f.input :start_at, as: :string, label: 'When do you want to do this task?', required: false, input_html: {class: "datepicker"}, placeholder: 'Date and Time' %>
           <div class="form-actions">
-            <%= f.submit 'Add', class: 'btn-submit' %>
+            <%= f.submit 'Create task', class: 'btn-submit' %>
           </div>
         <% end %>
       </div>

@@ -1,5 +1,8 @@
 <div class="loading-screen load-active d-flex justify-content-around align-items-center">
-  <div class="loader"></div>
+  <div class="loading-screen-inner">
+    <div class="loader"></div>
+    Generating Omarized™ mission...
+  </div>
 </div>
 <div class="app-container display-container">
     <%= link_to tasks_path do %>
@@ -15,7 +18,7 @@
 
       <div class="form-cards">
          <div class="card-location">
-          <h2>Start your mission <p> <i class="fas fa-map-marker-alt"></i> Inspire9 Richmond</p></h2>
+          <h2>Start location <p> <i class="fas fa-map-marker-alt"></i> Inspire9 Richmond</p></h2>
         </div>
         <% @location_tasks.each do |task| %>
           <div class="js-task-location" data-title="<%= task.title %>" data-location="<%= task.location %>" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
@@ -35,7 +38,7 @@
                           </div>
                         </label>
                       </div>
-                    <ul class="m-0 p-0">
+                    <ul class="m-0 mission-builder-category-tasks">
                       <% @category_tasks_categories[category_name].each do |task| %>
                         <input type="hidden" name="task_categories[<%= category_name %>][]" value="<%= task.id %>" />
                         <li class="list-item"><%= @category_tasks_categories[category_name].index(task) + 1 %>. <%= task.title %></li>

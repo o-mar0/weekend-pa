@@ -4,6 +4,11 @@ export const initNavbar = (selector) => {
   return elements.map(el => new MyPlugin(el));
 };
 
+const fallbackUserLocation = {
+  latitude: -37.82394,
+  longitude: 144.99125
+};
+
 class MyPlugin {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
@@ -22,6 +27,10 @@ class MyPlugin {
     newMissionButton.addEventListener('click', (event) => {
       event.preventDefault();
       this.requestUserLocation();
+    });
+    newMissionButton.addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      this.requestUserLocation();
     })
   }
 
@@ -38,6 +47,9 @@ class MyPlugin {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function(position) {
         window.location = '/mission?lat=' + position.coords.latitude + '&long=' + position.coords.longitude
+      }, () => {
+        // Error fallback.
+        window.location = '/mission?lat=' + fallbackUserLocation.latitude + '&long=' + fallbackUserLocation.longitude
       });
     } else {
       alert('You cannot get location')
