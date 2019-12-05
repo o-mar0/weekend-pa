@@ -1,0 +1,7 @@
+# config/meta.yml
+
+meta_product_name: "Weekend PA"
+meta_title: "Weekend PA - Procrastination Annihilator"
+meta_description: "Procrastination Annihilator"
+meta_image: "cover.png" # should exist in `app/assets/images/`
+twitter_account: "@weekendPA_app"   # required for Twitter Cards
