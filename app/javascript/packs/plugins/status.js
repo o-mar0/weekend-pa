@@ -27,7 +27,6 @@ class StatusUpdate {
     else {
       event.target.status = 0;
     }
-    console.log(event.target.status);
     Rails.fire(event.target.parentElement.parentElement.parentElement, 'submit');
   }
 }

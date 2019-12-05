@@ -19,7 +19,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.user = current_user
 
-    @task.category = params[:task][:category_id].empty? ? Category.find_by(name: 'appointment') : Category.find(params[:task][:category_id].to_i)
+    @task.category = params[:task][:category_id] ? Category.find(params[:task][:category_id].to_i) : Category.find_by(name: 'appointment')
 
     if @task.save
       redirect_to task_path(@task)
