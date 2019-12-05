@@ -29,4 +29,21 @@
       text-decoration: none;
     }
   }
+
+  .btn-mission {
+    transition: transform 1s 0s;
+
+    img {
+      transition: transform 1.5s 1s;
+    }
+  }
+
+  .btn-mission--active {
+    transform: rotate(-48deg);
+
+    img {
+      transform: scale(4.4) translateY(-186px) translateX(200px);
+    }
+  }
 }
+

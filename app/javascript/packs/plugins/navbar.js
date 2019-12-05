@@ -19,19 +19,20 @@ class MyPlugin {
   init() {
     this.checkIfMapPresent();
     const newMissionButton = this.el.querySelector('.js-new-mission-button');
+    const newMissionButtonWrapper = this.el.querySelector('.js-btn-mission-wrapper');
 
     window.addEventListener('scroll', (event) => {
       console.log(event);
     });
 
-    newMissionButton.addEventListener('click', (event) => {
+    const clickButton = (event) => {
       event.preventDefault();
+      newMissionButtonWrapper.classList.add('btn-mission--active');
       this.requestUserLocation();
-    });
-    newMissionButton.addEventListener('touchstart', (event) => {
-      event.preventDefault();
-      this.requestUserLocation();
-    })
+    }
+
+    newMissionButton.addEventListener('click', clickButton);
+    newMissionButton.addEventListener('touchstart', clickButton);
   }
 
   checkIfMapPresent() {
@@ -43,18 +44,18 @@ class MyPlugin {
   }
 
   requestUserLocation() {
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        window.location = '/mission?lat=' + position.coords.latitude + '&long=' + position.coords.longitude
-      }, () => {
-        // Error fallback.
-        window.location = '/mission?lat=' + fallbackUserLocation.latitude + '&long=' + fallbackUserLocation.longitude
-      });
-    } else {
-      alert('You cannot get location')
-    }
-
+    setTimeout(() => {
+     if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          window.location = '/mission?lat=' + position.coords.latitude + '&long=' + position.coords.longitude;
+        }, () => {
+          // Error fallback.
+          window.location = '/mission?lat=' + fallbackUserLocation.latitude + '&long=' + fallbackUserLocation.longitude;
+        });
+      } else {
+        window.location = '/mission?lat=' + fallbackUserLocation.latitude + '&long=' + fallbackUserLocation.longitude;
+      }
+    }, 2000);
   }
 
 }
