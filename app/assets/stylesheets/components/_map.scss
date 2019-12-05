@@ -9,7 +9,15 @@
 }
 
 .mapboxgl-popup-content {
+  .mapboxgl-popup-close-button {
+    display: none;
+  }
+  h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
   h3, p {
     color: #041d5b;
+    margin-bottom: 0;
   }
 }
