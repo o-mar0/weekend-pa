@@ -63,6 +63,8 @@ export class Map {
     const startLocation = leg.startLocation;
     const endLocation = leg.endLocation;
 
+    const map = await this.getMap();
+
     const bounds = new mapboxgl.LngLatBounds();
     bounds.extend([startLocation.longitude, startLocation.latitude]);
     bounds.extend([endLocation.longitude, endLocation.latitude]);
@@ -73,17 +75,17 @@ export class Map {
       bounds.extend([legPlaceLocation.longitude, legPlaceLocation.latitude]);
     });
 
-    this.map.fitBounds(bounds, {
+    map.fitBounds(bounds, {
       padding: 50,
     });
 
     this.legs.forEach(async thisLeg => {
       const lineLayerId = `routeline-active${leg.taskId}`;
-
-      const map = await this.getMap();
       this.addRouteLineLayerToMap(leg.taskId);
 
       if (thisLeg === leg) {
+        console.log(thisLeg);
+        console.log(leg.taskId);
         map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
       }
       else {

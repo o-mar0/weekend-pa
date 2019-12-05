@@ -121,6 +121,7 @@ class Mission {
 
      // Reached the finish line!
     if (!legEl) {
+      confetti.start();
       this.finalStepEl.classList.remove('d-none');
       this.nextEl.classList.add('d-none');
       return;
