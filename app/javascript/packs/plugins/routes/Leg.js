@@ -13,6 +13,8 @@ import queryString from 'query-string';
 
 export default class Leg {
   constructor(legData, startLocation) {
+    this.title = legData.title;
+    this.location = legData.location;
     this.taskId = legData.taskId;
 
     this.startLocation = startLocation;

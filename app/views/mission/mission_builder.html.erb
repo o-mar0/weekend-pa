@@ -15,7 +15,7 @@
 
       <div class="form-cards">
         <% @location_tasks.each do |task| %>
-          <div class="js-task-location" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
+          <div class="js-task-location" data-title="<%= task.title %>" data-location="<%= task.location %>" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
             <div class="card-location">
               <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
               <h2><%= task.title %> <p> <i class="fas fa-map-marker-alt"></i> <%= task.location %></p></h2>
@@ -27,7 +27,7 @@
                   <li>
 
                       <div class="checkbox">
-                        <label>
+                        <label class="label-category">
                           <input type="checkbox" class="js-category js-checkbox checkbox-hidden" checked value="<%= category_name %>" data-leg-task-id="<%= task.id %>" id="<%= category_name %>" name="task[<%= task.id %>][<%= category_name %>]" />
                           <%= @category_labels[category_name] %>
                           <div class="checkbox-empty d-none"></div>
