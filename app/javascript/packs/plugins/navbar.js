@@ -15,6 +15,10 @@ class MyPlugin {
     this.checkIfMapPresent();
     const newMissionButton = this.el.querySelector('.js-new-mission-button');
 
+    window.addEventListener('scroll', (event) => {
+      console.log(event);
+    });
+
     newMissionButton.addEventListener('click', (event) => {
       event.preventDefault();
       this.requestUserLocation();

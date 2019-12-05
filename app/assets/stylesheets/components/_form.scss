@@ -22,9 +22,16 @@
 
 .form{
   .form-control {
-    border-left: 6px solid #fff;
+    border-left: 6px solid #041749;
     background: rgba(255,255,255,0.2);
-    color: #000 !important;
+    color: #fff !important;
+    transition: 0.2s;
+
+    &:focus {
+      background: rgba(255,255,255,1);
+      color: #000 !important;
+      outline: none !important;
+    }
   }
 
   .form-actions {
