@@ -13,6 +13,13 @@ export const initMap = (selector) => {
 
 const defaultRouteLineColor = '#3887be';
 const activeRouteLineColor = '#ff8989';
+const activeRouteLineSourceName = `weekendPARouteLineActive`;
+
+
+const fallbackUserLocation = {
+  latitude: -37.82394,
+  longitude: 144.99125
+};
 
 export class Map {
   // Keep the constructor lean, don't add anything more to this.
@@ -31,6 +38,8 @@ export class Map {
     this.categoryMarkers = {};
     this.taskLocationMarkers = {};
 
+    this.legGeoJsonLinesByTaskId = {};
+
     this.init();
   }
 
@@ -48,7 +57,7 @@ export class Map {
     const userLocation = await this.getUserLocationPromise();
 
     this.legs = legsData.map((legData, index) => {
-      const previousLeg = this.legs[index - 1];
+      const previousLeg = legsData[index - 1];
       let previousLegEndLocation = previousLeg ? previousLeg.endLocation : null;
 
       if (!previousLegEndLocation) {
@@ -81,16 +90,19 @@ export class Map {
       padding: 50,
     });
 
-    this.legs.forEach(async thisLeg => {
-      const lineLayerId = `routeline-active${thisLeg.taskId}`;
-      this.addRouteLineLayerToMap(thisLeg.taskId);
+    map.getSource(activeRouteLineSourceName)
+      .setData(this.legGeoJsonLinesByTaskId[leg.taskId]);
 
-      if (thisLeg.taskId === leg.taskId) {
-        map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
-      }
-      else {
-        map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
-      }
+    this.legs.forEach(async thisLeg => {
+      // const lineLayerId = `routeline-active${thisLeg.taskId}`;
+      // this.addRouteLineLayerToMap(thisLeg.taskId);
+
+      // if (thisLeg.taskId === leg.taskId) {
+      //   map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
+      // }
+      // else {
+      //   map.setPaintProperty(lineLayerId, 'line-color', defaultRouteLineColor);
+      // }
     });
   }
 
@@ -163,18 +175,16 @@ export class Map {
 
 
         resolve(this.userLocation);
-      }, reject, {
+      }, () => {
+        this.userLocation = fallbackUserLocation;
+        resolve(this.userLocation);
+      }, {
         enableHighAccuracy: true,
       });
     });
   }
 
   async updateMap() {
-    // User location
-    const fallbackLocation = {
-      latitude: -37.82394,
-      longitude: 144.99125
-    }; // Inspire 9
     // Mapbox GL display markers
     return this.updateMapWithLatestData();
   }
@@ -225,7 +235,7 @@ export class Map {
 
       placeSearchResults.forEach(placeSearchResult => {
         const markerPopup = new mapboxgl.Popup({
-          offset: 50,
+          offset: 15,
           closeOnClick: false
         }) // add popups
           .setHTML('<h3>' + placeSearchResult.name + '</h3><p>' + placeSearchResult.address + '</p>');
@@ -283,6 +293,67 @@ export class Map {
     });
   }
 
+  addActiveRouteLineLayerToMap() {
+    // If exists, leave it.
+    if (this.map.getSource(activeRouteLineSourceName)) {
+      return;
+    }
+
+    this.map.addSource(activeRouteLineSourceName, {
+      type: 'geojson',
+      data: null,
+    });
+    this.map.addLayer({
+      id: 'routeline-active',
+      type: 'line',
+      source: activeRouteLineSourceName,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': activeRouteLineColor,
+        'line-width': [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          12, 8,
+          22, 12
+        ]
+      }
+    }, 'waterway-label');
+
+    this.map.addLayer({
+      id: 'routearrows',
+      type: 'symbol',
+      source: activeRouteLineSourceName,
+      layout: {
+        'symbol-placement': 'line',
+        'text-field': '▶',
+        'text-size': [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          12, 24,
+          22, 60
+        ],
+        'symbol-spacing': [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          12, 30,
+          22, 160
+        ],
+        'text-keep-upright': false
+      },
+      paint: {
+        'text-color': activeRouteLineColor,
+        'text-halo-color': 'hsl(55, 11%, 96%)',
+        'text-halo-width': 3
+      }
+    }, 'waterway-label');
+  }
+
   addRouteLineLayerToMap(suffix) {
     const sourceName = `weekendPARouteLine${suffix}`;
 
@@ -314,36 +385,6 @@ export class Map {
         ]
       }
     }, 'waterway-label');
-
-    this.map.addLayer({
-      id: `routearrows${suffix}`,
-      type: 'symbol',
-      source: sourceName,
-      layout: {
-        'symbol-placement': 'line',
-        'text-field': '▶',
-        'text-size': [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          12, 24,
-          22, 60
-        ],
-        'symbol-spacing': [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          12, 30,
-          22, 160
-        ],
-        'text-keep-upright': false
-      },
-      paint: {
-        'text-color': '#3887be',
-        'text-halo-color': 'hsl(55, 11%, 96%)',
-        'text-halo-width': 3
-      }
-    }, 'waterway-label');
   }
 
   async updateMapWithLatestData() {
@@ -358,6 +399,9 @@ export class Map {
     //legJourneyPromises.push(this.getFinalJourney());
 
     await Promise.all(legJourneyPromises);
+
+    this.addActiveRouteLineLayerToMap();
+
     return true;
   }
 
@@ -446,6 +490,8 @@ export class Map {
       // This is hacky shit.
       const map = await this.getMap();
       this.addRouteLineLayerToMap(leg.taskId);
+      this.legGeoJsonLinesByTaskId[leg.taskId] = routeGeoJSON;
+
       map.getSource(`weekendPARouteLine${leg.taskId}`)
         .setData(routeGeoJSON);
     }

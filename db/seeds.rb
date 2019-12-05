@@ -187,7 +187,7 @@ tasks = [
   {
     title: 'Drop Vincent To His House',
     category: Category.find_by(name: 'appointment'),
-    location: '108-90 Graham St, Broadmeadows VIC 3047',
+    location: '41 Okeefe St, Preston VIC 3072',
     status: false,
     user: User.first
   },
