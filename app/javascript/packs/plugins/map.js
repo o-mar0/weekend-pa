@@ -121,6 +121,9 @@ export class Map {
     const markerElImage = marker.getElement().querySelector('.js-marker-image');
     markerElImage.style.transform = 'scale(1.5)';
     markerElImage.classList.add('js-marker-active-image');
+    console.log(marker);
+    console.log(marker.lngLat.lat);
+    this.map.fire('click', {latLng: marker.lngLat});
   }
 
   removeActiveStateFromMarkers() {
@@ -201,7 +204,7 @@ export class Map {
         const markerPopup = new mapboxgl.Popup({
           offset: 25,
         }) // add popups
-          .setHTML('<h3>' + placeSearchResult.categoryName + '</h3><p>' + placeSearchResult.name + '</p>');
+          .setHTML('<h3>' + placeSearchResult.name + '</h3><p>' + placeSearchResult.address + '</p>');
 
         const marker = new mapboxgl.Marker({
           element: this.generateIconMarkerEl('fa-circle'),

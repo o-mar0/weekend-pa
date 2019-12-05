@@ -20,7 +20,6 @@
       <div class="form js-form-appointment d-none">
         <%= simple_form_for(@task) do |f| %>
           <%= f.input :title, label: 'What are you doing?', placeholder: 'eg. Buy bread' %>
-          <%= f.association :category, collection: Category.order(:name), value_method: :id, prompt: 'eg. Grocery or Supermarket', label: 'What type of task?' %>
           <%= f.input :location, as: :string, label: 'Where do you have to go?', placeholder: 'eg. 41-43 Stewart St, Richmond' %>
           <%= f.input :start_at, as: :string, label: 'When do you want to do this task?', required: false, input_html: {class: "datepicker"}, placeholder: 'Date and Time' %>
           <div class="form-actions">

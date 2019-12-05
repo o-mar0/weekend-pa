@@ -7,3 +7,9 @@
 .mapboxgl-ctrl-bottom-right > .mapboxgl-ctrl-attrib.mapboxgl-compact::after, a.mapboxgl-ctrl-logo {
   display: none !important;
 }
+
+.mapboxgl-popup-content {
+  h3, p {
+    color: #041d5b;
+  }
+}

@@ -86,7 +86,7 @@ export default class Leg {
 
     const placeSearchParmas = {
       key: "AIzaSyB_mO0b11UhsiOEwZP66gdPBb33sfWQWes",
-      radius: "1000",
+      radius: "2000",
       rankby: "distance",
       location: {
         lat: midPoint.latitude,

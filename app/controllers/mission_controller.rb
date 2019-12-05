@@ -1,9 +1,6 @@
 class MissionController < ApplicationController
   def mission_builder
-    user_lat = params[:lat].to_f.round(2)
-    user_long = params[:long].to_f.round(2)
-
-    @location_tasks = current_user.tasks.near([user_lat, user_long], 10).where(status: false)
+    @location_tasks = current_user.tasks.where("location != ''").where(status: false)
     @category_tasks = current_user.tasks.where(location: '').order(:due).where(status: false)
 
     @category_labels = {}
@@ -24,7 +21,7 @@ class MissionController < ApplicationController
       end
     end
 
-    tasks_per_mission_leg = (@categories.length / mission_leg_count).ceil
+    tasks_per_mission_leg = @categories.length.fdiv(mission_leg_count).ceil
     chunked_categories = @categories.each_slice(tasks_per_mission_leg).to_a
     @categories_by_location_task = {}
 
@@ -38,7 +35,7 @@ class MissionController < ApplicationController
       end
 
       @chunked_tasks = chunked_categories[index]
-      @categories_by_location_task[task.id] = @chunked_tasks
+      @categories_by_location_task[task.id] = @chunked_tasks || []
     end
   end
 

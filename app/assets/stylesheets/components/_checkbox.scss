@@ -18,7 +18,7 @@
     .tick-sm, .tick-lg {
       position: absolute;
       width: 4px;
-      background: #000;
+      background: #041d5b;
     }
 
     .tick-sm {
@@ -52,8 +52,14 @@
   }
 }
 
+.checkbox-mission {
+  top: 0;
+  left: 0;
+}
+
 .checkbox {
   position: relative;
+
 
   .checkbox-tick, .checkbox-empty {
     position: absolute;
@@ -63,13 +69,14 @@
 
   .label-mission {
     .checkbox-tick, .checkbox-empty {
-      top: -8px;
+      top: 0;
+      left: 2px;
     }
   }
 
   & > label {
     font-size: 24px;
     margin: 0 0 18px;
-    padding: 0 0 0 36px;
+    padding: 0 0 0 40px;
   }
 }

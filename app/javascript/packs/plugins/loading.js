@@ -2,7 +2,6 @@ export default class LoadingScreen {
   // Keep the constructor lean, don't add anything more to this.
   constructor(el) {
     this.el = el;
-    this.displayContainerEl = document.querySelector('.display-container');
   }
 
   endLoading() {

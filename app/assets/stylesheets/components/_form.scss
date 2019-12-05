@@ -46,6 +46,16 @@
   width: 100%;
 }
 
+.task-final {
+  .mission-accept {
+    bottom: -140px;
+
+    .btn-submit {
+      padding: 16px 72px;
+    }
+  }
+}
+
 .mission-accept {
   width: 88% !important;
   left: 6%;
@@ -61,6 +71,7 @@
 
   .form-cards {
     bottom: 84px;
+    width: 100%;
     height: 46%;
     overflow: scroll;
     position: absolute;

@@ -4,9 +4,10 @@
   grid-gap: 20px;
   text-align: center;
   padding: 16px;
-  background: #1d346c;
+  background: rgba( 91, 89, 98,0.6);
   height: 58px;
   width: 100%;
+  backdrop-filter: blur(6px);
 
   & * {
     color: #fff;
