@@ -14,13 +14,11 @@
       <div class="js-map map"></div>
 
       <div class="form-cards">
+         <div class="card-location">
+          <h2>Start your mission <p> <i class="fas fa-map-marker-alt"></i> Inspire9 Richmond</p></h2>
+        </div>
         <% @location_tasks.each do |task| %>
           <div class="js-task-location" data-title="<%= task.title %>" data-location="<%= task.location %>" data-latitude="<%= task.latitude %>" data-longitude="<%= task.longitude %>" data-task-id="<%= task.id %>">
-            <div class="card-location">
-              <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
-              <h2><%= task.title %> <p> <i class="fas fa-map-marker-alt"></i> <%= task.location %></p></h2>
-            </div>
-
             <% @categories_by_location_task[task.id].each do |category_name| %>
               <div>
                 <ul class="list-card">
@@ -47,6 +45,11 @@
                 </ul>
               </div>
             <% end %>
+             <div class="card-location">
+              <input type="checkbox" hidden value="<%= task.id %>" checked name="location_tasks[]">
+              <h2><%= task.title %> <p> <i class="fas fa-map-marker-alt"></i> <%= task.location %></p></h2>
+            </div>
+
           </div>
         <% end %>
       </div>

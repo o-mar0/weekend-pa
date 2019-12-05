@@ -1,7 +1,7 @@
 class MissionController < ApplicationController
   def mission_builder
-    @location_tasks = current_user.tasks.where("location != ''").where(status: false)
-    @category_tasks = current_user.tasks.where(location: '').order(:due).where(status: false)
+    @location_tasks = current_user.tasks.where("location != ''").order(:start_at).where(status: false)
+    @category_tasks = current_user.tasks.where(location: '').where(status: false)
 
     @category_labels = {}
     @categories = []

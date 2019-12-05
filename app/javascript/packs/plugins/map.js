@@ -11,8 +11,8 @@ export const initMap = (selector) => {
   return elements.map(el => new Map(el));
 };
 
-const defaultRouteLineColor = '#fff';
-const activeRouteLineColor = '#3887be';
+const defaultRouteLineColor = '#3887be';
+const activeRouteLineColor = '#ff8989';
 
 export class Map {
   // Keep the constructor lean, don't add anything more to this.
@@ -25,6 +25,8 @@ export class Map {
     this.placeCache = {};
     this.markers = [];
     this.hasMapLoaded = false;
+
+    this.currentHighlightedMarker = null;
 
     this.categoryMarkers = {};
     this.taskLocationMarkers = {};
@@ -80,12 +82,10 @@ export class Map {
     });
 
     this.legs.forEach(async thisLeg => {
-      const lineLayerId = `routeline-active${leg.taskId}`;
-      this.addRouteLineLayerToMap(leg.taskId);
+      const lineLayerId = `routeline-active${thisLeg.taskId}`;
+      this.addRouteLineLayerToMap(thisLeg.taskId);
 
-      if (thisLeg === leg) {
-        console.log(thisLeg);
-        console.log(leg.taskId);
+      if (thisLeg.taskId === leg.taskId) {
         map.setPaintProperty(lineLayerId, 'line-color', activeRouteLineColor);
       }
       else {
@@ -118,14 +118,27 @@ export class Map {
   }
 
   highlightMarker(marker) {
+    this.markers.forEach(marker => {
+      const markerEl = marker.getElement();
+      markerEl.style.opacity = 0.5;
+    });
+
+    if (this.currentHighlightedMarker) {
+      this.currentHighlightedMarker.togglePopup();
+    }
+
     this.removeActiveStateFromMarkers();
 
-    const markerElImage = marker.getElement().querySelector('.js-marker-image');
+    const markerEl = marker.getElement();
+    const markerElImage = markerEl.querySelector('.js-marker-image');
     markerElImage.style.transform = 'scale(1.5)';
+    markerElImage.style.transformOrigin = 'bottom center';
+
     markerElImage.classList.add('js-marker-active-image');
-    // console.log(marker);
-    // console.log(marker.lngLat.lat);
-    // this.map.fire('click', {latLng: marker.lngLat});
+    markerEl.style.opacity = 1;
+
+    marker.togglePopup();
+    this.currentHighlightedMarker = marker;
   }
 
   removeActiveStateFromMarkers() {
@@ -177,10 +190,18 @@ export class Map {
   generateIconMarkerEl(fontAwesomeIconName, color ='ff8989') {
     const markerWrapperEl = document.createElement('div');
 
+    const markerPositionWrapperEl = document.createElement('div');
+    markerPositionWrapperEl.style.position = 'relative';
+
     const imageEl = document.createElement('img');
+    imageEl.style.position = 'absolute';
+    imageEl.style.bottom = 0;
+    imageEl.style.left = '-25px';
     imageEl.classList.add('js-marker-image');
     imageEl.setAttribute('src', `https://cdn.mapmarker.io/api/v1/font-awesome/v5/pin?icon=${fontAwesomeIconName}&size=50&hoffset=0&voffset=-1&background=${color}`);
-    markerWrapperEl.appendChild(imageEl);
+
+    markerPositionWrapperEl.appendChild(imageEl);
+    markerWrapperEl.appendChild(markerPositionWrapperEl);
 
     return markerWrapperEl;
   }
@@ -204,7 +225,8 @@ export class Map {
 
       placeSearchResults.forEach(placeSearchResult => {
         const markerPopup = new mapboxgl.Popup({
-          offset: 25,
+          offset: 50,
+          closeOnClick: false
         }) // add popups
           .setHTML('<h3>' + placeSearchResult.name + '</h3><p>' + placeSearchResult.address + '</p>');
 
@@ -252,6 +274,7 @@ export class Map {
     this.map = new mapboxgl.Map({
       container: this.el,
       style: 'mapbox://styles/o-mar0/ck3qr7fao06n41cnt6nhsinl8', // stylesheet location
+      //mapbox://styles/o-mar0/ck3qmx8sl0shu1cpcaxze8s4x
       center: [144.99125, -37.82394], // starting position [lng, lat]
       zoom: 12,
     });
@@ -286,7 +309,7 @@ export class Map {
           "interpolate",
           ["linear"],
           ["zoom"],
-          12, 3,
+          12, 8,
           22, 12
         ]
       }
