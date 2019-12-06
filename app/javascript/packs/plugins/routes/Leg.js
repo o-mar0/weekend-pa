@@ -53,12 +53,15 @@ export default class Leg {
   }
 
   async getPlaceSearchResults() {
-    const placeSearchPromisesForCategoryNames = this.categoryNames.filter(categoryName => {
+    const filteredCategoryNames = this.categoryNames.filter(categoryName => {
       return this.selectedCategoryNames.includes(categoryName);
-    }).map((categoryName) => {
-      return this.getPlaceSearchPromiseForCategoryName(categoryName);
     });
-    const placeSearchResults = await Promise.all(placeSearchPromisesForCategoryNames);
+
+    const placeSearchResults = [];
+    for (let i = 0; i < filteredCategoryNames.length; i ++) {
+      const placeSearchResult = await this.getPlaceSearchPromiseForCategoryName(filteredCategoryNames[i]);
+      placeSearchResults.push(placeSearchResult);
+    }
 
     return placeSearchResults.filter(legPlace => legPlace);
   }

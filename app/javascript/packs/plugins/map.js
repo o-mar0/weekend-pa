@@ -395,10 +395,9 @@ export class Map {
 
     this.zoomOutToAllLegs();
 
-    const legJourneyPromises = this.legs.map((leg, legIndex) => this.drawRouteForLeg(legIndex));
-    //legJourneyPromises.push(this.getFinalJourney());
-
-    await Promise.all(legJourneyPromises);
+    for (let i = 0; i < this.legs.length; i ++) {
+      await this.drawRouteForLeg(i);
+    }
 
     this.addActiveRouteLineLayerToMap();
 
