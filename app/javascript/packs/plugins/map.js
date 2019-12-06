@@ -11,7 +11,7 @@ export const initMap = (selector) => {
   return elements.map(el => new Map(el));
 };
 
-const defaultRouteLineColor = '#3887be';
+const defaultRouteLineColor = '#72c6ff';
 const activeRouteLineColor = '#ff8989';
 const activeRouteLineSourceName = `weekendPARouteLineActive`;
 

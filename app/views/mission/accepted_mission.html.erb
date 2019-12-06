@@ -71,8 +71,11 @@
           </div>
         <% end %>
         <div class="js-final-step list-card task-final d-none">
-          <h1>Mission Completed</h1>
-          This is the final step, congratulations!!
+          <div class="task-final-top">
+            <h1>Mission Complete</h1>
+            <p>Congratulations!</p>
+            <p>You have successfully completed your first mission.</p>
+          </div>
           <div class="form-actions mission-accept text-center">
             <%= link_to 'Finish', tasks_path, class: 'btn-submit' %>
           </div>

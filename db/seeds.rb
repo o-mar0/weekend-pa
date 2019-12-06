@@ -171,7 +171,16 @@ tasks = [
     category: Category.find_by(name: 'appointment'),
     location: '8 Whiteman St, Southbank VIC 3006',
     status: false,
-    due: DateTime.parse('06/12/2019 19:00'),
+    start_at: DateTime.parse('06/12/2019 19:00'),
+    user: User.first
+  },
+
+  {
+    title: 'Go back home to deliver things for party',
+    category: Category.find_by(name: 'appointment'),
+    location: '23 Highland St, Kingsbury, Victoria',
+    start_at: DateTime.parse('06/12/2019 20:00'),
+    status: false,
     user: User.first
   },
 
@@ -180,14 +189,15 @@ tasks = [
     category: Category.find_by(name: 'appointment'),
     location: 'Melbourne Airport, Departure Dr, Melbourne Airport VIC',
     status: false,
-    due: DateTime.parse('06/12/2019 20:30'),
+    start_at: DateTime.parse('06/12/2019 20:30'),
     user: User.first
   },
 
   {
-    title: 'Drop Vincent To His House',
+    title: 'Go back home for the surprise party',
     category: Category.find_by(name: 'appointment'),
-    location: '35 Kodre St, St Albans VIC 3021',
+    location: '23 Highland St, Kingsbury, Victoria',
+    start_at: DateTime.parse('06/12/2019 21:30'),
     status: false,
     user: User.first
   },
@@ -199,7 +209,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -208,7 +217,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -217,7 +225,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -226,7 +233,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -235,7 +241,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -244,7 +249,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -253,7 +257,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -262,7 +265,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 23:50'),
     user: User.first
   },
 
@@ -271,7 +273,6 @@ tasks = [
     category: Category.find_by(name: 'grocery_or_supermarket'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 20:00'),
     user: User.first
   },
 
@@ -282,21 +283,10 @@ tasks = [
     category: Category.find_by(name: 'hardware_store'),
     location: '',
     status: false,
-    due: DateTime.parse('06/12/2019 20:30'),
     user: User.first
   },
 
-  ############################# 3. Car Wash #############################
-
-  {
-    title: 'Car wash',
-    category: Category.find_by(name: 'car_wash'),
-    location: '',
-    status: false,
-    user: User.first
-  },
-
-  ############################# 4. cafe #############################
+  ############################# 3. cafe #############################
 
   {
     title: 'Get a croissant',
@@ -314,10 +304,34 @@ tasks = [
     user: User.first
   },
 
-  ############################# 5. #############################
+  ############################# 4. #############################
+
   {
-    title: 'Post office/ post the letter',
+    title: 'Post office/ Purchase USB',
     category: Category.find_by(name: 'post_office'),
+    location: '',
+    status: false,
+    user: User.first
+  },
+
+  ############################# 5. Car Wash #############################
+  {
+    title: 'Get a haircut',
+    category: Category.find_by(name: 'shopping_mall'),
+    status: false,
+    user: User.first
+  },
+
+  {
+    title: 'Workout',
+    category: Category.find_by(name: 'gym'),
+    status: false,
+    user: User.first
+  },
+
+  {
+    title: 'Car wash',
+    category: Category.find_by(name: 'car_wash'),
     location: '',
     status: false,
     user: User.first
@@ -325,29 +339,12 @@ tasks = [
 
   ############################# other (filling) (NO TIME SHOULD BE SPECIFIED NOR LOCATION) #############################
 
-  # {
-  #   title: '',
-  #   category: Category.find_by(name: ''),
-  #   location: '',
-  #   status: false,
-  #   user: User.first
-  # },
-
-  # {
-  #   title: '',
-  #   category: Category.find_by(name: ''),
-  #   location: '',
-  #   status: false,
-  #   user: User.first
-  # },
-
-  # {
-  #   title: '',
-  #   category: Category.find_by(name: ''),
-  #   location: '',
-  #   status: false,
-  #   user: User.first
-  # },
+  {
+    title: 'Fuel up gas tank',
+    category: Category.find_by(name: 'gas_station'),
+    status: false,
+    user: User.first
+  },
 
   # {
   #   title: '',

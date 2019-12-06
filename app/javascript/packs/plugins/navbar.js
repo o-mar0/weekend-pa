@@ -15,17 +15,38 @@ class MyPlugin {
     this.el = el;
     this.scrollPos = 0;
 
+    this.listButton = this.el.querySelector('.js-btn-list')
+    this.listButtonWrapper = this.el.querySelector('.js-btn-list-wrapper');
+
+    this.addButton = this.el.querySelector('.js-btn-add')
+    this.addButtonWrapper = this.el.querySelector('.js-btn-add-wrapper');
+
+    this.newMissionButton = this.el.querySelector('.js-new-mission-button');
+    this.newMissionButtonWrapper = this.el.querySelector('.js-btn-mission-wrapper');
+
     this.init();
   }
 
   init() {
     this.checkIfMapPresent();
-    const newMissionButton = this.el.querySelector('.js-new-mission-button');
-    const newMissionButtonWrapper = this.el.querySelector('.js-btn-mission-wrapper');
 
-    const listButton = this.el.querySelector('.js-btn-list')
-    const listButtonWrapper = this.el.querySelector('.js-btn-list-wrapper');
+    this.navbarScroll();
 
+    this.clickListButton();
+    this.clickAddButton();
+    this.clickMissionButton();
+
+  }
+
+  checkIfMapPresent() {
+    const mapEl = document.querySelector('.map');
+
+    if (mapEl) {
+      this.el.classList.add('d-none');
+    }
+  }
+
+  navbarScroll() {
     this.el.classList.add('footer-active');
     window.addEventListener('scroll', (event) => {
       if (window.scrollY > this.scrollPos) {
@@ -37,30 +58,35 @@ class MyPlugin {
       };
       this.scrollPos = window.scrollY;
     });
+  }
 
-    const clickListButton = (event) => {
-      listButtonWrapper.classList.add('btn-list--active');
+  clickListButton() {
+    const listButtonEvent = () => {
+      this.listButtonWrapper.classList.add('btn-list--active');
     }
 
-    listButton.addEventListener('click', clickListButton);
-    listButton.addEventListener('touchstart', clickListButton);
+    this.listButton.addEventListener('click', listButtonEvent);
+    this.listButton.addEventListener('touchstart', listButtonEvent);
+  }
 
-    const clickButton = (event) => {
+  clickAddButton() {
+    const addButtonEvent = () => {
+      this.addButtonWrapper.classList.add('btn-add--active');
+    }
+
+    this.addButton.addEventListener('click', addButtonEvent);
+    this.addButton.addEventListener('touchstart', addButtonEvent);
+  }
+
+  clickMissionButton() {
+    const missionButtonEvent = (event) => {
       event.preventDefault();
-      newMissionButtonWrapper.classList.add('btn-mission--active');
+      this.newMissionButtonWrapper.classList.add('btn-mission--active');
       this.requestUserLocation();
     }
 
-    newMissionButton.addEventListener('click', clickButton);
-    newMissionButton.addEventListener('touchstart', clickButton);
-  }
-
-  checkIfMapPresent() {
-    const mapEl = document.querySelector('.map');
-
-    if (mapEl) {
-      this.el.classList.add('d-none');
-    }
+    this.newMissionButton.addEventListener('click', missionButtonEvent);
+    this.newMissionButton.addEventListener('touchstart', missionButtonEvent);
   }
 
   requestUserLocation() {

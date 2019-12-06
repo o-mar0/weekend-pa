@@ -1,6 +1,30 @@
 .alert {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  top: -63px;
+  left: 0;
+  margin: 0;
+  border: 0;
+  padding: 18px 0;
+  width: 100%;
   z-index: 1000;
+  border-radius: 0 0 40px 40px;
+  background: rgba(15,15,54,1);
+  text-align: center;
+  font-size: 18px;
+  transition: 1s 0s;
+
+  span {
+    position: absolute;
+    right: 16px;
+    color: #eee;
+    text-shadow: none;
+  }
+}
+
+.alert--active {
+  top: 0;
+}
+
+.alert--hide {
+  top: -63px;
 }

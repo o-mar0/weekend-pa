@@ -14,7 +14,6 @@
           <ul class="list">
             <% category[1].each do |task| %>
               <li class="list-item">
-                <%= link_to task_path(task), class: 'btn-link' do %>
                   <div class="list-item-left d-flex">
                     <div class="checkbox-box">
                       <label for="task_status[<%= task.id %>]">
@@ -31,7 +30,6 @@
                     <span><%= task.title %></span>
                   </div>
                   <i class="fas fa-chevron-right"></i>
-                <% end %>
               </li>
             <% end %>
           </ul>
