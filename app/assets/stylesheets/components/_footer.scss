@@ -34,6 +34,7 @@
     padding: 4px 24px;
     border-radius: 20px;
     font-size: 20px;
+    transition: 0.2s;
 
     &:hover {
       color: #fff;
@@ -41,11 +42,21 @@
     }
   }
 
+  .btn-add--active {
+    transform: scale(1.2);
+  }
+
   .btn-mission {
     transition: transform 1s 0s;
 
     img {
       transition: transform 1.5s 1s;
+    }
+  }
+
+  .new-mission-btn {
+    &:hover {
+      cursor: pointer;
     }
   }
 

@@ -22,7 +22,7 @@ class TasksController < ApplicationController
     @task.category = params[:task][:category_id].nil? ? Category.find_by(name: 'appointment') : Category.find(params[:task][:category_id].to_i)
 
     if @task.save
-      redirect_to tasks_path
+      redirect_to tasks_path, notice: "Good work! You now have #{current_user.tasks.count} tasks to do.."
     else
       render 'pages/home'
     end

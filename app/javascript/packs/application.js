@@ -9,6 +9,7 @@ import { initAutocomplete } from './plugins/init_autocomplete';
 import { initStatusUpdate } from './plugins/status';
 import { initAddButton } from './plugins/add-task-button';
 import { initUpdateCheckbox } from './plugins/checkbox';
+import { initActiveAlert } from './plugins/alert';
 
 
 // Always add a js- prefixed class to your elements when targeting to create a separation
@@ -21,3 +22,4 @@ initAutocomplete();
 initStatusUpdate('.js-task-status');
 initAddButton('.js-btn');
 initUpdateCheckbox('.js-checkbox');
+initActiveAlert('.js-alert');
