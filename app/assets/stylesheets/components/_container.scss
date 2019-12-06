@@ -22,7 +22,18 @@
 
 .landing-body {
   position: absolute;
-  bottom: 30%;
+  bottom: 20%;
+  font-size: 20px;
+
+  & > a {
+    color: #eee;
+    transition: 0.2s;
+
+    &:hover {
+      color: #ddd;
+      text-decoration: none;
+    }
+  }
 }
 
 .display-container {

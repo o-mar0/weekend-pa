@@ -15,6 +15,16 @@
   }
 }
 
+.new_user {
+  .form-actions {
+    margin: 0;
+    .btn {
+      font-size: 20px;
+      background: rgb(15,15,54);
+    }
+  }
+}
+
 .form-top {
   margin: 0 0 48px 0;
 }
