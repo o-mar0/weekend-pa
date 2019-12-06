@@ -184,14 +184,14 @@ tasks = [
     user: User.first
   },
 
-  {
-    title: 'Pick Up Vincent From The Airport',
-    category: Category.find_by(name: 'appointment'),
-    location: 'Melbourne Airport, Departure Dr, Melbourne Airport VIC',
-    status: false,
-    start_at: DateTime.parse('06/12/2019 20:30'),
-    user: User.first
-  },
+  # {
+  #   title: 'Pick Up Vincent From The Airport',
+  #   category: Category.find_by(name: 'appointment'),
+  #   location: 'Melbourne Airport, Departure Dr, Melbourne Airport VIC',
+  #   status: false,
+  #   start_at: DateTime.parse('06/12/2019 20:30'),
+  #   user: User.first
+  # },
 
   {
     title: 'Go back home for the surprise party',
@@ -318,6 +318,7 @@ tasks = [
   {
     title: 'Get a haircut',
     category: Category.find_by(name: 'shopping_mall'),
+    location: '',
     status: false,
     user: User.first
   },
@@ -325,6 +326,7 @@ tasks = [
   {
     title: 'Workout',
     category: Category.find_by(name: 'gym'),
+    location: '',
     status: false,
     user: User.first
   },
@@ -332,6 +334,7 @@ tasks = [
   {
     title: 'Car wash',
     category: Category.find_by(name: 'car_wash'),
+    location: '',
     location: '',
     status: false,
     user: User.first
@@ -342,6 +345,7 @@ tasks = [
   {
     title: 'Fuel up gas tank',
     category: Category.find_by(name: 'gas_station'),
+    location: '',
     status: false,
     user: User.first
   },
