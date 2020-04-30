@@ -6,7 +6,7 @@
     "@turf/turf": "^5.1.6",
     "bootstrap": "^4.3.1",
     "flatpickr": "^4.6.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "places.js": "^1.17.1",
     "popper.js": "^1.16.0",
     "query-string": "^6.9.0"
